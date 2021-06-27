@@ -19,12 +19,16 @@ lib64
 __pycache__
 
 # Python3 pyvenv
-env
-ENV
-venv
-VENV
-sbase
-sbase*
+.env
+.venv
+env/
+venv/
+ENV/
+VENV/
+env.bak/
+venv.bak/
+.sbase
+.sbase*
 seleniumbase_env
 seleniumbase_venv
 sbase_env
@@ -93,6 +97,12 @@ html_report.html
 report.html
 report.xml
 
+# Dashboard
+dashboard.html
+dashboard.json
+dash_pie.json
+dashboard.lock
+
 # Allure Reports / Results
 allure_report
 allure-report
@@ -127,6 +137,7 @@ docs/*/*/*/*.md
 # Other
 selenium-server-standalone.jar
 proxy.zip
+proxy.lock
 verbose_hub_server.dat
 verbose_node_server.dat
 ip_of_grid_hub.dat
@@ -134,5 +145,5 @@ downloaded_files
 archived_files
 assets
 temp
-temp*
+temp_*/
 node_modules

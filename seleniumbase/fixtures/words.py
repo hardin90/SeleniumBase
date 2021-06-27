@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-''' Small Dictionary '''
+""" Small Dictionary """
 
 
 class SD:
-
     def translate_in(language):
         words = {}
         words["English"] = "in"
@@ -72,6 +71,20 @@ class SD:
         words["Portuguese"] = "VERIFICAR TEXTO DO LINK"
         words["Russian"] = "ПОДТВЕРДИТЬ ССЫЛКУ"
         words["Spanish"] = "VERIFICAR TEXTO DEL ENLACE"
+        return words[language]
+
+    def translate_assert_attribute(language):
+        words = {}
+        words["English"] = "ASSERT ATTRIBUTE"
+        words["Chinese"] = "断言属性"
+        words["Dutch"] = "CONTROLEREN ATTRIBUUT"
+        words["French"] = "VÉRIFIER ATTRIBUT"
+        words["Italian"] = "VERIFICARE ATTRIBUTO"
+        words["Japanese"] = "属性を確認する"
+        words["Korean"] = "특성 확인"
+        words["Portuguese"] = "VERIFICAR ATRIBUTO"
+        words["Russian"] = "ПОДТВЕРДИТЬ АТРИБУТ"
+        words["Spanish"] = "VERIFICAR ATRIBUTO"
         return words[language]
 
     def translate_assert_title(language):

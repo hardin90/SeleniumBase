@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class 硒测试用例(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(硒测试用例, self).__init__(*args, **kwargs)
         self._language = "Chinese"
@@ -85,6 +84,10 @@ class 硒测试用例(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def 断言属性(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def 断言标题(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -137,6 +140,10 @@ class 硒测试用例(BaseCase):  # noqa
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def 元素是否启用(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def 元素是否存在(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -165,6 +172,10 @@ class 硒测试用例(BaseCase):  # noqa
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
 
+    def 等待属性(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
+
     def 睡(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
@@ -180,6 +191,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 清除(self, *args, **kwargs):
         # clear(selector)
         return self.clear(*args, **kwargs)
+
+    def 专注于(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
 
     def JS单击(self, *args, **kwargs):
         # js_click(selector)
@@ -200,6 +215,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 保存截图(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
+
+    def 保存截图到日志(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
 
     def 选择文件(self, *args, **kwargs):
         # choose_file(selector, file_path)
@@ -252,6 +271,10 @@ class 硒测试用例(BaseCase):  # noqa
     def 切换到默认窗口(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def 切换到最新的窗口(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def 最大化窗口(self, *args, **kwargs):
         # maximize_window()
@@ -428,9 +451,25 @@ class 硒测试用例(BaseCase):  # noqa
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def 下载文件(self, *args, **kwargs):
+        # download_file(file)
+        return self.download_file(*args, **kwargs)
+
+    def 下载的文件是否存在(self, *args, **kwargs):
+        # is_downloaded_file_present(file)
+        return self.is_downloaded_file_present(*args, **kwargs)
+
+    def 获取下载的文件路径(self, *args, **kwargs):
+        # get_path_of_downloaded_file(file)
+        return self.get_path_of_downloaded_file(*args, **kwargs)
+
     def 检查下载的文件(self, *args, **kwargs):
         # assert_downloaded_file(file)
         return self.assert_downloaded_file(*args, **kwargs)
+
+    def 删除下载的文件(self, *args, **kwargs):
+        # delete_downloaded_file(file)
+        return self.delete_downloaded_file(*args, **kwargs)
 
     def 失败(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
@@ -528,6 +567,10 @@ class 硒测试用例(BaseCase):  # noqa
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
 
+    def 设置HTML(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
+
     def 加载HTML文件(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
@@ -550,7 +593,6 @@ class 硒测试用例(BaseCase):  # noqa
 
 
 class MasterQA_中文(MasterQA, 硒测试用例):
-
     def 校验(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "手动检查"

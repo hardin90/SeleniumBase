@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class CasoDiProva(BaseCase):
-
     def __init__(self, *args, **kwargs):
         super(CasoDiProva, self).__init__(*args, **kwargs)
         self._language = "Italian"
@@ -85,6 +84,10 @@ class CasoDiProva(BaseCase):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def verificare_attributo(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def verificare_titolo(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -137,6 +140,10 @@ class CasoDiProva(BaseCase):
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def è_elemento_abilitato(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def è_elemento_presente(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -165,6 +172,10 @@ class CasoDiProva(BaseCase):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
 
+    def attendere_un_attributo(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
+
     def dormire(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
@@ -180,6 +191,10 @@ class CasoDiProva(BaseCase):
     def cancellare(self, *args, **kwargs):
         # clear(selector)
         return self.clear(*args, **kwargs)
+
+    def focalizzare(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
 
     def js_fare_clic(self, *args, **kwargs):
         # js_click(selector)
@@ -200,6 +215,10 @@ class CasoDiProva(BaseCase):
     def salva_screenshot(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
+
+    def salva_screenshot_nei_logs(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
 
     def seleziona_file(self, *args, **kwargs):
         # choose_file(selector, file_path)
@@ -252,6 +271,10 @@ class CasoDiProva(BaseCase):
     def passa_alla_finestra_predefinita(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def passa_alla_finestra_ultimo(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def ingrandisci_finestra(self, *args, **kwargs):
         # maximize_window()
@@ -428,9 +451,25 @@ class CasoDiProva(BaseCase):
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def scaricare_file(self, *args, **kwargs):
+        # download_file(file)
+        return self.download_file(*args, **kwargs)
+
+    def è_file_scaricato_presente(self, *args, **kwargs):
+        # is_downloaded_file_present(file)
+        return self.is_downloaded_file_present(*args, **kwargs)
+
+    def ottenere_percorso_del_file_scaricato(self, *args, **kwargs):
+        # get_path_of_downloaded_file(file)
+        return self.get_path_of_downloaded_file(*args, **kwargs)
+
     def verificare_file_scaricato(self, *args, **kwargs):
         # assert_downloaded_file(file)
         return self.assert_downloaded_file(*args, **kwargs)
+
+    def eliminare_file_scaricato(self, *args, **kwargs):
+        # delete_downloaded_file(file)
+        return self.delete_downloaded_file(*args, **kwargs)
 
     def fallire(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
@@ -528,6 +567,10 @@ class CasoDiProva(BaseCase):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
 
+    def impostare_html(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
+
     def caricare_html_file(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
@@ -550,7 +593,6 @@ class CasoDiProva(BaseCase):
 
 
 class MasterQA_Italiano(MasterQA, CasoDiProva):
-
     def verificare(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Controllo manuale"

@@ -2,11 +2,12 @@
 This module contains shared utility methods.
 """
 import time
-from selenium.webdriver.remote.errorhandler import ElementNotVisibleException
-from selenium.webdriver.remote.errorhandler import NoSuchElementException
-from selenium.webdriver.remote.errorhandler import NoAlertPresentException
-from selenium.webdriver.remote.errorhandler import NoSuchFrameException
-from selenium.webdriver.remote.errorhandler import NoSuchWindowException
+from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import NoAlertPresentException
+from selenium.common.exceptions import NoSuchAttributeException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchFrameException
+from selenium.common.exceptions import NoSuchWindowException
 from seleniumbase.common.exceptions import NoSuchFileException
 from seleniumbase.common.exceptions import TimeLimitExceededException
 from seleniumbase import config as sb_config
@@ -31,6 +32,10 @@ def format_exc(exception, message):
         exc = NoAlertPresentException
     elif exception == "NoAlertPresentException":
         exc = NoAlertPresentException
+    elif exception == NoSuchAttributeException:
+        exc = NoSuchAttributeException
+    elif exception == "NoSuchAttributeException":
+        exc = NoSuchAttributeException
     elif exception == NoSuchFrameException:
         exc = NoSuchFrameException
     elif exception == "NoSuchFrameException":
@@ -39,6 +44,8 @@ def format_exc(exception, message):
         exc = NoSuchWindowException
     elif exception == "NoSuchWindowException":
         exc = NoSuchWindowException
+    elif exception == NoSuchFileException:
+        exc = NoSuchFileException
     elif exception == "NoSuchFileException":
         exc = NoSuchFileException
     elif type(exception) is str:
@@ -74,6 +81,7 @@ def check_if_time_limit_exceeded():
                     plural = ""
             message = (
                 "This test has exceeded the time limit of %s second%s!"
-                "" % (display_time_limit, plural))
+                % (display_time_limit, plural)
+            )
             message = _format_message(message)
             __time_limit_exceeded(message)

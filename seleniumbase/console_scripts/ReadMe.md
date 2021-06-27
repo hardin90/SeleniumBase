@@ -1,6 +1,6 @@
 [<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Console Scripts</h2>
+## Console Scripts
 
 SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
 
@@ -35,20 +35,78 @@ Installs the specified webdriver.
 (``iedriver`` is required for Internet Explorer automation)
 (``operadriver`` is required for Opera Browser automation)
 
+### methods
+
+* Usage:
+``sbase methods``
+
+* Output:
+Displays common SeleniumBase Python methods.
+
+### options
+
+* Usage:
+``sbase options``
+
+* Output:
+Displays common pytest command-line options
+that are available when using SeleniumBase.
+
 ### mkdir
 
 * Usage:
-``sbase mkdir [DIRECTORY]``
+``sbase mkdir [DIRECTORY] [OPTIONS]``
 
 * Example:
 ``sbase mkdir ui_tests``
 
+* Options:
+``-b`` / ``--basic``  (Only config files. No tests added.)
+
 * Output:
-Creates a new folder for running SeleniumBase scripts.
+Creates a new folder for running SBase scripts.
 The new folder contains default config files,
 sample tests for helping new users get started,
 and Python boilerplates for setting up customized
 test frameworks.
+
+```bash
+ui_tests/
+│
+├── __init__.py
+├── my_first_test.py
+├── parameterized_test.py
+├── pytest.ini
+├── requirements.txt
+├── setup.cfg
+├── test_demo_site.py
+└── boilerplates/
+    │
+    ├── __init__.py
+    ├── base_test_case.py
+    ├── boilerplate_test.py
+    ├── classic_obj_test.py
+    ├── page_objects.py
+    ├── sb_fixture_test.py
+    └── samples/
+        │
+        ├── __init__.py
+        ├── google_objects.py
+        ├── google_test.py
+        ├── sb_swag_test.py
+        └── swag_labs_test.py
+```
+
+If running with the ``-b`` or ``--basic`` option:
+
+```bash
+ui_tests/
+│
+├── __init__.py
+├── pytest.ini
+├── requirements.txt
+└── setup.cfg
+```
 
 ### mkfile
 
@@ -78,14 +136,49 @@ methods, which are "open", "type", "click",
 basic boilerplate option, only the "open" method
 is included.
 
-### options
+### mkpres
 
 * Usage:
-``sbase options``
+``sbase mkpres [FILE.py] [LANG]``
+
+* Example:
+``sbase mkpres new_presentation.py --en``
+
+* Language Options:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
 
 * Output:
-Displays common pytest command-line options
-that are available when using SeleniumBase.
+Creates a new presentation with 3 example slides.
+If the file already exists, an error is raised.
+By default, the slides are written in English,
+and use "serif" theme with "slide" transition.
+The slides can be used as a basic boilerplate.
+
+### mkchart
+
+* Usage:
+``sbase mkchart [FILE.py] [LANG]``
+
+* Example:
+``sbase mkchart new_chart.py --en``
+
+* Language Options:
+``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
+``--nl`` / ``--Dutch``      |    ``--fr`` / ``--French``
+``--it`` / ``--Italian``    |    ``--ja`` / ``--Japanese``
+``--ko`` / ``--Korean``     |    ``--pt`` / ``--Portuguese``
+``--ru`` / ``--Russian``    |    ``--es`` / ``--Spanish``
+
+* Output:
+Creates a new SeleniumBase chart presentation.
+If the file already exists, an error is raised.
+By default, the slides are written in English,
+and use a "sky" theme with "slide" transition.
+The chart can be used as a basic boilerplate.
 
 ### print
 
@@ -125,7 +218,7 @@ specified. Method calls and "import" lines get swapped.
 Both a language and an action must be specified.
 The ``-p`` action can be paired with one other action.
 When running with ``-c`` (or ``--copy``), the new file name
-will be the orginal name appended with an underscore
+will be the original name appended with an underscore
 plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
 ``-c`` will create a new file called "test_1_ja.py".)
@@ -215,15 +308,11 @@ Runs the password decryption/unobfuscation tool.
 ### download
 
 * Usage:
-``sbase download [ITEM]``
-        (Options: server)
-
-* Example:
 ``sbase download server``
 
 * Output:
-Downloads the specified item.
-(server is required for using your own Selenium Grid)
+Downloads the Selenium Server JAR file for Grid usage.
+(That JAR file is required when using a Selenium Grid)
 
 ### grid-hub
 

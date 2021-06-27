@@ -1,11 +1,10 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="290" /></h3>
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="360" /></h3>
 
 <h1> 📰 Presenter 📑 </h1>
 
-<b>SeleniumBase Presenter allows you to create HTML presentations with Python.</b><br />
-(The "Reveal-JS" library is used for running the presentations.)
+<p>SeleniumBase Presenter lets you use Python to generate HTML presentations from Reveal JS.</p>
 
-**Here's a sample presentation:**
+<b>Here's a sample presentation:</b>
 
 <a href="https://seleniumbase.io/other/presenter.html"><img width="500" src="https://seleniumbase.io/other/presenter.gif" title="Screenshot"></a><br>
 
@@ -158,7 +157,7 @@ class MyPresenterClass(BaseCase):
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 'class MyTestClass(BaseCase):\n\n'
-                '    def test_basic(self):\n'
+                '    def test_basics(self):\n'
                 '        self.open("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd: volume 0", "h3")\n'
@@ -168,14 +167,14 @@ class MyPresenterClass(BaseCase):
                 '        self.click(\'a[rel="license"]\')\n'
                 '        self.assert_text("free to copy and reuse")\n'
                 '        self.go_back()\n'
-                '        self.click_link_text("About")\n'
+                '        self.click_link("About")\n'
                 '        self.assert_exact_text("xkcd.com", "h2")'))
         self.add_slide(
             "<h3>Highlight <b>code</b> in slides:</h3>",
             code=(
                 'from seleniumbase import BaseCase\n\n'
                 '<mark>class MyTestClass(BaseCase):</mark>\n\n'
-                '    def test_basic(self):\n'
+                '    def test_basics(self):\n'
                 '        self.open("https://store.xkcd.com/search")\n'
                 '        self.type(\'input[name="q"]\', "xkcd book\\n")\n'
                 '        self.assert_text("xkcd: volume 0", "h3")'))

@@ -1,6 +1,6 @@
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> Creating a SeleniumBase Test Runner with NodeJS</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Creating a Test Runner with NodeJS + Express</h2>
 
-You can create a customized web app for running SeleniumBase tests by using NodeJS. (This tutorial assumes that you've already installed SeleniumBase by following the instructions from the [top-level ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) file.)
+You can create a customized web app for running SeleniumBase tests by using NodeJS and Express. (This tutorial assumes that you've already installed SeleniumBase by following the instructions from the [top-level ReadMe](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md) file.)
 
 <img src="https://seleniumbase.io/other/node_runner.png" title="Node Runner" />
 
@@ -29,7 +29,7 @@ npm install
 node server.js
 ```
 
-(You can always stop the server by using ``CTRL-C``.)
+(You can always stop the server by using ``CTRL+C``.)
 
 #### 5. Open the SeleniumBase Test Runner web app
 

@@ -4,8 +4,7 @@ from seleniumbase import BaseCase
 
 
 @pytest.mark.offline  # Can be run with: "pytest -m offline"
-class OfflineTestClass(BaseCase):
-
+class OfflineTests(BaseCase):
     def test_demo_page(self):
         # Load a local html file into the web browser
         dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -39,7 +38,7 @@ class OfflineTestClass(BaseCase):
         # Assert that the given SVG is visible on the page
         self.assert_element('svg[name="svgName"]')
 
-        # Verify that a slider control updates a progrss bar
+        # Verify that a slider control updates a progress bar
         self.assert_element('progress[value="50"]')
         self.press_right_arrow("#myslider", times=5)
         self.assert_element('progress[value="100"]')
@@ -89,7 +88,7 @@ class OfflineTestClass(BaseCase):
         self.assert_true(self.is_selected(".fBox"))
         self.switch_to_default_content()
 
-        # Assert link text - Use click_link_text() to click
+        # Assert link text - Use click_link() to click
         self.assert_link_text("seleniumbase.com")
         self.assert_link_text("SeleniumBase on GitHub")
         self.assert_link_text("seleniumbase.io")
@@ -97,3 +96,6 @@ class OfflineTestClass(BaseCase):
 
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")
+
+        # Highlight a page element (also assert visibility)
+        self.highlight("h2")

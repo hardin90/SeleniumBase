@@ -74,8 +74,10 @@ class MD_F:
         parent_class_lang["ТестНаСелен"] = "Russian"
         parent_class_lang["CasoDePrueba"] = "Spanish"
         if parent_class not in parent_class_lang.keys():
-            raise Exception("Invalid parent_class {%s} not in {%s}!"
-                            "" % (parent_class, parent_class_lang.keys()))
+            raise Exception(
+                "Invalid parent_class {%s} not in {%s}!"
+                % (parent_class, parent_class_lang.keys())
+            )
         return parent_class_lang[parent_class]
 
     def get_mqa_par_class_lang(parent_class):
@@ -91,8 +93,10 @@ class MD_F:
         parent_class_lang["MasterQA_Русский"] = "Russian"
         parent_class_lang["MasterQA_Español"] = "Spanish"
         if parent_class not in parent_class_lang.keys():
-            raise Exception("Invalid parent_class {%s} not in {%s}!"
-                            "" % (parent_class, parent_class_lang.keys()))
+            raise Exception(
+                "Invalid parent_class {%s} not in {%s}!"
+                % (parent_class, parent_class_lang.keys())
+            )
         return parent_class_lang[parent_class]
 
     def get_lang_parent_class(language):
@@ -108,8 +112,10 @@ class MD_F:
         lang_parent_class["Russian"] = "ТестНаСелен"
         lang_parent_class["Spanish"] = "CasoDePrueba"
         if language not in lang_parent_class.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, lang_parent_class.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, lang_parent_class.keys())
+            )
         return lang_parent_class[language]
 
     def get_mqa_lang_par_class(language):
@@ -125,66 +131,88 @@ class MD_F:
         lang_parent_class["Russian"] = "MasterQA_Русский"
         lang_parent_class["Spanish"] = "MasterQA_Español"
         if language not in lang_parent_class.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, lang_parent_class.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, lang_parent_class.keys())
+            )
         return lang_parent_class[language]
 
     def get_import_line(language):
         import_line = {}
         # - The Default Import Line:
-        import_line["English"] = (
-            "from seleniumbase import BaseCase")
+        import_line["English"] = "from seleniumbase import BaseCase"
         # - Translated Import Lines:
-        import_line["Chinese"] = (
-            "from seleniumbase.translate.chinese import 硒测试用例")
-        import_line["Dutch"] = (
-            "from seleniumbase.translate.dutch import Testgeval")
-        import_line["French"] = (
-            "from seleniumbase.translate.french import CasDeBase")
-        import_line["Italian"] = (
-            "from seleniumbase.translate.italian import CasoDiProva")
-        import_line["Japanese"] = (
-            "from seleniumbase.translate.japanese import セレニウムテストケース")
-        import_line["Korean"] = (
-            "from seleniumbase.translate.korean import 셀레늄_테스트_케이스")
-        import_line["Portuguese"] = (
-            "from seleniumbase.translate.portuguese import CasoDeTeste")
-        import_line["Russian"] = (
-            "from seleniumbase.translate.russian import ТестНаСелен")
-        import_line["Spanish"] = (
-            "from seleniumbase.translate.spanish import CasoDePrueba")
+        import_line[
+            "Chinese"
+        ] = "from seleniumbase.translate.chinese import 硒测试用例"
+        import_line[
+            "Dutch"
+        ] = "from seleniumbase.translate.dutch import Testgeval"
+        import_line[
+            "French"
+        ] = "from seleniumbase.translate.french import CasDeBase"
+        import_line[
+            "Italian"
+        ] = "from seleniumbase.translate.italian import CasoDiProva"
+        import_line[
+            "Japanese"
+        ] = "from seleniumbase.translate.japanese import セレニウムテストケース"
+        import_line[
+            "Korean"
+        ] = "from seleniumbase.translate.korean import 셀레늄_테스트_케이스"
+        import_line[
+            "Portuguese"
+        ] = "from seleniumbase.translate.portuguese import CasoDeTeste"
+        import_line[
+            "Russian"
+        ] = "from seleniumbase.translate.russian import ТестНаСелен"
+        import_line[
+            "Spanish"
+        ] = "from seleniumbase.translate.spanish import CasoDePrueba"
         if language not in import_line.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, import_line.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, import_line.keys())
+            )
         return import_line[language]
 
     def get_mqa_im_line(language):
         import_line = {}
         # - The Default Import Line:
-        import_line["English"] = (
-            "from seleniumbase import MasterQA")
+        import_line["English"] = "from seleniumbase import MasterQA"
         # - Translated Import Lines:
-        import_line["Chinese"] = (
-            "from seleniumbase.translate.chinese import MasterQA_中文")
-        import_line["Dutch"] = (
-            "from seleniumbase.translate.dutch import MasterQA_Nederlands")
-        import_line["French"] = (
-            "from seleniumbase.translate.french import MasterQA_Français")
-        import_line["Italian"] = (
-            "from seleniumbase.translate.italian import MasterQA_Italiano")
-        import_line["Japanese"] = (
-            "from seleniumbase.translate.japanese import MasterQA_日本語")
-        import_line["Korean"] = (
-            "from seleniumbase.translate.korean import MasterQA_한국어")
-        import_line["Portuguese"] = (
-            "from seleniumbase.translate.portuguese import MasterQA_Português")
-        import_line["Russian"] = (
-            "from seleniumbase.translate.russian import MasterQA_Русский")
-        import_line["Spanish"] = (
-            "from seleniumbase.translate.spanish import MasterQA_Español")
+        import_line[
+            "Chinese"
+        ] = "from seleniumbase.translate.chinese import MasterQA_中文"
+        import_line[
+            "Dutch"
+        ] = "from seleniumbase.translate.dutch import MasterQA_Nederlands"
+        import_line[
+            "French"
+        ] = "from seleniumbase.translate.french import MasterQA_Français"
+        import_line[
+            "Italian"
+        ] = "from seleniumbase.translate.italian import MasterQA_Italiano"
+        import_line[
+            "Japanese"
+        ] = "from seleniumbase.translate.japanese import MasterQA_日本語"
+        import_line[
+            "Korean"
+        ] = "from seleniumbase.translate.korean import MasterQA_한국어"
+        import_line[
+            "Portuguese"
+        ] = "from seleniumbase.translate.portuguese import MasterQA_Português"
+        import_line[
+            "Russian"
+        ] = "from seleniumbase.translate.russian import MasterQA_Русский"
+        import_line[
+            "Spanish"
+        ] = "from seleniumbase.translate.spanish import MasterQA_Español"
         if language not in import_line.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, import_line.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, import_line.keys())
+            )
         return import_line[language]
 
     def get_locale_code(language):
@@ -200,8 +228,10 @@ class MD_F:
         locale_codes["Russian"] = "ru"
         locale_codes["Spanish"] = "es"
         if language not in locale_codes.keys():
-            raise Exception("Invalid language {%s} not in {%s}!"
-                            "" % (language, locale_codes.keys()))
+            raise Exception(
+                "Invalid language {%s} not in {%s}!"
+                % (language, locale_codes.keys())
+            )
         return locale_codes[language]
 
     def get_locale_list():
@@ -311,17 +341,17 @@ class MD:
     md["click_if_visible"][8] = "нажмите_если_виден"
     md["click_if_visible"][9] = "clic_si_está_muestra"
 
-    md["click_link_text"] = ["*"] * num_langs
-    md["click_link_text"][0] = "click_link_text"
-    md["click_link_text"][1] = "单击链接文本"
-    md["click_link_text"][2] = "klik_linktekst"
-    md["click_link_text"][3] = "cliquer_texte_du_lien"
-    md["click_link_text"][4] = "clic_testo_del_collegamento"
-    md["click_link_text"][5] = "リンクテキストをクリックします"
-    md["click_link_text"][6] = "링크_텍스트를_클릭합니다"
-    md["click_link_text"][7] = "clique_texto_do_link"
-    md["click_link_text"][8] = "нажмите_ссылку"
-    md["click_link_text"][9] = "clic_texto_del_enlace"
+    md["click_link"] = ["*"] * num_langs
+    md["click_link"][0] = "click_link"
+    md["click_link"][1] = "单击链接文本"
+    md["click_link"][2] = "klik_linktekst"
+    md["click_link"][3] = "cliquer_texte_du_lien"
+    md["click_link"][4] = "clic_testo_del_collegamento"
+    md["click_link"][5] = "リンクテキストをクリックします"
+    md["click_link"][6] = "링크_텍스트를_클릭합니다"
+    md["click_link"][7] = "clique_texto_do_link"
+    md["click_link"][8] = "нажмите_ссылку"
+    md["click_link"][9] = "clic_texto_del_enlace"
 
     md["update_text"] = ["*"] * num_langs
     md["update_text"][0] = "update_text"
@@ -454,6 +484,18 @@ class MD:
     md["assert_element_absent"][7] = "verificar_elemento_ausente"
     md["assert_element_absent"][8] = "подтвердить_элемент_отсутствует"
     md["assert_element_absent"][9] = "verificar_elemento_ausente"
+
+    md["assert_attribute"] = ["*"] * num_langs
+    md["assert_attribute"][0] = "assert_attribute"
+    md["assert_attribute"][1] = "断言属性"
+    md["assert_attribute"][2] = "controleren_attribuut"
+    md["assert_attribute"][3] = "vérifier_attribut"
+    md["assert_attribute"][4] = "verificare_attributo"
+    md["assert_attribute"][5] = "属性を確認する"
+    md["assert_attribute"][6] = "특성_확인"
+    md["assert_attribute"][7] = "verificar_atributo"
+    md["assert_attribute"][8] = "подтвердить_атрибут"
+    md["assert_attribute"][9] = "verificar_atributo"
 
     md["assert_title"] = ["*"] * num_langs
     md["assert_title"][0] = "assert_title"
@@ -611,6 +653,18 @@ class MD:
     md["is_element_visible"][8] = "элемент_виден"
     md["is_element_visible"][9] = "se_muestra_el_elemento"
 
+    md["is_element_enabled"] = ["*"] * num_langs
+    md["is_element_enabled"][0] = "is_element_enabled"
+    md["is_element_enabled"][1] = "元素是否启用"
+    md["is_element_enabled"][2] = "element_ingeschakeld"
+    md["is_element_enabled"][3] = "est_un_élément_activé"
+    md["is_element_enabled"][4] = "è_elemento_abilitato"
+    md["is_element_enabled"][5] = "要素が有効かどうか"
+    md["is_element_enabled"][6] = "요소가_활성화돼"
+    md["is_element_enabled"][7] = "o_elemento_está_habilitado"
+    md["is_element_enabled"][8] = "элемент_включен"
+    md["is_element_enabled"][9] = "está_habilitado_el_elemento"
+
     md["is_element_present"] = ["*"] * num_langs
     md["is_element_present"][0] = "is_element_present"
     md["is_element_present"][1] = "元素是否存在"
@@ -695,6 +749,18 @@ class MD:
     md["wait_for_element_absent"][8] = "ждать_элемента_отсутствует"
     md["wait_for_element_absent"][9] = "espera_el_elemento_ausente"
 
+    md["wait_for_attribute"] = ["*"] * num_langs
+    md["wait_for_attribute"][0] = "wait_for_attribute"
+    md["wait_for_attribute"][1] = "等待属性"
+    md["wait_for_attribute"][2] = "wachten_op_attribuut"
+    md["wait_for_attribute"][3] = "attendre_un_attribut"
+    md["wait_for_attribute"][4] = "attendere_un_attributo"
+    md["wait_for_attribute"][5] = "属性を待つ"
+    md["wait_for_attribute"][6] = "특성_때까지_기다립니다"
+    md["wait_for_attribute"][7] = "aguardar_o_atributo"
+    md["wait_for_attribute"][8] = "ждать_атрибут"
+    md["wait_for_attribute"][9] = "espera_el_atributo"
+
     md["sleep"] = ["*"] * num_langs
     md["sleep"][0] = "sleep"
     md["sleep"][1] = "睡"
@@ -743,6 +809,18 @@ class MD:
     md["clear"][8] = "очистить"
     md["clear"][9] = "despejar"
 
+    md["focus"] = ["*"] * num_langs
+    md["focus"][0] = "focus"
+    md["focus"][1] = "专注于"
+    md["focus"][2] = "focussen"
+    md["focus"][3] = "concentrer"
+    md["focus"][4] = "focalizzare"
+    md["focus"][5] = "集中する"
+    md["focus"][6] = "집중하다"
+    md["focus"][7] = "focar"
+    md["focus"][8] = "сосредоточиться"
+    md["focus"][9] = "centrarse"
+
     md["js_click"] = ["*"] * num_langs
     md["js_click"][0] = "js_click"
     md["js_click"][1] = "JS单击"
@@ -775,7 +853,7 @@ class MD:
     md["js_type"][4] = "js_digitare"
     md["js_type"][5] = "JS入力"
     md["js_type"][6] = "JS_입력"
-    md["js_type"][7] = "js_tipo"
+    md["js_type"][7] = "js_digitar"
     md["js_type"][8] = "JS_введите"
     md["js_type"][9] = "js_escriba"
 
@@ -802,6 +880,18 @@ class MD:
     md["save_screenshot"][7] = "salvar_captura_de_tela"
     md["save_screenshot"][8] = "сохранить_скриншот"
     md["save_screenshot"][9] = "guardar_captura_de_pantalla"
+
+    md["save_screenshot_to_logs"] = ["*"] * num_langs
+    md["save_screenshot_to_logs"][0] = "save_screenshot_to_logs"
+    md["save_screenshot_to_logs"][1] = "保存截图到日志"
+    md["save_screenshot_to_logs"][2] = "bewaar_screenshot_om_te_loggen"
+    md["save_screenshot_to_logs"][3] = "enregistrer_capture_d_écran_aux_logs"
+    md["save_screenshot_to_logs"][4] = "salva_screenshot_nei_logs"
+    md["save_screenshot_to_logs"][5] = "ログにスクリーンショットを保存"
+    md["save_screenshot_to_logs"][6] = "로그에_스크린_샷_저장"
+    md["save_screenshot_to_logs"][7] = "salvar_captura_de_tela_para_logs"
+    md["save_screenshot_to_logs"][8] = "сохранить_скриншот_в_логи"
+    md["save_screenshot_to_logs"][9] = "guardar_captura_de_pantalla_para_logs"
 
     md["choose_file"] = ["*"] * num_langs
     md["choose_file"][0] = "choose_file"
@@ -920,8 +1010,8 @@ class MD:
     md["switch_to_default_content"][5] = "デフォルトのコンテンツに切り替える"
     md["switch_to_default_content"][6] = "기본_콘텐츠로_전환"
     md["switch_to_default_content"][7] = "mudar_para_o_conteúdo_padrão"
-    md["switch_to_default_content"][8] = (
-        "переключиться_на_содержимое_по_умолчанию")
+    stdc_ru = "переключиться_на_содержимое_по_умолчанию"
+    md["switch_to_default_content"][8] = stdc_ru
     md["switch_to_default_content"][9] = "cambiar_al_contenido_predeterminado"
 
     md["open_new_window"] = ["*"] * num_langs
@@ -957,8 +1047,20 @@ class MD:
     md["switch_to_default_window"][5] = "デフォルトのウィンドウに切り替える"
     md["switch_to_default_window"][6] = "기본_창으로_전환"
     md["switch_to_default_window"][7] = "mudar_para_a_janela_padrão"
-    md["switch_to_default_window"][8] = "переключиться_в_окно_по_умолчанию"
+    md["switch_to_default_window"][8] = "переключиться_на_окно_по_умолчанию"
     md["switch_to_default_window"][9] = "cambiar_a_ventana_predeterminada"
+
+    md["switch_to_newest_window"] = ["*"] * num_langs
+    md["switch_to_newest_window"][0] = "switch_to_newest_window"
+    md["switch_to_newest_window"][1] = "切换到最新的窗口"
+    md["switch_to_newest_window"][2] = "overschakelen_naar_nieuwste_venster"
+    md["switch_to_newest_window"][3] = "passer_à_fenêtre_dernière"
+    md["switch_to_newest_window"][4] = "passa_alla_finestra_ultimo"
+    md["switch_to_newest_window"][5] = "最新のウィンドウに切り替えます"
+    md["switch_to_newest_window"][6] = "최신_창으로_전환"
+    md["switch_to_newest_window"][7] = "mudar_para_a_janela_última"
+    md["switch_to_newest_window"][8] = "переключиться_на_последнее_окно"
+    md["switch_to_newest_window"][9] = "cambiar_a_ventana_última"
 
     md["maximize_window"] = ["*"] * num_langs
     md["maximize_window"][0] = "maximize_window"
@@ -1452,6 +1554,45 @@ class MD:
     md["assert_pdf_text"][8] = "подтвердить_текст_PDF"
     md["assert_pdf_text"][9] = "verificar_texto_pdf"
 
+    md["download_file"] = ["*"] * num_langs
+    md["download_file"][0] = "download_file"
+    md["download_file"][1] = "下载文件"
+    md["download_file"][2] = "bestand_downloaden"
+    md["download_file"][3] = "télécharger_fichier"
+    md["download_file"][4] = "scaricare_file"
+    md["download_file"][5] = "ファイルをダウンロード"
+    md["download_file"][6] = "파일_다운로드"
+    md["download_file"][7] = "baixar_arquivo"
+    md["download_file"][8] = "скачать_файл"
+    md["download_file"][9] = "descargar_archivo"
+
+    md["is_downloaded_file_present"] = ["*"] * num_langs
+    md["is_downloaded_file_present"][0] = "is_downloaded_file_present"
+    md["is_downloaded_file_present"][1] = "下载的文件是否存在"
+    md["is_downloaded_file_present"][2] = "gedownloade_bestand_aanwezig"
+    md["is_downloaded_file_present"][3] = "est_un_fichier_téléchargé_présent"
+    md["is_downloaded_file_present"][4] = "è_file_scaricato_presente"
+    md["is_downloaded_file_present"][5] = "ダウンロードしたファイルが存在するかどうか"
+    md["is_downloaded_file_present"][6] = "다운로드한_파일이_있습니다"
+    md["is_downloaded_file_present"][7] = "o_arquivo_baixado_está_presente"
+    md["is_downloaded_file_present"][8] = "загруженный_файл_присутствует"
+    md["is_downloaded_file_present"][9] = "está_presente_el_archivo_descargado"
+
+    md["get_path_of_downloaded_file"] = ["*"] * num_langs
+    md["get_path_of_downloaded_file"][0] = "get_path_of_downloaded_file"
+    md["get_path_of_downloaded_file"][1] = "获取下载的文件路径"
+    md["get_path_of_downloaded_file"][2] = "pad_gedownloade_bestand_ophalen"
+    gpodf_fr = "obtenir_chemin_du_fichier_téléchargé"
+    md["get_path_of_downloaded_file"][3] = gpodf_fr
+    gpodf_it = "ottenere_percorso_del_file_scaricato"
+    md["get_path_of_downloaded_file"][4] = gpodf_it
+    md["get_path_of_downloaded_file"][5] = "ダウンロードしたファイルパスを取得する"
+    md["get_path_of_downloaded_file"][6] = "다운로드한_파일_경로_가져_오기"
+    md["get_path_of_downloaded_file"][7] = "obter_caminho_do_arquivo_baixado"
+    md["get_path_of_downloaded_file"][8] = "получить_путь_к_загруженному_файлу"
+    gpodf_es = "obtener_ruta_del_archivo_descargado"
+    md["get_path_of_downloaded_file"][9] = gpodf_es
+
     md["assert_downloaded_file"] = ["*"] * num_langs
     md["assert_downloaded_file"][0] = "assert_downloaded_file"
     md["assert_downloaded_file"][1] = "检查下载的文件"
@@ -1463,6 +1604,18 @@ class MD:
     md["assert_downloaded_file"][7] = "verificar_arquivo_baixado"
     md["assert_downloaded_file"][8] = "подтвердить_загруженный_файл"
     md["assert_downloaded_file"][9] = "verificar_archivo_descargado"
+
+    md["delete_downloaded_file"] = ["*"] * num_langs
+    md["delete_downloaded_file"][0] = "delete_downloaded_file"
+    md["delete_downloaded_file"][1] = "删除下载的文件"
+    md["delete_downloaded_file"][2] = "verwijder_gedownloade_bestand"
+    md["delete_downloaded_file"][3] = "supprimer_fichier_téléchargé"
+    md["delete_downloaded_file"][4] = "eliminare_file_scaricato"
+    md["delete_downloaded_file"][5] = "ダウンロードしたファイルを削除する"
+    md["delete_downloaded_file"][6] = "다운로드한_파일_삭제"
+    md["delete_downloaded_file"][7] = "exclua_arquivo_baixado"
+    md["delete_downloaded_file"][8] = "удалить_загруженный_файл"
+    md["delete_downloaded_file"][9] = "eliminar_archivo_descargado"
 
     md["fail"] = ["*"] * num_langs
     md["fail"][0] = "fail"
@@ -1587,7 +1740,7 @@ class MD:
     md["get_attribute"] = ["*"] * num_langs
     md["get_attribute"][0] = "get_attribute"
     md["get_attribute"][1] = "获取属性"
-    md["get_attribute"][2] = "kenmerk_ophalen"
+    md["get_attribute"][2] = "attribuut_ophalen"
     md["get_attribute"][3] = "obtenir_attribut"
     md["get_attribute"][4] = "ottenere_attributo"
     md["get_attribute"][5] = "属性を取得する"
@@ -1599,7 +1752,7 @@ class MD:
     md["set_attribute"] = ["*"] * num_langs
     md["set_attribute"][0] = "set_attribute"
     md["set_attribute"][1] = "设置属性"
-    md["set_attribute"][2] = "kenmerk_instellen"
+    md["set_attribute"][2] = "attribuut_instellen"
     md["set_attribute"][3] = "définir_attribut"
     md["set_attribute"][4] = "imposta_attributo"
     md["set_attribute"][5] = "属性を設定する"
@@ -1611,7 +1764,7 @@ class MD:
     md["set_attributes"] = ["*"] * num_langs
     md["set_attributes"][0] = "set_attributes"
     md["set_attributes"][1] = "设置所有属性"
-    md["set_attributes"][2] = "kenmerken_instellen"
+    md["set_attributes"][2] = "attributen_instellen"
     md["set_attributes"][3] = "définir_attributs"
     md["set_attributes"][4] = "impostare_gli_attributi"
     md["set_attributes"][5] = "すべての属性を設定"
@@ -1619,6 +1772,18 @@ class MD:
     md["set_attributes"][7] = "definir_atributos"
     md["set_attributes"][8] = "набор_атрибутов"
     md["set_attributes"][9] = "establecer_atributos"
+
+    md["set_content"] = ["*"] * num_langs
+    md["set_content"][0] = "set_content"
+    md["set_content"][1] = "设置HTML"
+    md["set_content"][2] = "html_instellen"
+    md["set_content"][3] = "définir_html"
+    md["set_content"][4] = "impostare_html"
+    md["set_content"][5] = "HTML設定する"
+    md["set_content"][6] = "HTML_설정"
+    md["set_content"][7] = "definir_html"
+    md["set_content"][8] = "набор_HTML"
+    md["set_content"][9] = "establecer_html"
 
     md["type"] = ["*"] * num_langs
     md["type"][0] = "type"
@@ -1628,7 +1793,7 @@ class MD:
     md["type"][4] = "digitare"
     md["type"][5] = "入力"
     md["type"][6] = "입력"
-    md["type"][7] = "tipo"
+    md["type"][7] = "digitar"
     md["type"][8] = "введите"
     md["type"][9] = "escriba"
 
@@ -1836,9 +2001,22 @@ class MD:
     md["input"][4] = "digitare"
     md["input"][5] = "入力"
     md["input"][6] = "입력"
-    md["input"][7] = "tipo"
+    md["input"][7] = "digitar"
     md["input"][8] = "введите"
     md["input"][9] = "escriba"
+
+    # "fill" -> duplicate of "type"
+    md["fill"] = ["*"] * num_langs
+    md["fill"][0] = "fill"
+    md["fill"][1] = "输入文本"
+    md["fill"][2] = "typ"
+    md["fill"][3] = "taper"
+    md["fill"][4] = "digitare"
+    md["fill"][5] = "入力"
+    md["fill"][6] = "입력"
+    md["fill"][7] = "digitar"
+    md["fill"][8] = "введите"
+    md["fill"][9] = "escriba"
 
     # "goto" -> duplicate of "visit"
     md["goto"] = ["*"] * num_langs
@@ -1918,18 +2096,18 @@ class MD:
     md["get_page_title"][8] = "получить_название"
     md["get_page_title"][9] = "obtener_título"
 
-    # "click_link" -> duplicate of "click_link_text"
-    md["click_link"] = ["*"] * num_langs
-    md["click_link"][0] = "click_link"
-    md["click_link"][1] = "单击链接文本"
-    md["click_link"][2] = "klik_linktekst"
-    md["click_link"][3] = "cliquer_texte_du_lien"
-    md["click_link"][4] = "clic_testo_del_collegamento"
-    md["click_link"][5] = "リンクテキストをクリックします"
-    md["click_link"][6] = "링크_텍스트를_클릭합니다"
-    md["click_link"][7] = "clique_texto_do_link"
-    md["click_link"][8] = "нажмите_ссылку"
-    md["click_link"][9] = "clic_texto_del_enlace"
+    # "click_link_text" -> duplicate of "click_link"
+    md["click_link_text"] = ["*"] * num_langs
+    md["click_link_text"][0] = "click_link_text"
+    md["click_link_text"][1] = "单击链接文本"
+    md["click_link_text"][2] = "klik_linktekst"
+    md["click_link_text"][3] = "cliquer_texte_du_lien"
+    md["click_link_text"][4] = "clic_testo_del_collegamento"
+    md["click_link_text"][5] = "リンクテキストをクリックします"
+    md["click_link_text"][6] = "링크_텍스트를_클릭합니다"
+    md["click_link_text"][7] = "clique_texto_do_link"
+    md["click_link_text"][8] = "нажмите_ссылку"
+    md["click_link_text"][9] = "clic_texto_del_enlace"
 
     # "send_keys" -> duplicate of "add_text"
     md["send_keys"] = ["*"] * num_langs
@@ -1944,11 +2122,24 @@ class MD:
     md["send_keys"][8] = "добавить_текст"
     md["send_keys"][9] = "agregar_texto"
 
+    # "load_html_string" -> duplicate of "set_content"
+    md["load_html_string"] = ["*"] * num_langs
+    md["load_html_string"][0] = "load_html_string"
+    md["load_html_string"][1] = "设置HTML"
+    md["load_html_string"][2] = "html_instellen"
+    md["load_html_string"][3] = "définir_html"
+    md["load_html_string"][4] = "impostare_html"
+    md["load_html_string"][5] = "HTML設定する"
+    md["load_html_string"][6] = "HTML_설정"
+    md["load_html_string"][7] = "definir_html"
+    md["load_html_string"][8] = "набор_HTML"
+    md["load_html_string"][9] = "establecer_html"
+
     # "set_attribute_all" -> duplicate of "set_attributes"
     md["set_attribute_all"] = ["*"] * num_langs
     md["set_attribute_all"][0] = "set_attribute_all"
     md["set_attribute_all"][1] = "设置所有属性"
-    md["set_attribute_all"][2] = "kenmerken_instellen"
+    md["set_attribute_all"][2] = "attributen_instellen"
     md["set_attribute_all"][3] = "définir_attributs"
     md["set_attribute_all"][4] = "impostare_gli_attributi"
     md["set_attribute_all"][5] = "すべての属性を設定"
@@ -2034,6 +2225,21 @@ class MD:
     md["start_tour"][7] = "jogar_o_tour"
     md["start_tour"][8] = "играть_тур"
     md["start_tour"][9] = "reproducir_la_gira"
+
+    # "delete_downloaded_file_if_present" -> double of "delete_downloaded_file"
+    md["delete_downloaded_file_if_present"] = ["*"] * num_langs
+    ddfip_en = "delete_downloaded_file_if_present"
+    md["delete_downloaded_file_if_present"][0] = ddfip_en
+    md["delete_downloaded_file_if_present"][1] = "删除下载的文件"
+    ddfip_nl = "verwijder_gedownloade_bestand"
+    md["delete_downloaded_file_if_present"][2] = ddfip_nl
+    md["delete_downloaded_file_if_present"][3] = "supprimer_fichier_téléchargé"
+    md["delete_downloaded_file_if_present"][4] = "eliminare_file_scaricato"
+    md["delete_downloaded_file_if_present"][5] = "ダウンロードしたファイルを削除する"
+    md["delete_downloaded_file_if_present"][6] = "다운로드한_파일_삭제"
+    md["delete_downloaded_file_if_present"][7] = "exclua_arquivo_baixado"
+    md["delete_downloaded_file_if_present"][8] = "удалить_загруженный_файл"
+    md["delete_downloaded_file_if_present"][9] = "eliminar_archivo_descargado"
 
     # "wait_for_and_accept_alert" -> duplicate of "accept_alert"
     md["wait_for_and_accept_alert"] = ["*"] * num_langs

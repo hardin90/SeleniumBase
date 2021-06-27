@@ -14,8 +14,8 @@ import time
 
 def main():
     try:
-        while(1):
-            print("\nEnter password to obfuscate: (CTRL-C to exit)")
+        while 1:
+            print("\nEnter password to obfuscate: (CTRL+C to exit)")
             password = getpass.getpass()
             print("Verify password:")
             verify_password = getpass.getpass()

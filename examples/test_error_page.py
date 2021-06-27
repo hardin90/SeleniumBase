@@ -5,8 +5,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
-
+class ErrorPageTests(BaseCase):
     def test_error_page(self):
         self.open("https://seleniumbase.io/error_page/")
         self.highlight('img[alt="500 Error"]')

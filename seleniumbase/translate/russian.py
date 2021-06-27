@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class ТестНаСелен(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(ТестНаСелен, self).__init__(*args, **kwargs)
         self._language = "Russian"
@@ -85,6 +84,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def подтвердить_атрибут(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def подтвердить_название(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -137,6 +140,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def элемент_включен(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def элемент_присутствует(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -165,6 +172,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
 
+    def ждать_атрибут(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
+
     def спать(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
@@ -180,6 +191,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def очистить(self, *args, **kwargs):
         # clear(selector)
         return self.clear(*args, **kwargs)
+
+    def сосредоточиться(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
 
     def JS_нажмите(self, *args, **kwargs):
         # js_click(selector)
@@ -200,6 +215,10 @@ class ТестНаСелен(BaseCase):  # noqa
     def сохранить_скриншот(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
+
+    def сохранить_скриншот_в_логи(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
 
     def выберите_файл(self, *args, **kwargs):
         # choose_file(selector, file_path)
@@ -249,9 +268,13 @@ class ТестНаСелен(BaseCase):  # noqa
         # switch_to_window(window)
         return self.switch_to_window(*args, **kwargs)
 
-    def переключиться_в_окно_по_умолчанию(self, *args, **kwargs):
+    def переключиться_на_окно_по_умолчанию(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def переключиться_на_последнее_окно(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def максимальное_окно(self, *args, **kwargs):
         # maximize_window()
@@ -428,9 +451,25 @@ class ТестНаСелен(BaseCase):  # noqa
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def скачать_файл(self, *args, **kwargs):
+        # download_file(file)
+        return self.download_file(*args, **kwargs)
+
+    def загруженный_файл_присутствует(self, *args, **kwargs):
+        # is_downloaded_file_present(file)
+        return self.is_downloaded_file_present(*args, **kwargs)
+
+    def получить_путь_к_загруженному_файлу(self, *args, **kwargs):
+        # get_path_of_downloaded_file(file)
+        return self.get_path_of_downloaded_file(*args, **kwargs)
+
     def подтвердить_загруженный_файл(self, *args, **kwargs):
         # assert_downloaded_file(file)
         return self.assert_downloaded_file(*args, **kwargs)
+
+    def удалить_загруженный_файл(self, *args, **kwargs):
+        # delete_downloaded_file(file)
+        return self.delete_downloaded_file(*args, **kwargs)
 
     def провалить(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
@@ -528,6 +567,10 @@ class ТестНаСелен(BaseCase):  # noqa
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
 
+    def набор_HTML(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
+
     def загрузить_HTML_файл(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
@@ -550,7 +593,6 @@ class ТестНаСелен(BaseCase):  # noqa
 
 
 class MasterQA_Русский(MasterQA, ТестНаСелен):
-
     def подтвердить(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Ручная проверка"

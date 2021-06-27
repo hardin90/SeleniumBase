@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class CasDeBase(BaseCase):
-
     def __init__(self, *args, **kwargs):
         super(CasDeBase, self).__init__(*args, **kwargs)
         self._language = "French"
@@ -85,6 +84,10 @@ class CasDeBase(BaseCase):
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def vérifier_attribut(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def vérifier_titre(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -137,6 +140,10 @@ class CasDeBase(BaseCase):
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def est_un_élément_activé(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def est_un_élément_présent(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -165,6 +172,10 @@ class CasDeBase(BaseCase):
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
 
+    def attendre_un_attribut(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
+
     def dormir(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
@@ -180,6 +191,10 @@ class CasDeBase(BaseCase):
     def effacer(self, *args, **kwargs):
         # clear(selector)
         return self.clear(*args, **kwargs)
+
+    def concentrer(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
 
     def js_cliquer(self, *args, **kwargs):
         # js_click(selector)
@@ -200,6 +215,10 @@ class CasDeBase(BaseCase):
     def enregistrer_capture_d_écran(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
+
+    def enregistrer_capture_d_écran_aux_logs(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
 
     def sélectionner_fichier(self, *args, **kwargs):
         # choose_file(selector, file_path)
@@ -252,6 +271,10 @@ class CasDeBase(BaseCase):
     def passer_à_fenêtre_par_défaut(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def passer_à_fenêtre_dernière(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def maximiser_fenêtre(self, *args, **kwargs):
         # maximize_window()
@@ -428,9 +451,25 @@ class CasDeBase(BaseCase):
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def télécharger_fichier(self, *args, **kwargs):
+        # download_file(file)
+        return self.download_file(*args, **kwargs)
+
+    def est_un_fichier_téléchargé_présent(self, *args, **kwargs):
+        # is_downloaded_file_present(file)
+        return self.is_downloaded_file_present(*args, **kwargs)
+
+    def obtenir_chemin_du_fichier_téléchargé(self, *args, **kwargs):
+        # get_path_of_downloaded_file(file)
+        return self.get_path_of_downloaded_file(*args, **kwargs)
+
     def vérifier_fichier_téléchargé(self, *args, **kwargs):
         # assert_downloaded_file(file)
         return self.assert_downloaded_file(*args, **kwargs)
+
+    def supprimer_fichier_téléchargé(self, *args, **kwargs):
+        # delete_downloaded_file(file)
+        return self.delete_downloaded_file(*args, **kwargs)
 
     def échouer(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
@@ -528,6 +567,10 @@ class CasDeBase(BaseCase):
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
 
+    def définir_html(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
+
     def charger_html_fichier(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
@@ -550,7 +593,6 @@ class CasDeBase(BaseCase):
 
 
 class MasterQA_Français(MasterQA, CasDeBase):
-
     def vérifier(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "Vérification manuelle"

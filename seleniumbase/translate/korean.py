@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class 셀레늄_테스트_케이스(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(셀레늄_테스트_케이스, self).__init__(*args, **kwargs)
         self._language = "Korean"
@@ -85,6 +84,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def 특성_확인(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def 제목_확인(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -137,6 +140,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def 요소가_활성화돼(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def 요소가_있습니다(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -165,6 +172,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
 
+    def 특성_때까지_기다립니다(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
+
     def 잠을(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
@@ -180,6 +191,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 지우려면(self, *args, **kwargs):
         # clear(selector)
         return self.clear(*args, **kwargs)
+
+    def 집중하다(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
 
     def JS_클릭(self, *args, **kwargs):
         # js_click(selector)
@@ -200,6 +215,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 스크린_샷_저장(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
+
+    def 로그에_스크린_샷_저장(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
 
     def 파일을_선택(self, *args, **kwargs):
         # choose_file(selector, file_path)
@@ -252,6 +271,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
     def 기본_창으로_전환(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def 최신_창으로_전환(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def 창_최대화(self, *args, **kwargs):
         # maximize_window()
@@ -428,9 +451,25 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def 파일_다운로드(self, *args, **kwargs):
+        # download_file(file)
+        return self.download_file(*args, **kwargs)
+
+    def 다운로드한_파일이_있습니다(self, *args, **kwargs):
+        # is_downloaded_file_present(file)
+        return self.is_downloaded_file_present(*args, **kwargs)
+
+    def 다운로드한_파일_경로_가져_오기(self, *args, **kwargs):
+        # get_path_of_downloaded_file(file)
+        return self.get_path_of_downloaded_file(*args, **kwargs)
+
     def 다운로드한_파일_확인(self, *args, **kwargs):
         # assert_downloaded_file(file)
         return self.assert_downloaded_file(*args, **kwargs)
+
+    def 다운로드한_파일_삭제(self, *args, **kwargs):
+        # delete_downloaded_file(file)
+        return self.delete_downloaded_file(*args, **kwargs)
 
     def 실패(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
@@ -528,6 +567,10 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
 
+    def HTML_설정(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
+
     def HTML_파일_로드(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
@@ -550,7 +593,6 @@ class 셀레늄_테스트_케이스(BaseCase):  # noqa
 
 
 class MasterQA_한국어(MasterQA, 셀레늄_테스트_케이스):
-
     def 확인(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "수동 검사"

@@ -1,8 +1,8 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="320">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
 
-<h2><img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> CLI Options</h2>
+# pytest CLI Options
 
-You can customize test runs from the command-line interface thanks to [SeleniumBase's pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py), which adds CLI options for setting/enabling the browser type, headless mode, mobile mode, multithreading mode, demo mode, proxy config, user agent config, browser extensions, and more.
+SeleniumBase's [pytest plugin](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/plugins/pytest_plugin.py) lets you customize test runs from the CLI (Command-Line Interface), which adds options for setting/enabling the browser type, headless mode, mobile mode, demo mode, multi-threading mode, reuse-session mode, proxy config, user agent config, browser extensions, report mode, and more.
 
 Here are some examples of configuring tests, which can be run from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:
 
@@ -91,6 +91,12 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 
 ```bash
 --browser=BROWSER  # (The web browser to use. Default: "chrome".)
+--chrome  # (Shortcut for "--browser=chrome". On by default.)
+--edge  # (Shortcut for "--browser=edge".)
+--firefox  # (Shortcut for "--browser=firefox".)
+--ie  # (Shortcut for "--browser=ie".)
+--opera  # (Shortcut for "--browser=opera".)
+--safari  # (Shortcut for "--browser=safari".)
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
@@ -100,19 +106,26 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
 --var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
+--protocol=PROTOCOL  # (The Selenium Grid protocol: http|https.)
 --server=SERVER  # (The Selenium Grid server/IP used for tests.)
 --port=PORT  # (The Selenium Grid port used by the test server.)
 --proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
 --proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
+--agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
+--chromium-arg=ARG  # (Add a Chromium arg for Chrome/Edge, comma-separated.)
+--firefox-arg=ARG  # (Add a Firefox arg for Firefox, comma-separated.)
+--firefox-pref=SET  # (Set a Firefox preference:value set, comma-separated.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
 --headless  # (Run tests headlessly. Default mode on Linux OS.)
 --headed  # (Run tests with a GUI on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
+--interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
---archive-logs  # (Archive old log files instead of deleting them.)
+--archive-logs  #  (Archive existing log files instead of deleting them.)
+--archive-downloads  #  (Archive old downloads instead of deleting them.)
 --time-limit=SECONDS  # (Safely fail any test that exceeds the time limit.)
 --slow  # (Slow down the automation. Faster than using Demo Mode.)
 --demo  # (Slow down and visually see test actions as they occur.)
@@ -128,6 +141,8 @@ SeleniumBase provides additional ``pytest`` command-line options for tests:
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
 --enable-sync  # (Enable "Chrome Sync".)
 --use-auto-ext  # (Use Chrome's automation extension.)
+--remote-debug  # (Enable Chrome's Remote Debugger on http://localhost:9222)
+--dashboard  # (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
 --swiftshader  # (Use Chrome's "--use-gl=swiftshader" feature.)
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
@@ -154,14 +169,14 @@ Or the short form:
 sbase options
 ```
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Customizing default settings:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Customizing default settings:</h3>
 
 An easy way to override [seleniumbase/config/settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py) is by using a custom settings file.
 Here's the command-line option to add to tests: (See [examples/custom_settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/custom_settings.py))
 ``--settings-file=custom_settings.py``
 (Settings include default timeout values, a two-factor auth key, DB credentials, S3 credentials, and other important settings used by tests.)
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Running tests on a remote Selenium Grid:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Running tests on a remote Selenium Grid:</h3>
 
 SeleniumBase lets you run tests on remote Selenium Grids such as [BrowserStack](https://www.browserstack.com/automate#)'s Selenium Grid, [Sauce Labs](https://saucelabs.com/products/open-source-frameworks/selenium)'s Selenium Grid, [TestingBot](https://testingbot.com/features)'s Selenium Grid, other Grids, and even your own Grid:
 
@@ -199,15 +214,21 @@ pytest my_first_test.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
 
 Or you can create your own Selenium Grid for test distribution. ([See this ReadMe for details](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md))
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Example tests using Logging:
+To use a server on the ``https`` protocol, add ``--protocol=https``:
+
+```bash
+pytest test_suite.py --protocol=https --server=IP_ADDRESS --port=PORT
+```
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Example tests using Logging:</h3>
 
 ```bash
 pytest test_suite.py --browser=chrome
 ```
 
-(During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. Those logs will get moved to ``archived_logs/`` if you have ARCHIVE_EXISTING_LOGS set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py), otherwise log files with be cleaned up at the start of the next test run.)
+🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Demo Mode:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Demo Mode:</h3>
 
 If any test is moving too fast for your eyes to see what's going on, you can run it in **Demo Mode** by adding ``--demo`` on the command line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
 
@@ -221,23 +242,23 @@ You can override the default wait time by either updating [settings.py](https://
 pytest my_first_test.py --demo --demo-sleep=1.2
 ```
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Passing additional data to tests:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Passing additional data to tests:</h3>
 
 If you want to pass additional data from the command line to your tests, you can use ``--data=STRING``. Now inside your tests, you can use ``self.data`` to access that.
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Running tests multithreaded:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Running tests multithreaded:</h3>
 
 To run Pytest multithreaded on multiple CPUs at the same time, add ``-n=NUM`` or ``-n NUM`` on the command line, where NUM is the number of CPUs you want to use.
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Retrying failing tests automatically:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Retrying failing tests automatically:</h3>
 
 You can use ``--reruns=NUM`` to retry failing tests that many times. Use ``--reruns-delay=SECONDS`` to wait that many seconds between retries. Example:
 
-```
-pytest --reruns=2 --reruns-delay=1
+```bash
+pytest --reruns=1 --reruns-delay=1
 ```
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Debugging tests:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Debugging tests:</h3>
 
 You can use the following calls in your scripts to help you debug issues:
 
@@ -255,9 +276,39 @@ pytest my_first_test.py --pdb -s
 
 The code above will leave your browser window open in case there's a failure. (ipdb commands: 'c', 's', 'n' => continue, step, next).
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Pytest Reports:
+--------
 
-Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
+
+🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
+
+```bash
+pytest --dashboard --rs --headless
+```
+
+<img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
+
+🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
+
+```bash
+python -m http.server 1948
+```
+
+🔵 Now you can navigate to ``http://localhost:1948/dashboard.html`` in order to view the dashboard as a web app. This requires two different terminal windows: one for running the server, and another for running the tests, which should be run from the same directory. (Use ``CTRL+C`` to stop the http server.)
+
+🔵 Here's a full example of what the SeleniumBase Dashboard may look like:
+
+```bash
+pytest test_suite.py --dashboard --rs --headless
+```
+
+<img src="https://seleniumbase.io/cdn/img/dashboard_2.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="480" />
+
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Pytest Reports:</h3>
+
+🔵 Using ``--html=report.html`` gives you a fancy report of the name specified after your test suite completes.
 
 ```bash
 pytest test_suite.py --html=report.html
@@ -265,7 +316,27 @@ pytest test_suite.py --html=report.html
 
 <img src="https://seleniumbase.io/cdn/img/html_report.png" alt="Example Pytest Report" title="Example Pytest Report" width="520" />
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Nosetest Reports:
+🔵 When combining pytest html reports with SeleniumBase Dashboard usage, the pie chart from the Dashboard will get added to the html report. Additionally, if you set the html report URL to be the same as the Dashboard URL when also using the dashboard, (example: ``--dashboard --html=dashboard.html``), then the Dashboard will become an advanced html report when all the tests complete.
+
+🔵 Here's an example of an upgraded html report:
+
+```bash
+pytest test_suite.py --dashboard --html=report.html
+```
+
+<img src="https://seleniumbase.io/cdn/img/dash_report.jpg" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
+
+If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the html to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/).
+
+You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
+
+```bash
+pytest test_suite.py --junit-xml=report.xml
+```
+
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Nosetest Reports:</h3>
 
 The ``--report`` option gives you a fancy report after your test suite completes.
 
@@ -277,18 +348,28 @@ nosetests test_suite.py --report
 
 (NOTE: You can add ``--show_report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show_report`` when running tests locally because it pauses the test run.)
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Using a Proxy Server:
+--------
 
-If you wish to use a proxy server for your browser tests (Chrome and Firefox only), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Using a Proxy Server:</h3>
+
+If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
 ```bash
 pytest proxy_test.py --proxy=IP_ADDRESS:PORT
 ```
 
-If the proxy server that you wish to use requires authentication, you can do the following (Chrome only):
+If the proxy server that you wish to use requires authentication, you can do the following (Chromium only):
 
 ```bash
 pytest proxy_test.py --proxy=USERNAME:PASSWORD@IP_ADDRESS:PORT
+```
+
+SeleniumBase also supports SOCKS4 and SOCKS5 proxies:
+
+```bash
+pytest proxy_test.py --proxy="socks4://IP_ADDRESS:PORT"
+
+pytest proxy_test.py --proxy="socks5://IP_ADDRESS:PORT"
 ```
 
 To make things easier, you can add your frequently-used proxies to PROXY_LIST in [proxy_list.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/proxy_list.py), and then use ``--proxy=KEY_FROM_PROXY_LIST`` to use the IP_ADDRESS:PORT of that key.
@@ -297,7 +378,9 @@ To make things easier, you can add your frequently-used proxies to PROXY_LIST in
 pytest proxy_test.py --proxy=proxy1
 ```
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Changing the User-Agent:
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Changing the User-Agent:</h3>
 
 If you wish to change the User-Agent for your browser tests (Chrome and Firefox only), you can add ``--agent="USER-AGENT-STRING"`` as an argument on the command line.
 
@@ -305,7 +388,7 @@ If you wish to change the User-Agent for your browser tests (Chrome and Firefox 
 pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1.7412.EU"
 ```
 
-### <img src="https://seleniumbase.io/img/logo3a.png" title="SeleniumBase" width="28" /> Mobile Device Testing:
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> Mobile Device Testing:</h3>
 
 Use ``--mobile`` to quickly run your tests using Chrome's mobile device emulator with default values for device metrics (CSS Width, CSS Height, Pixel-Ratio) and a default value set for the user agent. To configure the mobile device metrics, use ``--metrics="CSS_Width,CSS_Height,Pixel_Ratio"`` to set those values. You'll also be able to set the user agent with ``--agent="USER-AGENT-STRING"`` (a default user agent will be used if not specified). To find real values for device metrics, [see this GitHub Gist](https://gist.github.com/sidferreira/3f5fad525e99b395d8bd882ee0fd9d00). For a list of available user agent strings, [check out this page](https://developers.whatismybrowser.com/useragents/explore/).
 

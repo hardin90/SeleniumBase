@@ -15,6 +15,7 @@
     specific needs, you may need to call SeleniumBase commands without
     using Pytest, and this example shows you how. """
 
+pure_python = False
 try:
     # Running with Pytest / (Finds test methods to run using autodiscovery)
     # Example run command:  "pytest raw_parameter_script.py"
@@ -23,14 +24,18 @@ try:
 except (ImportError, ValueError):
     # Running with pure Python OR from a Python interactive interpreter
     # Example run command:  "python raw_parameter_script.py"
-    from my_first_test import MyTestClass  # (relative imports DON'T work)
+    from my_first_test import MyTestClass  # (relative imports do not work)
 
-    sb = MyTestClass("test_basic")
+    pure_python = True
+
+if pure_python:
+    sb = MyTestClass("test_basics")
     sb.browser = "chrome"
     sb.headless = False
     sb.headed = False
     sb.start_page = None
     sb.locale_code = None
+    sb.protocol = "http"
     sb.servername = "localhost"
     sb.port = 4444
     sb.data = None
@@ -53,6 +58,7 @@ except (ImportError, ValueError):
     sb.use_auto_ext = False
     sb.no_sandbox = False
     sb.disable_gpu = False
+    sb._multithreaded = False
     sb._reuse_session = False
     sb._crumbs = False
     sb.visual_baseline = False
@@ -69,21 +75,28 @@ except (ImportError, ValueError):
     sb.demo_mode = False
     sb.time_limit = None
     sb.demo_sleep = 1
+    sb.dashboard = False
+    sb._dash_initialized = False
     sb.message_duration = 2
     sb.block_images = False
+    sb.remote_debug = False
     sb.settings_file = None
     sb.user_data_dir = None
+    sb.chromium_arg = None
+    sb.firefox_arg = None
+    sb.firefox_pref = None
     sb.proxy_string = None
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None
     sb.check_js = False
+    sb.interval = None
     sb.cap_file = None
     sb.cap_string = None
 
     sb.setUp()
     try:
-        sb.test_basic()
+        sb.test_basics()
     finally:
         sb.tearDown()
         del sb

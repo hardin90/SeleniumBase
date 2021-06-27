@@ -4,7 +4,6 @@ from seleniumbase import MasterQA
 
 
 class セレニウムテストケース(BaseCase):  # noqa
-
     def __init__(self, *args, **kwargs):
         super(セレニウムテストケース, self).__init__(*args, **kwargs)
         self._language = "Japanese"
@@ -85,6 +84,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # assert_element_absent(selector)
         return self.assert_element_absent(*args, **kwargs)
 
+    def 属性を確認する(self, *args, **kwargs):
+        # assert_attribute(selector, attribute, value)
+        return self.assert_attribute(*args, **kwargs)
+
     def タイトルを確認(self, *args, **kwargs):
         # assert_title(title)
         return self.assert_title(*args, **kwargs)
@@ -137,6 +140,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # is_element_visible(selector)
         return self.is_element_visible(*args, **kwargs)
 
+    def 要素が有効かどうか(self, *args, **kwargs):
+        # is_element_enabled(selector)
+        return self.is_element_enabled(*args, **kwargs)
+
     def 要素が存在するかどうか(self, *args, **kwargs):
         # is_element_present(selector)
         return self.is_element_present(*args, **kwargs)
@@ -165,6 +172,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # wait_for_element_absent(selector)
         return self.wait_for_element_absent(*args, **kwargs)
 
+    def 属性を待つ(self, *args, **kwargs):
+        # wait_for_attribute(selector, attribute, value)
+        return self.wait_for_attribute(*args, **kwargs)
+
     def 眠る(self, *args, **kwargs):
         # sleep(seconds)
         return self.sleep(*args, **kwargs)
@@ -180,6 +191,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def クリアする(self, *args, **kwargs):
         # clear(selector)
         return self.clear(*args, **kwargs)
+
+    def 集中する(self, *args, **kwargs):
+        # focus(selector)
+        return self.focus(*args, **kwargs)
 
     def JSクリックして(self, *args, **kwargs):
         # js_click(selector)
@@ -200,6 +215,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def スクリーンショットを保存(self, *args, **kwargs):
         # save_screenshot(name)
         return self.save_screenshot(*args, **kwargs)
+
+    def ログにスクリーンショットを保存(self, *args, **kwargs):
+        # save_screenshot_to_logs(name)
+        return self.save_screenshot_to_logs(*args, **kwargs)
 
     def ファイルを選択(self, *args, **kwargs):
         # choose_file(selector, file_path)
@@ -252,6 +271,10 @@ class セレニウムテストケース(BaseCase):  # noqa
     def デフォルトのウィンドウに切り替える(self, *args, **kwargs):
         # switch_to_default_window()
         return self.switch_to_default_window(*args, **kwargs)
+
+    def 最新のウィンドウに切り替えます(self, *args, **kwargs):
+        # switch_to_newest_window()
+        return self.switch_to_newest_window(*args, **kwargs)
 
     def ウィンドウを最大化する(self, *args, **kwargs):
         # maximize_window()
@@ -428,9 +451,25 @@ class セレニウムテストケース(BaseCase):  # noqa
         #                 codec='utf-8', wrap=True, nav=False, override=False)
         return self.assert_pdf_text(*args, **kwargs)
 
+    def ファイルをダウンロード(self, *args, **kwargs):
+        # download_file(file)
+        return self.download_file(*args, **kwargs)
+
+    def ダウンロードしたファイルが存在するかどうか(self, *args, **kwargs):
+        # is_downloaded_file_present(file)
+        return self.is_downloaded_file_present(*args, **kwargs)
+
+    def ダウンロードしたファイルパスを取得する(self, *args, **kwargs):
+        # get_path_of_downloaded_file(file)
+        return self.get_path_of_downloaded_file(*args, **kwargs)
+
     def ダウンロードしたファイルを確認する(self, *args, **kwargs):
         # assert_downloaded_file(file)
         return self.assert_downloaded_file(*args, **kwargs)
+
+    def ダウンロードしたファイルを削除する(self, *args, **kwargs):
+        # delete_downloaded_file(file)
+        return self.delete_downloaded_file(*args, **kwargs)
 
     def 失敗(self, *args, **kwargs):
         # fail(msg=None)  # Inherited from "unittest"
@@ -528,6 +567,10 @@ class セレニウムテストケース(BaseCase):  # noqa
         # drag_and_drop(drag_selector, drop_selector)
         return self.drag_and_drop(*args, **kwargs)
 
+    def HTML設定する(self, *args, **kwargs):
+        # set_content(html_string, new_page=False)
+        return self.set_content(*args, **kwargs)
+
     def HTMLファイルを読み込む(self, *args, **kwargs):
         # load_html_file(html_file, new_page=True)
         return self.load_html_file(*args, **kwargs)
@@ -550,7 +593,6 @@ class セレニウムテストケース(BaseCase):  # noqa
 
 
 class MasterQA_日本語(MasterQA, セレニウムテストケース):
-
     def を確認する(self, *args, **kwargs):
         # "Manual Check"
         self.DEFAULT_VALIDATION_TITLE = "手動チェック"

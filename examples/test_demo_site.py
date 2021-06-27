@@ -1,8 +1,7 @@
 from seleniumbase import BaseCase
 
 
-class MyTestClass(BaseCase):
-
+class DemoSiteTests(BaseCase):
     def test_demo_site(self):
         self.open("https://seleniumbase.io/demo_page")
 
@@ -33,7 +32,7 @@ class MyTestClass(BaseCase):
         # Assert that the given SVG is visible on the page
         self.assert_element('svg[name="svgName"]')
 
-        # Verify that a slider control updates a progrss bar
+        # Verify that a slider control updates a progress bar
         self.assert_element('progress[value="50"]')
         self.press_right_arrow("#myslider", times=5)
         self.assert_element('progress[value="100"]')
@@ -89,13 +88,16 @@ class MyTestClass(BaseCase):
         self.assert_link_text("seleniumbase.io")
 
         # Click link text
-        self.click_link_text("SeleniumBase Demo Page")
+        self.click_link("SeleniumBase Demo Page")
 
         # Assert exact text
         self.assert_exact_text("Demo Page", "h1")
+
+        # Highlight a page element (Also asserts visibility)
+        self.highlight("h2")
 
         # Assert no broken links (Can be slow if many links)
         # self.assert_no_404_errors()
 
         # Assert no JavaScript errors (Can also detect 404s)
-        self.assert_no_js_errors()
+        # self.assert_no_js_errors()

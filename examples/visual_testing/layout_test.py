@@ -1,10 +1,9 @@
 from seleniumbase import BaseCase
 
 
-class VisualLayoutTest(BaseCase):
-
+class VisualLayoutTests(BaseCase):
     def test_applitools_layout_change(self):
-        self.open('https://applitools.com/helloworld?diff1')
+        self.open("https://applitools.com/helloworld?diff1")
         print('\nCreating baseline in "visual_baseline" folder.')
         self.check_window(name="helloworld", baseline=True)
         # Click a button that changes the text of an element

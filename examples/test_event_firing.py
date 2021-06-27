@@ -6,7 +6,6 @@ from seleniumbase import BaseCase
 
 
 class MyListener(AbstractEventListener):
-
     def before_navigate_to(self, url, driver):
         print("Before navigating to: %s" % url)
 
@@ -26,8 +25,7 @@ class MyListener(AbstractEventListener):
         print("Click complete!")
 
 
-class EventFiringTestClass(BaseCase):
-
+class EventFiringTests(BaseCase):
     def test_event_firing_webdriver(self):
         self.driver = EventFiringWebDriver(self.driver, MyListener())
         print("\n* EventFiringWebDriver example *")

@@ -1,10 +1,10 @@
-<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="290" /></h3>
+<h3 align="left"><img src="https://seleniumbase.io/cdn/img/sb_logo_b.png" alt="SeleniumBase" width="350" /></h3>
 
-<h3> 📊 ChartMaker 📈 </h3>
+<h2> 📊 ChartMaker 📈 </h2>
 
-SeleniumBase ChartMaker allows you to create HTML charts with Python. (Using HighCharts JS)
+<p>SeleniumBase ChartMaker lets you use Python to generate HTML charts from HighCharts JS.</p>
 
-<a href="https://seleniumbase.io/other/chart_presentation.html"><img width="500" src="https://seleniumbase.io/other/chart_presentation.gif" title="Screenshot"></a><br>
+<a href="https://seleniumbase.io/other/chart_presentation.html"><img width="480" src="https://seleniumbase.io/cdn/gif/chart_pres.gif" title="Chart Presentation"></a><br>
 
 ([Click to see a presentation with multiple charts](https://seleniumbase.io/other/chart_presentation.html))
 
@@ -53,7 +53,7 @@ Here are screenshots from the examples:
 <a href="https://seleniumbase.io/other/multi_series_chart.png"><img width="500" src="https://seleniumbase.io/other/multi_series_chart.png" title="Screenshot"></a><br>
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Here's a line chart example:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Here's a line chart example:</h3>
 
 ```python
 from seleniumbase import BaseCase
@@ -83,7 +83,7 @@ pytest test_line_chart.py
 Because that presentation above has an ``interval`` set to ``8``, it will automatically advance to the next slide after 8 seconds. (Or exit if there are no more slides.)
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> For a more advanced example (multiple charts in a presentation):</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> For a more advanced example (multiple charts in a presentation):</h3>
 
 ```python
 from seleniumbase import BaseCase
@@ -99,19 +99,19 @@ class MyChartMakerClass(BaseCase):
         self.add_data_point("Failed", 1, color="#f1888f")
         self.add_slide("<p>Pie Chart</p>" + self.extract_chart())
 
-        self.create_bar_chart(title="Language", libs=False)
+        self.create_bar_chart(title="Language")
         self.add_data_point("Python", 33, color="Orange")
         self.add_data_point("JavaScript", 27, color="Teal")
         self.add_data_point("HTML + CSS", 21, color="Purple")
         self.add_slide("<p>Bar Chart</p>" + self.extract_chart())
 
-        self.create_column_chart(title="Colors", libs=False)
+        self.create_column_chart(title="Colors")
         self.add_data_point("Red", 10, color="Red")
         self.add_data_point("Green", 25, color="Green")
         self.add_data_point("Blue", 15, color="Blue")
         self.add_slide("<p>Column Chart</p>" + self.extract_chart())
 
-        self.create_line_chart(title="Last Week's Data", libs=False)
+        self.create_line_chart(title="Last Week's Data")
         self.add_data_point("Sun", 5)
         self.add_data_point("Mon", 10)
         self.add_data_point("Tue", 20)
@@ -138,7 +138,7 @@ pytest chart_presentation.py
 Multi-Series charts can also be created. Try the available examples to learn more.
 
 
-<h2><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> ChartMaker API</h2>
+<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> ChartMaker API</h2>
 
 ```python
 self.create_pie_chart(
@@ -150,13 +150,16 @@ self.create_pie_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -170,13 +173,16 @@ self.create_bar_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -190,13 +196,16 @@ self.create_column_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -210,14 +219,17 @@ self.create_line_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     zero - If True, the y-axis always starts at 0. (Default: False).
     libs - The option to include Chart libraries (JS and CSS files).
            Should be set to True (default) for the first time creating
-           a chart on a web page. If creating multiple charts on
-           a web page, you no longer need to re-import the libraries
+           a chart on a web page. If creating multiple charts on the
+           same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
@@ -231,7 +243,8 @@ self.create_area_chart(
                  use this to select which one.
     title - The title displayed for the chart.
     subtitle - The subtitle displayed for the chart.
-    data_name - Set the series name. Useful for multi-series charts.
+    data_name - The series name. Useful for multi-series charts.
+                If no data_name, will default to using "Series 1".
     unit - The description label given to the chart's y-axis values.
     zero - If True, the y-axis always starts at 0. (Default: False).
     libs - The option to include Chart libraries (JS and CSS files).
@@ -239,13 +252,15 @@ self.create_area_chart(
            a chart on a web page. If creating multiple charts on the
            same web page, you won't need to re-import the libraries
            when creating additional charts.
+    labels - If True, displays labels on the chart for data points.
+    legend - If True, displays the data point legend on the chart.
 """
 ```
 
 If creating multiple charts at the same time, you can pass the ``chart_name`` parameter to distinguish between different charts.
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Adding a data point to a chart:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Adding a data point to a chart:</h3>
 
 ```python
 self.add_data_point(label, value, color=None, chart_name=None):
@@ -262,7 +277,7 @@ self.add_data_point(label, value, color=None, chart_name=None):
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Adding a new data series to an existing chart:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Adding a new data series to an existing chart:</h3>
 
 ```python
 self.add_series_to_chart(self, data_name=None, chart_name=None):
@@ -276,7 +291,7 @@ self.add_series_to_chart(self, data_name=None, chart_name=None):
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Saving a chart to a file:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Saving a chart to a file:</h3>
 
 ```python
 self.save_chart(chart_name=None, filename=None):
@@ -292,7 +307,7 @@ self.save_chart(chart_name=None, filename=None):
 The full HTML of the chart is saved to the ``saved_charts/`` folder.
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Extracting the HTML of a chart:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Extracting the HTML of a chart:</h3>
 
 ```python
 self.extract_chart(chart_name=None):
@@ -304,7 +319,7 @@ self.extract_chart(chart_name=None):
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="24" /> Displaying a chart in the browser window:</h3>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Displaying a chart in the browser window:</h3>
 
 ```python
 self.display_chart(chart_name=None, filename=None):

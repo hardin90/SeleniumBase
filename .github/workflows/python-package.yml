@@ -9,8 +9,11 @@ on:
 jobs:
   build:
 
+    env:
+      PY_COLORS: "1"
     runs-on: ubuntu-18.04
     strategy:
+      fail-fast: false
       max-parallel: 6
       matrix:
         python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
@@ -49,6 +52,13 @@ jobs:
       run: |
         echo "def test_1(): pass" > nothing.py
         pytest nothing.py
+    - name: Make sure nosetests is working
+      run: |
+        echo "def test_2(): pass" > nothing2.py
+        nosetests nothing2.py
+    - name: Run pytest verify_framework.py --browser=chrome --headless
+      run: |
+        pytest examples/unit_tests/verify_framework.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
     - name: Run pytest boilerplate_test.py --browser=chrome --headless
       run: |
         pytest examples/boilerplates/boilerplate_test.py --browser=chrome --headless -v -s --junit-xml=junit/test-results.xml
