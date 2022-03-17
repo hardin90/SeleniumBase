@@ -11,7 +11,7 @@ class SwagLabsTests(BaseCase):
         self.type("#password", "secret_sauce")
         self.click('input[type="submit"]')
         self.assert_element("#inventory_container")
-        self.assert_element('div:contains("Sauce Labs Backpack")')
+        self.assert_element('.inventory_item:contains("Sauce Labs Backpack")')
 
     def test_swag_labs_basic_flow(self):
         """ This test checks functional flow of the Swag Labs store. """
@@ -34,7 +34,7 @@ class SwagLabsTests(BaseCase):
         self.assert_exact_text("1", "span.shopping_cart_badge")
 
         # Verify your cart
-        self.click("#shopping_cart_container")
+        self.click("#shopping_cart_container a")
         self.assert_element('span:contains("Your Cart")')
         self.assert_text(item_name, "div.inventory_item_name")
         self.assert_exact_text("1", "div.cart_quantity")
@@ -60,8 +60,7 @@ class SwagLabsTests(BaseCase):
         # Finish Checkout and verify that the cart is now empty
         self.click("button#finish")
         self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
-        self.assert_element("img.pony_express")
-        self.click("#shopping_cart_container")
+        self.click("#shopping_cart_container a")
         self.assert_element_absent("div.inventory_item_name")
         self.click("button#continue-shopping")
         self.assert_element_absent("span.shopping_cart_badge")

@@ -13,7 +13,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Type in your query here.", 'input[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "Google")
+        self.highlight_type('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
         # Create a website tour using the ShepherdJS library with "light" theme
@@ -23,7 +23,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Or press [ENTER] after entry.", '[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "GitHub\n")
+        self.highlight_type('input[title="Search"]', "GitHub\n")
         self.ad_block()
         self.wait_for_element("#search")
 
@@ -42,9 +42,9 @@ class MyTourClass(BaseCase):
         # Create a website tour using the IntroJS library
         # Same as:  self.create_introjs_tour()
         self.create_tour(theme="introjs")
-        self.add_tour_step("Welcome to Google Maps!")
+        self.add_tour_step("Welcome to Google Maps", title="SeleniumBase Tour")
         self.add_tour_step(
-            "Type in a location here.", "#searchboxinput", title="Search Box"
+            "The location goes here.", "#searchboxinput", title="Search Box"
         )
         self.add_tour_step(
             "Then click here to show it on the map.",
@@ -53,12 +53,12 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Or click here to get driving directions.",
-            "#searchbox-directions",
+            'button[aria-label="Directions"]',
             alignment="bottom",
         )
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "#minimap div.widget-minimap",
+            'button[jsaction*="minimap.main;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -69,7 +69,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Use the Menu button to see more options.",
-            ".searchbox-hamburger-container",
+            'button[jsaction*="settings.open;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -78,7 +78,7 @@ class MyTourClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour",
         )
         self.export_tour()  # The default name for exports is "my_tour.js"
         self.play_tour()

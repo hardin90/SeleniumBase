@@ -4,15 +4,11 @@ from seleniumbase import BaseCase
 
 class ChinesePdfTests(BaseCase):
     def test_chinese_pdf(self):
-
-        pdf = (
-            "https://github.com/seleniumbase/SeleniumBase/"
-            "files/3895614/unittest.pdf"
-        )
+        pdf = "https://seleniumbase.io/cdn/pdf/unittest_zh.pdf"
 
         # Get and print PDF text
         pdf_text = self.get_pdf_text(pdf, page=2)
-        print("\n" + pdf_text)
+        self._print("\n" + pdf_text)
 
         # Assert PDF contains the expected text on Page 2
         self.assert_pdf_text(pdf, "个测试类", page=2)

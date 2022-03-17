@@ -5,35 +5,35 @@
 <p align="left">
 <a href="https://seleniumbase.io/#python_installation">🚀 Start</a> |
 <a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🖥️ CLI</a> |
-<a href="https://seleniumbase.io/help_docs/features_list/">🗂️ Features</a>
+<a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">📖 Examples</a> |
+<a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔡 Syntax Formats</a> |
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
 <a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/method_summary/">📗 API</a> |
-<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📋 Reports</a> |
+<a href="https://seleniumbase.io/help_docs/method_summary/">📚 API</a> |
+<a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">💻 Console Scripts</a> |
+<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🧙‍ Console Scripts</a> |
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
 <a href="https://seleniumbase.io/help_docs/locale_codes/">🗾 Locales</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/js_package_manager/">🗄️ PkgManager</a> |
+<a href="https://seleniumbase.io/help_docs/js_package_manager/">🕹️ JSManager</a> |
 <a href="https://seleniumbase.io/examples/visual_testing/ReadMe/">🖼️ VisualTest</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/translations/">🌏 Translate</a> |
-<a href="https://seleniumbase.io/examples/master_qa/ReadMe/">🛂 MasterQA</a>
+<a href="https://seleniumbase.io/examples/dialog_boxes/ReadMe/">🛂 DialogBoxes</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/">⏺️ Recorder</a> |
+<a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
-<a href="https://seleniumbase.io/examples/presenter/ReadMe/">📑 Presenter</a> |
-<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 ChartMaker</a>
+<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Presenter</a> |
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📶 ChartMaker</a>
 </p>
 
 --------
@@ -51,6 +51,8 @@
 <div><a href="https://seleniumbase.io/help_docs/webdriver_installation/"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/verify_webdriver/"><b>Verify Webdriver Works</b></a></div>
 <div><a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/"><b>Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.io/examples/example_logs/ReadMe/"><b>The Dashboard</b></a></div>
+<div><a href="https://seleniumbase.io/help_docs/recorder_mode/"><b>Recorder Mode</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/syntax_formats/"><b>Syntax Formats</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/mobile_testing/"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.io/help_docs/method_summary/"><b>Method Summary (API Ref)</b></a></div>
@@ -71,10 +73,27 @@
 
 <h3>Demo Pages / Web Examples</h3>
 
-<div><a href="https://seleniumbase.io/demo_page"><b>Demo Page / Demo Site</b></a></div>
-<div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE Demo Page</b></a></div>
-<div><a href="https://seleniumbase.io/devices/"><b>Virtual Device Farm</b></a></div>
-<div><a href="https://seleniumbase.io/error_page/"><b>Error Page for Tests</b></a></div>
+<div><a href="https://seleniumbase.io/demo_page"><b>Demo Page (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/realworld/login"><b>MFA Login (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/tinymce/"><b>TinyMCE (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/error_page/"><b>Error Page (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/other/drag_and_drop"><b>Drag-&-Drop (Test Page)</b></a></div>
+<div><a href="https://seleniumbase.io/devices/"><b>Device Farm (Virtual)</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/"><b>HTML Playground Page</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/sbase"><b>SeleniumBase in iframe</b></a></div>
+<div><a href="https://seleniumbase.io/other/broken_page"><b>Page with broken links</b></a></div>
+<div><a href="https://seleniumbase.io/other/shadow_dom"><b>Shadow DOM/Root</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/iframes"><b>W3Schools iframes</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/file_upload"><b>W3Schools file upload</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/double_click"><b>W3Schools doubleclick</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/drag_drop"><b>W3Schools drag & drop</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/checkboxes"><b>W3Schools checkboxes</b></a></div>
+<div><a href="https://seleniumbase.io/w3schools/radio_buttons"><b>W3Schools radio buttons</b></a></div>
+
+--------
+
+<h3>Presentations</h3>
+
 <div><a href="https://seleniumbase.io/other/presenter.html"><b>Presenter Demo</b></a></div>
 <div><a href="https://seleniumbase.io/other/core_presentation.html"><b>Core Presentation</b></a></div>
 <div><a href="https://seleniumbase.io/other/chart_presentation.html"><b>Chart Maker Demo</b></a></div>
@@ -94,6 +113,8 @@
 <div><a href="https://seleniumbase.dev/help_docs/webdriver_installation"><b>Webdriver Installation</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/verify_webdriver"><b>Verify Webdriver Works</b></a></div>
 <div><a href="https://seleniumbase.dev/seleniumbase/console_scripts/"><b>Console Scripts Tutorial</b></a></div>
+<div><a href="https://seleniumbase.dev/examples/example_logs/"><b>The Dashboard</b></a></div>
+<div><a href="https://seleniumbase.dev/help_docs/recorder_mode"><b>Recorder Mode</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/syntax_formats"><b>Syntax Formats</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/mobile_testing"><b>Mobile Device Testing</b></a></div>
 <div><a href="https://seleniumbase.dev/help_docs/method_summary"><b>Method Summary (API Ref)</b></a></div>

@@ -6,11 +6,7 @@ from seleniumbase import BaseCase
 
 class FileUploadButtonTests(BaseCase):
     def test_file_upload_button(self):
-        self.open(
-            "https://www.w3schools.com/jsref/tryit.asp"
-            "?filename=tryjsref_fileupload_get"
-        )
-        self.ad_block()
+        self.open("https://seleniumbase.io/w3schools/file_upload")
         self.switch_to_frame("iframeResult")
         zoom_in = 'input[type="file"]{zoom: 1.6;-moz-transform: scale(1.6);}'
         self.add_css_style(zoom_in)

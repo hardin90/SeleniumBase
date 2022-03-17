@@ -13,12 +13,13 @@ Example:
         sbase install chromedriver
         sbase install geckodriver
         sbase install edgedriver
-        sbase install chromedriver 89.0.4389.23
-        sbase install chromedriver 89
+        sbase install chromedriver 99.0.4844.51
+        sbase install chromedriver 99
         sbase install chromedriver latest
+        sbase install chromedriver latest-1  # (Latest minus one)
         sbase install chromedriver -p
         sbase install chromedriver latest -p
-        sbase install edgedriver 89.0.774.54
+        sbase install edgedriver 99.0.1150.39
 Output:
         Installs the chosen webdriver to seleniumbase/drivers/
         (chromedriver is required for Chrome automation)
@@ -43,15 +44,16 @@ urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
 DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.29.1"
-DEFAULT_EDGEDRIVER_VERSION = "89.0.774.54"  # (Looks for LATEST_STABLE first)
-DEFAULT_OPERADRIVER_VERSION = "v.88.0.4324.104"
+DEFAULT_GECKODRIVER_VERSION = "v0.30.0"
+DEFAULT_EDGEDRIVER_VERSION = "99.0.1150.39"  # (Looks for LATEST_STABLE first)
+DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
 def invalid_run_command():
     exp = "  ** install **\n\n"
     exp += "  Usage:\n"
-    exp += "          seleniumbase install [DRIVER_NAME] [OPTIONS]\n"
+    exp += "          seleniumbase install [DRIVER] [OPTIONS]\n"
+    exp += "          OR     sbase install [DRIVER] [OPTIONS]\n"
     exp += "              (Drivers: chromedriver, geckodriver, edgedriver,\n"
     exp += "                        iedriver, operadriver)\n"
     exp += "  Options:\n"
@@ -60,13 +62,16 @@ def invalid_run_command():
     exp += '                          Use "latest" for the latest version.\n'
     exp += "          -p OR --path    Also copy the driver to /usr/local/bin\n"
     exp += "  Example:\n"
-    exp += "          seleniumbase install chromedriver\n"
-    exp += "          seleniumbase install geckodriver\n"
-    exp += "          seleniumbase install chromedriver 89\n"
-    exp += "          seleniumbase install chromedriver 89.0.4389.23\n"
-    exp += "          seleniumbase install chromedriver latest\n"
-    exp += "          seleniumbase install chromedriver -p\n"
-    exp += "          seleniumbase install chromedriver latest -p\n"
+    exp += "          sbase install chromedriver\n"
+    exp += "          sbase install geckodriver\n"
+    exp += "          sbase install edgedriver"
+    exp += "          sbase install chromedriver 99\n"
+    exp += "          sbase install chromedriver 99.0.4844.51\n"
+    exp += "          sbase install chromedriver latest\n"
+    exp += "          sbase install chromedriver latest-1\n"
+    exp += "          sbase install chromedriver -p\n"
+    exp += "          sbase install chromedriver latest -p\n"
+    exp += "          sbase install edgedriver 99.0.1150.39"
     exp += "  Output:\n"
     exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
@@ -83,6 +88,17 @@ def make_executable(file_path):
     mode = os.stat(file_path).st_mode
     mode |= (mode & 0o444) >> 2  # copy R bits to X
     os.chmod(file_path, mode)
+
+
+def requests_get(url):
+    response = None
+    try:
+        response = requests.get(url)
+    except Exception:
+        # Prevent SSLCertVerificationError / CERTIFICATE_VERIFY_FAILED
+        url = url.replace("https://", "http://")
+        response = requests.get(url)
+    return response
 
 
 def main(override=None):
@@ -142,12 +158,15 @@ def main(override=None):
         use_version = DEFAULT_CHROMEDRIVER_VERSION
         get_latest = False
         get_v_latest = False
+        get_latest_minus_one = False
         if num_args == 4 or num_args == 5:
             if "-p" not in sys.argv[3].lower():
                 use_version = sys.argv[3]
                 uv_low = use_version.lower()
                 if uv_low == "latest":
                     get_latest = True
+                elif uv_low == "latest-1":
+                    get_latest_minus_one = True
                 elif len(uv_low) < 4 and uv_low.isdigit() and int(uv_low) > 69:
                     get_v_latest = True
             else:
@@ -163,22 +182,27 @@ def main(override=None):
             file_name = "chromedriver_linux64.zip"
         elif "win32" in sys_plat or "win64" in sys_plat or "x64" in sys_plat:
             file_name = "chromedriver_win32.zip"  # Works for win32 / win_x64
+            if not get_latest and not get_v_latest and num_args < 4:
+                get_latest = True
         else:
             raise Exception(
                 "Cannot determine which version of chromedriver to download!"
             )
         found_chromedriver = False
-        if get_latest:
-            url_request = requests.get(last)
+        if get_latest or get_latest_minus_one:
+            url_request = requests_get(last)
             if url_request.ok:
                 found_chromedriver = True
                 use_version = url_request.text
-        elif get_v_latest:
-            url_req = requests.get(last)
+                if get_latest_minus_one:
+                    get_v_latest = True
+                    use_version = str(int(use_version.split('.')[0]) - 1)
+        if get_v_latest:
+            url_req = requests_get(last)
             if url_req.ok:
                 latest_version = url_req.text
             last = last + "_" + use_version
-            url_request = requests.get(last)
+            url_request = requests_get(last)
             if url_request.ok:
                 found_chromedriver = True
                 use_version = url_request.text
@@ -190,12 +214,12 @@ def main(override=None):
         )
         url_request = None
         if not found_chromedriver:
-            url_req = requests.get(last)
+            url_req = requests_get(last)
             if url_req.ok:
                 latest_version = url_req.text
                 if use_version == latest_version:
                     get_latest = True
-            url_request = requests.get(download_url)
+            url_request = requests_get(download_url)
         if found_chromedriver or url_request.ok:
             p_version = use_version
             p_version = c3 + use_version + cr
@@ -226,7 +250,7 @@ def main(override=None):
                         "https://api.github.com/repos/"
                         "mozilla/geckodriver/releases/latest"
                     )
-                    url_request = requests.get(last)
+                    url_request = requests_get(last)
                     if url_request.ok:
                         found_geckodriver = True
                         use_version = url_request.json()["tag_name"]
@@ -260,7 +284,7 @@ def main(override=None):
         )
         url_request = None
         if not found_geckodriver:
-            url_request = requests.get(download_url)
+            url_request = requests_get(download_url)
         if found_geckodriver or url_request.ok:
             msg = c2 + "geckodriver version for download" + cr
             p_version = c3 + use_version + cr
@@ -300,18 +324,30 @@ def main(override=None):
                 use_version = url_request.text.split("\r")[0].split("\n")[0]
             else:
                 use_version = DEFAULT_EDGEDRIVER_VERSION
+        suffix = None
         if "win64" in sys_plat or "x64" in sys_plat:
             file_name = "edgedriver_win64.zip"
+            suffix = "WINDOWS"
         elif "win32" in sys_plat or "x86" in sys_plat:
             file_name = "edgedriver_win32.zip"
+            suffix = "WINDOWS"
         elif "darwin" in sys_plat:
             file_name = "edgedriver_mac64.zip"
+            suffix = "MACOS"
+        elif "linux" in sys_plat:
+            file_name = "edgedriver_linux64.zip"
+            suffix = "LINUX"
         else:
             raise Exception(
-                "Sorry! Microsoft WebDriver / EdgeDriver is "
-                "only for Windows or Mac operating systems!"
+                "Cannot determine which version of EdgeDriver to download!"
             )
-        download_url = "https://msedgedriver.azureedge.net/" "%s/%s" % (
+        if use_version.isdigit():
+            edgedriver_st = "https://msedgedriver.azureedge.net/LATEST_RELEASE"
+            use_version = "%s_%s_%s" % (edgedriver_st, use_version, suffix)
+            url_request = requests.get(use_version)
+            if url_request.ok:
+                use_version = url_request.text.split("\r")[0].split("\n")[0]
+        download_url = "https://msedgedriver.azureedge.net/%s/%s" % (
             use_version,
             file_name,
         )
@@ -427,7 +463,7 @@ def main(override=None):
 
     file_path = downloads_folder + "/" + file_name
     if not os.path.exists(downloads_folder):
-        os.mkdir(downloads_folder)
+        os.makedirs(downloads_folder)
 
     if headless_ie_exists:
         headless_ie_file_path = downloads_folder + "/" + headless_ie_file_name
@@ -551,6 +587,7 @@ def main(override=None):
                 # Mac / Linux
                 expected_contents = [
                     "Driver_Notes/",
+                    "Driver_Notes/EULA",
                     "Driver_Notes/LICENSE",
                     "Driver_Notes/credits.html",
                     "msedgedriver",
@@ -561,6 +598,7 @@ def main(override=None):
                 expected_contents = [
                     "Driver_Notes/",
                     "Driver_Notes/credits.html",
+                    "Driver_Notes/EULA",
                     "Driver_Notes/LICENSE",
                     "msedgedriver.exe",
                 ]
@@ -603,6 +641,7 @@ def main(override=None):
             print("Unzip Complete!\n")
             to_remove = [
                 "%s/Driver_Notes/credits.html" % downloads_folder,
+                "%s/Driver_Notes/EULA" % downloads_folder,
                 "%s/Driver_Notes/LICENSE" % downloads_folder,
             ]
             for file_to_remove in to_remove:

@@ -1,104 +1,73 @@
 <meta property="og:site_name" content="SeleniumBase">
 <meta property="og:title" content="SeleniumBase: Python Web Automation and E2E Testing" />
-<meta property="og:description" content="Build fast, reliable, end-to-end tests." />
-<meta property="og:keywords" content="Python, pytest, selenium, webdriver, test automation, testing, seleniumbase, test framework, RPA, reports, website tours, presentations">
+<meta property="og:description" content="Fast, easy, and reliable Web/UI testing with Python." />
+<meta property="og:keywords" content="Python, pytest, selenium, webdriver, testing, automation, seleniumbase, framework, RPA, dashboard, recorder, reports">
 <meta property="og:image" content="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" />
-<link rel="icon" href="https://seleniumbase.io/img/logo6.png" />
+<link rel="icon" href="https://seleniumbase.io/img/green_logo.png" />
 
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/">
-<img src="https://seleniumbase.io/cdn/img/long_logo.png" alt="SeleniumBase" title="SeleniumBase" width="690" /></a></p>
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/releases">
-<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=0090c0" alt="Latest Release on GitHub" /></a> <a href="https://pypi.org/project/seleniumbase/">
-<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=00a0e0" alt="Latest Release on PyPI" /></a></p>
-<p align="center">
-<b>Python Web UI Testing Made Easy.</b>
-</p>
-
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" alt="SeleniumBase" title="SeleniumBase" width="300" /></a></h3>
 <!-- View on GitHub -->
-<p align="center"><a href="https://github.com/seleniumbase/SeleniumBase/actions">
-<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://dev.azure.com/seleniumbase/seleniumbase/_build/latest?definitionId=1&branchName=master"> <img src="https://dev.azure.com/seleniumbase/seleniumbase/_apis/build/status/seleniumbase.SeleniumBase?branchName=master" alt="SeleniumBase Azure Pipelines" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase">
-<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20seleniumbase.io-22BBAA.svg" alt="SeleniumBase.io Docs" /></a></p>
-
+<h4 align="center">Better web testing with <a href="https://www.selenium.dev/documentation/" target="_blank">Selenium</a> and <a href="https://docs.pytest.org/en/stable/" target="_blank">pytest</a>.</h4>
 <p align="center">
-SeleniumBase is a complete framework for automated browser testing with pytest.
+<a href="https://github.com/seleniumbase/SeleniumBase/releases">
+<img src="https://img.shields.io/github/v/release/seleniumbase/SeleniumBase.svg?color=2277EE" alt="Latest Release on GitHub" /></a> <a href="https://pypi.python.org/pypi/seleniumbase" target="_blank">
+<img src="https://img.shields.io/pypi/v/seleniumbase.svg?color=22AAEE" alt="Latest Release on PyPI" /></a> <a href="https://seleniumbase.io">
+<img src="https://img.shields.io/badge/docs-seleniumbase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/actions">
+<img src="https://github.com/seleniumbase/SeleniumBase/workflows/CI%20build/badge.svg" alt="SeleniumBase GitHub Actions" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank">
+<img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" alt="SeleniumBase" /></a>
 </p>
 
 <p align="center">
 <a href="#python_installation">🚀 Start</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🗂️ Features</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ CLI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">📖 Examples</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">🏰 Features</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/ReadMe.md">👩‍🏫 Examples</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">🖥️ Options</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">🧙 Scripts</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ Visual</a>
 <br />
-<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📚 API</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">🔵 Dashboard</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/recorder_mode.md">🔴 Recorder</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔠 Syntaxes</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/locale_codes.md">🗾 Locales</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🗄️ PkgManager</a>
-<br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">📗 API</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md">📋 Reports</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/console_scripts/ReadMe.md">💻 Scripts</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/mobile_testing.md">📱 Mobile</a>
-<br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/syntax_formats.md">🔡 SyntaxFormats</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 GridHub</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_ide/ReadMe.md">⏺️ Recorder</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/utilities/selenium_grid/ReadMe.md">🌐 Grid</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/js_package_manager.md">🕹️ JSMgr</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/integrations/github/workflows/ReadMe.md">🤖 CI</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translate</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Templates</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">🎞️ Presenter</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/translations.md">🌏 Translator</a> |
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 Charts</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">🗺️ Tours</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/visual_testing/ReadMe.md">🖼️ VisualTest</a>
-<br />
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/presenter/ReadMe.md">📑 Presenter</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/chart_maker/ReadMe.md">📊 ChartMaker</a> |
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">🛂 MasterQA</a>
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/dialog_boxes/ReadMe.md">🛂 Dialog</a>
 </p>
 
-✅ Chrome/Edge/Firefox/IE/Opera/Safari.<br />
-✅ Includes [reporting and dashboard tools](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/example_logs/ReadMe.md).
-
 --------
 
-<p align="left">Example: <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a> (<code>--demo</code> mode)</p>
+<p align="left"><b>One of many examples:</b> <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py">test_demo_site.py</a></p>
 
 ```bash
-pytest my_first_test.py --demo
+cd examples/
+pytest test_demo_site.py
 ```
 
-<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a></p>
+<p align="left"><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_4.gif" width="400" alt="SeleniumBase Demo Mode" title="SeleniumBase Test" /></a></p>
 
-```python
-from seleniumbase import BaseCase
-
-class MyTestClass(BaseCase):
-    def test_basics(self):
-        url = "https://store.xkcd.com/collections/posters"
-        self.open(url)
-        self.type('input[name="q"]', "xkcd book")
-        self.click('input[value="Search"]')
-        self.assert_text("xkcd: volume 0", "h3")
-        self.open("https://xkcd.com/353/")
-        self.assert_title("xkcd: Python")
-        self.assert_element('img[alt="Python"]')
-        self.click('a[rel="license"]')
-        self.assert_text("free to copy and reuse")
-        self.go_back()
-        self.click_link("About")
-        self.assert_exact_text("xkcd.com", "h2")
-```
-
---------
 
 <a id="python_installation"></a>
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Python Setup:</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Python Setup:</h2>
 
 🔵 Add **[Python](https://www.python.org/downloads/)** and **[Git](https://git-scm.com/)** to your System PATH.
 
-🔵 Create a **[Python virtual environment](https://seleniumbase.io/help_docs/virtualenv_instructions/)**.
+🔵 Using a [Python virtual env](https://seleniumbase.io/help_docs/virtualenv_instructions/) is recommended.
 
 <a id="install_seleniumbase"></a>
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Install SeleniumBase:</h2>
 
-🔵 You can install ``seleniumbase`` from [GitHub](https://github.com/seleniumbase/SeleniumBase):
+**You can install ``seleniumbase`` from [GitHub](https://github.com/seleniumbase/SeleniumBase) or [PyPI](https://pypi.org/project/seleniumbase/):**
+
+🔵 Installing ``seleniumbase`` from a GitHub clone:
 
 ```bash
 git clone https://github.com/seleniumbase/SeleniumBase.git
@@ -109,14 +78,14 @@ pip install -e .  # Editable install
 
 > (When using a virtual env, the Editable install is faster.)
 
-🔵 You can also install ``seleniumbase`` from [pypi](https://pypi.python.org/pypi/seleniumbase):
+🔵 Installing ``seleniumbase`` from PyPI:
 
 ```bash
 pip install seleniumbase
 ```
 
-> (Add ``--upgrade`` OR ``-U`` to upgrade an installation.)
-> (Add ``--force-reinstall`` to upgrade dependencies.)
+> (Add ``--upgrade`` OR ``-U`` to install the latest ``seleniumbase``.)
+> (Add ``--force-reinstall`` to also install the latest dependencies.)
 > (Use ``pip3`` if multiple versions of Python are installed.)
 
 🔵 Type ``seleniumbase`` or ``sbase`` to verify that SeleniumBase was installed successfully:
@@ -133,110 +102,126 @@ pip install seleniumbase
  *    OR:        "sbase [COMMAND] [PARAMETERS]"
 
 COMMANDS:
-      install         [DRIVER] [OPTIONS]
-      methods         (List common Python methods)
-      options         (List common pytest options)
-      mkdir           [DIRECTORY] [OPTIONS]
-      mkfile          [FILE.py] [OPTIONS]
-      mkpres          [FILE.py] [LANG]
-      mkchart         [FILE.py] [LANG]
-      print           [FILE] [OPTIONS]
-      translate       [SB_FILE.py] [LANG] [ACTION]
-      convert         [WEBDRIVER_UNITTEST_FILE.py]
-      extract-objects [SB_FILE.py]
-      inject-objects  [SB_FILE.py] [OPTIONS]
-      objectify       [SB_FILE.py] [OPTIONS]
-      revert-objects  [SB_FILE.py] [OPTIONS]
-      encrypt         (OR: obfuscate)
-      decrypt         (OR: unobfuscate)
-      download server (The Selenium Grid JAR file)
-      grid-hub        [start|stop] [OPTIONS]
-      grid-node       [start|stop] --hub=[HOST/IP]
- * (EXAMPLE: "sbase install chromedriver latest")  *
+      install          [DRIVER] [OPTIONS]
+      methods          (List common Python methods)
+      options          (List common pytest options)
+      mkdir            [DIRECTORY] [OPTIONS]
+      mkfile           [FILE.py] [OPTIONS]
+      mkrec / codegen  [FILE.py] [OPTIONS]
+      recorder         (Open Recorder Desktop App)
+      mkpres           [FILE.py] [LANG]
+      mkchart          [FILE.py] [LANG]
+      print            [FILE] [OPTIONS]
+      translate        [SB_FILE.py] [LANG] [ACTION]
+      convert          [WEBDRIVER_UNITTEST_FILE.py]
+      extract-objects  [SB_FILE.py]
+      inject-objects   [SB_FILE.py] [OPTIONS]
+      objectify        [SB_FILE.py] [OPTIONS]
+      revert-objects   [SB_FILE.py] [OPTIONS]
+      encrypt / obfuscate
+      decrypt / unobfuscate
+      download server  (Get Selenium Grid JAR file)
+      grid-hub         [start|stop] [OPTIONS]
+      grid-node        [start|stop] --hub=[HOST/IP]
+ * (EXAMPLE: "sbase install chromedriver latest") *
 
     Type "sbase help [COMMAND]" for specific command info.
     For info on all commands, type: "seleniumbase --help".
- * (Use "pytest" for running tests) *
+    Use "pytest" for running tests.
 ```
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Download a webdriver:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Downloading web drivers:</h3>
 
-✅ SeleniumBase can download webdrivers to the [seleniumbase/drivers](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/drivers) folder with the ``install`` command:
+✅ SeleniumBase automatically downloads web drivers as needed, such as ``chromedriver`` and ``geckodriver`` (Firefox).
 
-```bash
-sbase install chromedriver
-```
+✅ To manually download a webdriver, see [Console Scripts](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) OR [Webdriver Installation](https://seleniumbase.io/help_docs/webdriver_installation/).
 
-* You need a different webdriver for each browser to automate: ``chromedriver`` for Chrome, ``edgedriver`` for Edge, ``geckodriver`` for Firefox, and ``operadriver`` for Opera.
-* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Running tests:</h3>
 
-```bash
-sbase install chromedriver latest
-```
+🔵 If you've cloned SeleniumBase, you can run tests from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.
 
-* If you run a test without the correct webdriver installed, the driver will be downloaded automatically.
-
-(See [seleniumbase.io/seleniumbase/console_scripts/ReadMe/](https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/) for more information on SeleniumBase console scripts.)
-
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Running tests:</h3>
-
-🔵 <b>If you've cloned SeleniumBase from GitHub, you can run sample tests from the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder:</b>
+<p align="left">Here's <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</p>
 
 ```bash
 cd examples/
-pytest test_demo_site.py
-```
-
-> (Chrome is the default browser if not specified with ``--browser=BROWSER``. On Linux, ``--headless`` is the default behavior. You can also run in headless mode on any OS. If your Linux machine has a GUI and you want to see the web browser as tests run, add ``--headed`` or ``--gui``.)
-
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_demo_site.py"><img src="https://seleniumbase.io/cdn/gif/demo_page_1.gif" title="SeleniumBase Demo Page" /></a><br />
-
-🔵 <b>Here are more examples that you can run:</b>
-
-```bash
 pytest my_first_test.py
-
-pytest test_swag_labs.py
 ```
 
-🔵 <b>Run [my_first_test.py](https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py) in Demo Mode:</b>
+> (Chrome is the default browser if not specified with ``--browser``. On Linux, ``--headless`` is the default behavior.)
 
-```bash
-pytest my_first_test.py --demo
+<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/swag_labs_4.gif" alt="SeleniumBase Test" title="SeleniumBase Test" width="400" /></a>
+
+<p align="left"><b>Here's the code for <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py">my_first_test.py</a>:</b></p>
+
+```python
+from seleniumbase import BaseCase
+
+class MyTestClass(BaseCase):
+    def test_swag_labs(self):
+        self.open("https://www.saucedemo.com")
+        self.type("#user-name", "standard_user")
+        self.type("#password", "secret_sauce\n")
+        self.assert_element("#inventory_container")
+        self.assert_text("PRODUCTS", "span.title")
+        self.click('button[name*="backpack"]')
+        self.click("#shopping_cart_container a")
+        self.assert_text("YOUR CART", "span.title")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click("button#checkout")
+        self.type("#first-name", "SeleniumBase")
+        self.type("#last-name", "Automation")
+        self.type("#postal-code", "77123")
+        self.click("input#continue")
+        self.assert_text("CHECKOUT: OVERVIEW")
+        self.assert_text("Backpack", "div.cart_item")
+        self.click("button#finish")
+        self.assert_exact_text("THANK YOU FOR YOUR ORDER", "h2")
+        self.assert_element('img[alt="Pony Express"]')
+        self.js_click("a#logout_sidebar_link")
 ```
-
-<a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/my_first_test.py"><img src="https://seleniumbase.io/cdn/gif/my_first_test_4.gif" alt="SeleniumBase Demo Mode" title="SeleniumBase Demo Mode" /></a>
 
 * By default, **[CSS Selectors](https://www.w3schools.com/cssref/css_selectors.asp)** are used for finding page elements.
-* If you're new to CSS Selectors, games like [Flukeout](http://flukeout.github.io/) can help you learn.
+* If you're new to CSS Selectors, games like [CSS Diner](http://flukeout.github.io/) can help you learn.
 * Here are some common ``SeleniumBase`` methods that you might find in tests:
 
 ```python
-self.open(URL)  # Navigate to the web page
-self.click(SELECTOR)  # Click a page element
-self.type(SELECTOR, TEXT)  # Type text (Add "\n" to text for pressing enter/return.)
-self.assert_element(SELECTOR)  # Assert element is visible
-self.assert_text(TEXT)  # Assert text is visible (has optional SELECTOR arg)
-self.assert_title(PAGE_TITLE)  # Assert page title
-self.assert_no_404_errors()  # Assert no 404 errors from files on the page
-self.assert_no_js_errors()  # Assert no JavaScript errors on the page (Chrome-ONLY)
-self.execute_script(JAVASCRIPT)  # Execute JavaScript code
-self.go_back()  # Navigate to the previous URL
-self.get_text(SELECTOR)  # Get text from a selector
-self.get_attribute(SELECTOR, ATTRIBUTE)  # Get a specific attribute from a selector
-self.is_element_visible(SELECTOR)  # Determine if an element is visible on the page
-self.is_text_visible(TEXT)  # Determine if text is visible on the page (optional SELECTOR)
-self.hover_and_click(HOVER_SELECTOR, CLICK_SELECTOR)  # Mouseover element & click another
-self.select_option_by_text(DROPDOWN_SELECTOR, OPTION_TEXT)  # Select a dropdown option
-self.switch_to_frame(FRAME_NAME)  # Switch webdriver control to an iframe on the page
-self.switch_to_default_content()  # Switch webdriver control out of the current iframe
-self.switch_to_window(WINDOW_NUMBER)  # Switch to a different window/tab
-self.save_screenshot(FILE_NAME)  # Save a screenshot of the current page
+self.open(url)  # Navigate the browser window to the URL.
+self.type(selector, text)  # Update the field with the text.
+self.click(selector)  # Click the element with the selector.
+self.click_link(link_text)  # Click the link containing text.
+self.go_back()  # Navigate back to the previous URL.
+self.select_option_by_text(dropdown_selector, option)
+self.hover_and_click(hover_selector, click_selector)
+self.drag_and_drop(drag_selector, drop_selector)
+self.get_text(selector)  # Get the text from the element.
+self.get_current_url()  # Get the URL of the current page.
+self.get_page_source()  # Get the HTML of the current page.
+self.get_attribute(selector, attribute)  # Get element attribute.
+self.get_title()  # Get the title of the current page.
+self.switch_to_frame(frame)  # Switch into the iframe container.
+self.switch_to_default_content()  # Leave the iframe container.
+self.open_new_window()  # Open a new window in the same browser.
+self.switch_to_window(window)  # Switch to the browser window.
+self.switch_to_default_window()  # Switch to the original window.
+self.get_new_driver(OPTIONS)  # Open a new driver with OPTIONS.
+self.switch_to_driver(driver)  # Switch to the browser driver.
+self.switch_to_default_driver()  # Switch to the original driver.
+self.wait_for_element(selector)  # Wait until element is visible.
+self.is_element_visible(selector)  # Return element visibility.
+self.is_text_visible(text, selector)  # Return text visibility.
+self.sleep(seconds)  # Do nothing for the given amount of time.
+self.save_screenshot(name)  # Save a screenshot in .png format.
+self.assert_element(selector)  # Verify the element is visible.
+self.assert_text(text, selector)  # Verify text in the element.
+self.assert_title(title)  # Verify the title of the web page.
+self.assert_downloaded_file(file)  # Verify file was downloaded.
+self.assert_no_404_errors()  # Verify there are no broken links.
+self.assert_no_js_errors()  # Verify there are no JS errors.
 ```
 
 🔵 For the complete list of SeleniumBase methods, see: <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/method_summary.md">Method Summary</a></b>
 
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Learn More:</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Learn More:</h2>
 
 ✅ Automatic WebDriver Abilities:
 <p>SeleniumBase automatically handles common WebDriver actions such as spinning up web browsers and saving screenshots during test failures. (<i><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md">Read more about customizing test runs</a>.</i>)</p>
@@ -257,7 +242,7 @@ nosetests test_suite.py --browser=firefox
 ```
 
 ✅ Automatic Test Discovery:
-<p>All Python methods that start with <code>test_</code> will automatically be run when using <code>pytest</code> or <code>nosetests</code> on a Python file, (<i>or on folders containing Python files</i>). You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)</p>
+<p>All Python methods that start with <code>test_</code> will be run automatically when running <code>pytest</code> or <code>nosetests</code> on Python files. You can also be more specific on what to run within a file by using the following: (<i>Note that the syntax is different for pytest vs nosetests.</i>)</p>
 
 ```bash
 pytest [FILE_NAME.py]::[CLASS_NAME]::[METHOD_NAME]
@@ -269,21 +254,18 @@ nosetests [FILE_NAME.py]:[CLASS_NAME].[METHOD_NAME]
 <p>SeleniumBase methods automatically wait for page elements to finish loading before interacting with them (<i>up to a timeout limit</i>). This means you <b>no longer need</b> random <span><b>time.sleep()</b></span> statements in your scripts.</p>
 <img src="https://img.shields.io/badge/Flaky Tests%3F-%20NO%21-11BBDD.svg" alt="NO MORE FLAKY TESTS!" />
 
-✅ Automated/Manual Hybrid Mode:</h4>
-<p>SeleniumBase includes a solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/masterqa/ReadMe.md">MasterQA</a></b>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validation.</p>
+✅ Automated/Manual Hybrid Mode:
+<p>SeleniumBase includes a solution called <b><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/master_qa/ReadMe.md">MasterQA</a></b>, which speeds up manual testing by having automation perform all the browser actions while the manual tester handles validation.</p>
 
 ✅ Feature-Rich:
 <p>For a full list of SeleniumBase features, <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/features_list.md">Click Here</a>.</p>
 
 
 <a id="detailed_instructions"></a>
-<img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" title="SeleniumBase" width="300">
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
 
-<h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Detailed Instructions:</h2>
-
-<a id="seleniumbase_demo_mode"></a> <b>Use Demo Mode to help you see what tests are asserting.</b>
-
-🔵 If the example test is moving too fast for your eyes, you can run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and lets you know what test assertions are happening in real time:
+<a id="seleniumbase_demo_mode"></a>
+🔵 You can use **Demo Mode** to help you see what a test is doing: If a test is moving too fast for your eyes, run it in **Demo Mode** by adding ``--demo`` on the command-line, which pauses the browser briefly between actions, highlights page elements being acted on, and displays assertions:
 
 ```bash
 pytest my_first_test.py --demo
@@ -343,17 +325,19 @@ The code above will leave your browser window open in case there's a failure. (i
 --cap-file=FILE  # (The web browser's desired capabilities to use.)
 --cap-string=STRING  # (The web browser's desired capabilities to use.)
 --settings-file=FILE  # (Override default SeleniumBase settings.)
---env=ENV  # (Set a test environment. Use "self.env" to use this in tests.)
---data=DATA  # (Extra test data. Access with "self.data" in tests.)
---var1=DATA  # (Extra test data. Access with "self.var1" in tests.)
---var2=DATA  # (Extra test data. Access with "self.var2" in tests.)
---var3=DATA  # (Extra test data. Access with "self.var3" in tests.)
+--env=ENV  # (Set the test env. Access with "self.env" in tests.)
+--account=STR  # (Set account. Access with "self.account" in tests.)
+--data=STRING  # (Extra test data. Access with "self.data" in tests.)
+--var1=STRING  # (Extra test data. Access with "self.var1" in tests.)
+--var2=STRING  # (Extra test data. Access with "self.var2" in tests.)
+--var3=STRING  # (Extra test data. Access with "self.var3" in tests.)
 --user-data-dir=DIR  # (Set the Chrome user data directory to use.)
 --protocol=PROTOCOL  # (The Selenium Grid protocol: http|https.)
 --server=SERVER  # (The Selenium Grid server/IP used for tests.)
 --port=PORT  # (The Selenium Grid port used by the test server.)
 --proxy=SERVER:PORT  # (Connect to a proxy server:port for tests.)
 --proxy=USERNAME:PASSWORD@SERVER:PORT  # (Use authenticated proxy server.)
+--proxy-bypass-list=STRING  # (";"-separated hosts to bypass, Eg "*.foo.com")
 --agent=STRING  # (Modify the web browser's User-Agent string.)
 --mobile  # (Use the mobile device emulator while running tests.)
 --metrics=STRING  # (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -362,8 +346,9 @@ The code above will leave your browser window open in case there's a failure. (i
 --firefox-pref=SET  # (Set a Firefox preference:value set, comma-separated.)
 --extension-zip=ZIP  # (Load a Chrome Extension .zip|.crx, comma-separated.)
 --extension-dir=DIR  # (Load a Chrome Extension directory, comma-separated.)
---headless  # (Run tests headlessly. Default mode on Linux OS.)
---headed  # (Run tests with a GUI on Linux OS.)
+--headless  # (Run tests in headless mode. The default arg on Linux OS.)
+--headed  # (Run tests in headed/GUI mode on Linux OS.)
+--xvfb  # (Run tests using the Xvfb virtual display server on Linux OS.)
 --locale=LOCALE_CODE  # (Set the Language Locale Code for the web browser.)
 --interval=SECONDS  # (The autoplay interval for presentations & tour steps)
 --start-page=URL  # (The starting URL for the web browser when tests begin.)
@@ -379,6 +364,7 @@ The code above will leave your browser window open in case there's a failure. (i
 --ad-block  # (Block some types of display ads after page loads.)
 --block-images  # (Block images from loading during tests.)
 --verify-delay=SECONDS  # (The delay before MasterQA verification checks.)
+--recorder  # (Enables the Recorder for turning browser actions into code.)
 --disable-csp  # (Disable the Content Security Policy of websites.)
 --disable-ws  # (Disable Web Security on Chromium-based browsers.)
 --enable-ws  # (Enable Web Security on Chromium-based browsers.)
@@ -390,11 +376,12 @@ The code above will leave your browser window open in case there's a failure. (i
 --incognito  #  (Enable Chrome's Incognito mode.)
 --guest  # (Enable Chrome's Guest mode.)
 --devtools  # (Open Chrome's DevTools when the browser opens.)
---reuse-session | --rs  # (Reuse browser session between tests.)
+--reuse-session | --rs  # (Reuse the browser session between tests.)
 --crumbs  # (Delete all cookies between tests reusing a session.)
---maximize-window  # (Start tests with the web browser window maximized.)
---save-screenshot  # (Save a screenshot at the end of each test.)
+--maximize  # (Start tests with the web browser window maximized.)
+--screenshot  # (Save a screenshot at the end of each test.)
 --visual-baseline  # (Set the visual baseline for Visual/Layout tests.)
+--external-pdf  # (Set Chrome "plugins.always_open_pdf_externally": True.)
 --timeout-multiplier=MULTIPLIER  # (Multiplies the default timeout values.)
 ```
 
@@ -419,7 +406,7 @@ Here's the command-line option to add to tests: (See [examples/custom_settings.p
 Inside your tests, you can use ``self.data`` to access that.
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Test Directory Configuration:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Test Directory Configuration:</h3>
 
 🔵 When running tests with **pytest**, you'll want a copy of **[pytest.ini](https://github.com/seleniumbase/SeleniumBase/blob/master/pytest.ini)** in your root folders. When running tests with **nosetests**, you'll want a copy of **[setup.cfg](https://github.com/seleniumbase/SeleniumBase/blob/master/setup.cfg)** in your root folders. These files specify default configuration details for tests. Folders should also include a blank ``__init__.py`` file, which allows your tests to import files from that folder.
 
@@ -433,7 +420,6 @@ sbase mkdir ui_tests
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── my_first_test.py
 ├── parameterized_test.py
@@ -442,7 +428,6 @@ ui_tests/
 ├── setup.cfg
 ├── test_demo_site.py
 └── boilerplates/
-    │
     ├── __init__.py
     ├── base_test_case.py
     ├── boilerplate_test.py
@@ -450,7 +435,6 @@ ui_tests/
     ├── page_objects.py
     ├── sb_fixture_test.py
     └── samples/
-        │
         ├── __init__.py
         ├── google_objects.py
         ├── google_test.py
@@ -468,7 +452,6 @@ sbase mkdir ui_tests --basic
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── pytest.ini
 ├── requirements.txt
@@ -479,7 +462,7 @@ Of those files, the ``pytest.ini`` config file is the most important, followed b
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Log files from failed tests:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Log files from failed tests:</h3>
 
 Let's try an example of a test that fails:
 
@@ -504,7 +487,7 @@ pytest test_fail.py
 
 --------
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The SeleniumBase Dashboard:</h3>
 
 🔵 The ``--dashboard`` option for pytest generates a SeleniumBase Dashboard located at ``dashboard.html``, which updates automatically as tests run and produce results. Example:
 
@@ -512,7 +495,7 @@ pytest test_fail.py
 pytest --dashboard --rs --headless
 ```
 
-<img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="360" />
+<img src="https://seleniumbase.io/cdn/img/dashboard_1.png" alt="The SeleniumBase Dashboard" title="The SeleniumBase Dashboard" width="380" />
 
 🔵 Additionally, you can host your own SeleniumBase Dashboard Server on a port of your choice. Here's an example of that using Python 3's ``http.server``:
 
@@ -533,7 +516,7 @@ pytest test_suite.py --dashboard --rs --headless
 --------
 
 <a id="creating_visual_reports"></a>
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Creating Visual Test Reports:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Creating Visual Test Reports:</h3>
 
 <h4><b>Pytest Reports:</b></h4>
 
@@ -592,7 +575,7 @@ pytest test_suite.py --alluredir=allure_results
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Using a Proxy Server:</h3>
 
 If you wish to use a proxy server for your browser tests (Chromium or Firefox), you can add ``--proxy=IP_ADDRESS:PORT`` as an argument on the command line.
 
@@ -621,7 +604,7 @@ pytest proxy_test.py --proxy=proxy1
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Changing the User-Agent:</h3>
 
 🔵 If you wish to change the User-Agent for your browser tests (Chromium and Firefox only), you can add ``--agent="USER AGENT STRING"`` as an argument on the command-line.
 
@@ -630,13 +613,18 @@ pytest user_agent_test.py --agent="Mozilla/5.0 (Nintendo 3DS; U; ; en) Version/1
 ```
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Handling Pop-Up / Pop Up Alerts:</h3>
+
+🔵 <code>self.accept_alert()</code> automatically waits for and accepts alert pop-ups. <code>self.dismiss_alert()</code> automatically waits for and dismisses alert pop-ups. On occasion, some methods like <code>self.click(SELECTOR)</code> might dismiss a pop-up on its own because they call JavaScript to make sure that the <code>readyState</code> of the page is <code>complete</code> before advancing. If you're trying to accept a pop-up that got dismissed this way, use this workaround: Call <code>self.find_element(SELECTOR).click()</code> instead, (which will let the pop-up remain on the screen), and then use <code>self.accept_alert()</code> to accept the pop-up (<a href="https://github.com/seleniumbase/SeleniumBase/issues/600#issuecomment-647270426">more on that here</a>). If pop-ups are intermittent, wrap code in a try/except block.
+
+
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Building Guided Tours for Websites:</h3>
 
 🔵 Learn about <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/tour_examples/ReadMe.md">SeleniumBase Interactive Walkthroughs</a> (in the ``examples/tour_examples/`` folder). It's great for prototyping a website onboarding experience.
 
 
 <a id="utilizing_advanced_features"></a>
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Production Environments & Integrations:</h3>
 
 🔵 Here are some things you can do to set up a production environment for your testing:
 
@@ -657,7 +645,7 @@ pytest [YOUR_TEST_FILE.py] --with-db-reporting --with-s3-logging
 ```
 
 <a id="detailed_method_specifications"></a>
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Detailed Method Specifications and Examples:</h3>
 
 🔵 Navigating to a web page: (and related commands)
 
@@ -806,6 +794,8 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
     selector = "div.superbowl_%s div.commercials div.transcript div.picard" % superbowl_year
     if self.is_text_visible("Yes, it was I who summoned you all here.", selector):
         return "Picard Paramount+ Superbowl Ad 2020"
+    elif self.is_text_visible("Commander, signal the following: Our Network is Secure!"):
+        return "Picard Mirror Universe iboss Superbowl Ad 2018"
     elif self.is_text_visible("For the Love of Marketing and Earl Grey Tea!", selector):
         return "Picard Mirror Universe HubSpot Superbowl Ad 2015"
     elif self.is_text_visible("Delivery Drones... Engage", selector):
@@ -816,19 +806,19 @@ def get_mirror_universe_captain_picard_superbowl_ad(superbowl_year):
         return "Picard Mirror Universe Google Superbowl Ad 2015"
     elif self.is_text_visible("Number One, I've Never Seen Anything Like It.", selector):
         return "Picard Mirror Universe Tesla Superbowl Ad 2015"
+    elif self.is_text_visible("Let us make sure history never forgets the name ... Facebook", selector):
+        return "Picard Mirror Universe Facebook Superbowl Ad 2015"
     elif self.is_text_visible("""With the first link, the chain is forged.
                               The first speech censored, the first thought forbidden,
                               the first freedom denied, chains us all irrevocably.""", selector):
         return "Picard Mirror Universe Wikimedia Superbowl Ad 2015"
-    elif self.is_text_visible("Let us make sure history never forgets the name ... Facebook", selector):
-        return "Picard Mirror Universe Facebook Superbowl Ad 2015"
     else:
         raise Exception("Reports of my assimilation are greatly exaggerated.")
 ```
 
 🔵 Switching Tabs:
 
-<p>What if your test opens up a new tab/window and now you have more than one page? No problem. You need to specify which one you currently want Selenium to use. Switching between tabs/windows is easy:</p>
+<p>If your test opens up a new tab/window, you can switch to it. (SeleniumBase automatically switches to new tabs that don't open to ``about:blank`` URLs.)</p>
 
 ```python
 self.switch_to_window(1)  # This switches to the new tab (0 is the first one)
@@ -842,18 +832,6 @@ self.switch_to_frame('ContentManagerTextBody_ifr')
 # .... Do something cool (here)
 self.switch_to_default_content()  # Exit the iFrame when you're done
 ```
-
-🔵 Handling Pop-Up Alerts:
-
-<p>What if your test makes an alert pop up in your browser? No problem. You need to switch to it and either accept it or dismiss it:</p>
-
-```python
-self.wait_for_and_accept_alert()
-
-self.wait_for_and_dismiss_alert()
-```
-
-If you're not sure whether there's an alert before trying to accept or dismiss it, one way to handle that is to wrap your alert-handling code in a try/except block. Other methods such as .text and .send_keys() will also work with alerts.
 
 🔵 Executing Custom jQuery Scripts:
 
@@ -895,6 +873,8 @@ self.execute_script("return jQuery('div#amazing')[0].text")  # Returns the css "
 self.execute_script("return jQuery('textarea')[2].value")  # Returns the css "value" of the 3rd textarea element on the page
 ```
 
+(Most of the above commands can be done directly with built-in SeleniumBase methods.)
+
 🔵 In the next example, JavaScript creates a referral button on a page, which is then clicked:
 
 ```python
@@ -906,7 +886,7 @@ self.execute_script('''document.body.innerHTML = \"%s\"''' % referral_link)
 self.click("a.analytics")  # Clicks the generated button
 ```
 
-(Due to popular demand, this traffic generation example has been baked into SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
+(Due to popular demand, this traffic generation example has been included in SeleniumBase with the ``self.generate_referral(start_page, end_page)`` and the ``self.generate_traffic(start_page, end_page, loops)`` methods.)
 
 🔵 Using deferred asserts:
 
@@ -932,7 +912,7 @@ class MyTestClass(BaseCase):
 <code>deferred_assert_element()</code> and <code>deferred_assert_text()</code> will save any exceptions that would be raised.
 To flush out all the failed deferred asserts into a single exception, make sure to call <code>self.process_deferred_asserts()</code> at the end of your test method. If your test hits multiple pages, you can call <code>self.process_deferred_asserts()</code> before navigating to a new page so that the screenshot from your log files matches the URL where the deferred asserts were made.
 
-🔵 Accessing Raw WebDriver
+🔵 Accessing Raw WebDriver:
 
 <p>If you need access to any commands that come with standard WebDriver, you can call them directly like this:</p>
 
@@ -955,7 +935,7 @@ pytest --reruns=1 --reruns-delay=1
 <p>Additionally, you can use the <code>@retry_on_exception()</code> decorator to specifically retry failing methods. (First import: <code>from seleniumbase import decorators</code>) To learn more about SeleniumBase decorators, [click here](https://github.com/seleniumbase/SeleniumBase/tree/master/seleniumbase/common).</p>
 
 
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> Wrap-Up</h3>
 
 <b>Congratulations on getting started with SeleniumBase!</b>
 
@@ -966,22 +946,19 @@ pytest --reruns=1 --reruns-delay=1
 
 <p>
 <div><b>If you like us, give us a star!</b></div>
-<div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=888CFA" title="Stargazers" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/stargazers"><img src="https://img.shields.io/github/stars/seleniumbase/seleniumbase.svg?color=19A57B" title="Stargazers" /></a></div>
 </p>
 <p><div><a href="https://github.com/mdmintz">https://github.com/mdmintz</a></div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="290" /></a></div>
+<div><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/fancy_logo_14.png" title="SeleniumBase" width="200" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div> <div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a></div> <div><a href="https://seleniumbase.io">
+<img src="https://img.shields.io/badge/docs-%20%20SeleniumBase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></div> <div><a href="https://pepy.tech/project/seleniumbase" target="_blank"><img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a></div>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-22BBCC.svg" title="SeleniumBase" /></a> <a href="https://github.com/seleniumbase/SeleniumBase/releases"><img src="https://img.shields.io/github/repo-size/seleniumbase/seleniumbase.svg" title="SeleniumBase" alt="Repo Size" /></a> <a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://badges.gitter.im/seleniumbase/SeleniumBase.svg" title="SeleniumBase" alt="Join the chat!" /></a></div>
+<p><div>
+<span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="38" /></a></span>
+<span><a href="https://www.facebook.com/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="36" /></a></span>
+<span><a href="https://gitter.im/seleniumbase/SeleniumBase" target="_blank"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="30" /></a></span>
+<span><a href="https://instagram.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="32" /></a></span>
+<span><a href="https://twitter.com/seleniumbase" target="_blank"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="39" /></a></span>
+</div></p>
 
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://img.shields.io/badge/tested%20with-SeleniumBase-04C38E.svg" alt="Tested with SeleniumBase" /></a> <a href="https://seleniumbase.io">
-<img src="https://img.shields.io/badge/docs-%20%20SeleniumBase.io-11BBDD.svg" alt="SeleniumBase.io Docs" /></a></div>
-
-<div><a href="https://pepy.tech/count/seleniumbase"> <img src="https://pepy.tech/badge/seleniumbase" alt="SeleniumBase PyPI downloads" /></a> <a href="https://twitter.com/SeleniumBase">
-<img src="https://img.shields.io/twitter/follow/seleniumbase.svg?style=flat-rounded&logo=twitter&label=followers" alt="SeleniumBase Twitter followers" /></a></div>
-
-<p><div><span><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_github.svg" title="SeleniumBase on GitHub" alt="SeleniumBase on GitHub" width="56" /></a></span>
-<span><a href="https://gitter.im/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_gitter.svg" title="SeleniumBase on Gitter" alt="SeleniumBase on Gitter" width="44" /></a></span>
-<span><a href="https://twitter.com/seleniumbase"><img src="https://seleniumbase.io/img/social/share_twitter.svg" title="SeleniumBase on Twitter" alt="SeleniumBase on Twitter" width="60" /></a></span>
-<span><a href="https://instagram.com/seleniumbase"><img src="https://seleniumbase.io/img/social/share_instagram.svg" title="SeleniumBase on Instagram" alt="SeleniumBase on Instagram" width="52" /></a></span>
-<span><a href="https://www.facebook.com/SeleniumBase"><img src="https://seleniumbase.io/img/social/share_facebook.svg" title="SeleniumBase on Facebook" alt="SeleniumBase on Facebook" width="56" /></a></span></div></p>
+<a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" alt="SeleniumBase" title="SeleniumBase" width="200" /></a>

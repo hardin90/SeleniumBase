@@ -9,7 +9,7 @@
 
     One big advantage to running tests with Pytest is that most of this
     is done for you automatically, with the option to update any of the
-    parameters through command line parsing. Pytest also provides you
+    parameters through command-line parsing. Pytest also provides you
     with other plugins, such as ones for generating test reports,
     handling multithreading, and parametrized tests. Depending on your
     specific needs, you may need to call SeleniumBase commands without
@@ -29,16 +29,21 @@ except (ImportError, ValueError):
     pure_python = True
 
 if pure_python:
-    sb = MyTestClass("test_basics")
+    sb = MyTestClass("test_swag_labs")
     sb.browser = "chrome"
     sb.headless = False
     sb.headed = False
+    sb.xvfb = False
     sb.start_page = None
     sb.locale_code = None
     sb.protocol = "http"
     sb.servername = "localhost"
     sb.port = 4444
     sb.data = None
+    sb.var1 = None
+    sb.var2 = None
+    sb.var3 = None
+    sb.account = None
     sb.environment = "test"
     sb.user_agent = None
     sb.incognito = False
@@ -69,6 +74,8 @@ if pure_python:
     sb.with_db_reporting = False
     sb.with_s3_logging = False
     sb.js_checking_on = False
+    sb.recorder_mode = False
+    sb.recorder_ext = False
     sb.report_on = False
     sb.is_pytest = False
     sb.slow_mode = False
@@ -79,6 +86,7 @@ if pure_python:
     sb._dash_initialized = False
     sb.message_duration = 2
     sb.block_images = False
+    sb.external_pdf = False
     sb.remote_debug = False
     sb.settings_file = None
     sb.user_data_dir = None
@@ -86,6 +94,7 @@ if pure_python:
     sb.firefox_arg = None
     sb.firefox_pref = None
     sb.proxy_string = None
+    sb.proxy_bypass_list = None
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None
@@ -96,7 +105,7 @@ if pure_python:
 
     sb.setUp()
     try:
-        sb.test_basics()
+        sb.test_swag_labs()
     finally:
         sb.tearDown()
         del sb

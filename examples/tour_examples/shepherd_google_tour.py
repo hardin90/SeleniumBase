@@ -11,7 +11,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Type in your query here.", 'input[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "Google")
+        self.highlight_type('input[title="Search"]', "Google")
         self.wait_for_element('[role="listbox"]')  # Wait for autocomplete
 
         self.create_shepherd_tour(theme="light")
@@ -19,7 +19,7 @@ class MyTourClass(BaseCase):
         self.add_tour_step("Or press [ENTER] after entry.", '[title="Search"]')
         self.play_tour()
 
-        self.highlight_update_text('input[title="Search"]', "GitHub\n")
+        self.highlight_type('input[title="Search"]', "GitHub\n")
         self.ad_block()
         self.wait_for_element("#search")
 
@@ -45,13 +45,13 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Or click here to get driving directions.",
-            "#searchbox-directions",
+            'button[aria-label="Directions"]',
             alignment="bottom",
             theme="dark",
         )
         self.add_tour_step(
             "Use this button to switch to Satellite view.",
-            "#minimap div.widget-minimap",
+            'button[jsaction*="minimap.main;"]',
             alignment="right",
         )
         self.add_tour_step(
@@ -65,7 +65,7 @@ class MyTourClass(BaseCase):
         )
         self.add_tour_step(
             "Use the Menu button to see more options.",
-            ".searchbox-hamburger-container",
+            'button[jsaction*="settings.open;"]',
             alignment="right",
         )
         self.add_tour_step(

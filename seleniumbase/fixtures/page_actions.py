@@ -31,6 +31,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from seleniumbase.config import settings
@@ -102,6 +103,36 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
     try:
         element = driver.find_element(by=by, value=selector)
         return element.is_displayed() and text in element.text
+    except Exception:
+        return False
+
+
+def is_attribute_present(
+    driver, selector, attribute, value=None, by=By.CSS_SELECTOR
+):
+    """
+    Returns whether the specified attribute is present in the given selector.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    attribute - the attribute that is expected for the element (required)
+    value - the attribute value that is expected (Default: None)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    @Returns
+    Boolean (is attribute present)
+    """
+    try:
+        element = driver.find_element(by=by, value=selector)
+        found_value = element.get_attribute(attribute)
+        if found_value is None:
+            return False
+        if value is not None:
+            if found_value == value:
+                return True
+            else:
+                return False
+        else:
+            return True
     except Exception:
         return False
 
@@ -354,7 +385,12 @@ def wait_for_element_visible(
 
 
 def wait_for_text_visible(
-    driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    text,
+    selector,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT,
+    browser=None
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -382,11 +418,21 @@ def wait_for_text_visible(
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if element.is_displayed() and text in element.text:
-                return element
+            if browser == "safari":
+                if (
+                    element.is_displayed()
+                    and text in element.get_attribute("innerText")
+                ):
+                    return element
+                else:
+                    element = None
+                    raise Exception()
             else:
-                element = None
-                raise Exception()
+                if element.is_displayed() and text in element.text:
+                    return element
+                else:
+                    element = None
+                    raise Exception()
         except Exception:
             now_ms = time.time() * 1000.0
             if now_ms >= stop_ms:
@@ -413,7 +459,12 @@ def wait_for_text_visible(
 
 
 def wait_for_exact_text_visible(
-    driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    text,
+    selector,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT,
+    browser=None
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -441,11 +492,25 @@ def wait_for_exact_text_visible(
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if element.is_displayed() and text.strip() == element.text.strip():
-                return element
+            if browser == "safari":
+                if (
+                    element.is_displayed()
+                    and text.strip() == element.get_attribute(
+                        "innerText").strip()
+                ):
+                    return element
+                else:
+                    element = None
+                    raise Exception()
             else:
-                element = None
-                raise Exception()
+                if (
+                    element.is_displayed()
+                    and text.strip() == element.text.strip()
+                ):
+                    return element
+                else:
+                    element = None
+                    raise Exception()
         except Exception:
             now_ms = time.time() * 1000.0
             if now_ms >= stop_ms:
@@ -493,7 +558,7 @@ def wait_for_attribute(
     attribute - the attribute that is expected for the element (required)
     value - the attribute value that is expected (Default: None)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
-    timeout - the time to wait for elements in seconds
+    timeout - the time to wait for the element attribute in seconds
     @Returns
     A web element object that contains the expected attribute/value
     """
@@ -670,6 +735,55 @@ def wait_for_text_not_visible(
     timeout_exception(Exception, message)
 
 
+def wait_for_attribute_not_present(
+    driver,
+    selector,
+    attribute,
+    value=None,
+    by=By.CSS_SELECTOR,
+    timeout=settings.LARGE_TIMEOUT
+):
+    """
+    Searches for the specified element attribute by the given selector.
+    Returns True if the attribute isn't present on the page within the timeout.
+    Also returns True if the element is not present within the timeout.
+    Raises an exception if the attribute is still present after the timeout.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    attribute - the element attribute (required)
+    value - the attribute value (Default: None)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for the element attribute in seconds
+    """
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        s_utils.check_if_time_limit_exceeded()
+        if not is_attribute_present(
+            driver, selector, attribute, value=value, by=by
+        ):
+            return True
+        now_ms = time.time() * 1000.0
+        if now_ms >= stop_ms:
+            break
+        time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    message = (
+        "Attribute {%s} of element {%s} was still present after %s second%s!"
+        "" % (attribute, selector, timeout, plural)
+    )
+    if value:
+        message = (
+            "Value {%s} for attribute {%s} of element {%s} was still present "
+            "after %s second%s!"
+            "" % (value, attribute, selector, timeout, plural)
+        )
+    timeout_exception(Exception, message)
+
+
 def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
     """
     Finds all WebElements that match a selector and are visible.
@@ -693,11 +807,16 @@ def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
         return v_elems
 
 
-def save_screenshot(driver, name, folder=None):
+def save_screenshot(
+    driver, name, folder=None, selector=None, by=By.CSS_SELECTOR
+):
     """
-    Saves a screenshot to the current directory (or to a subfolder if provided)
+    Saves a screenshot of the current page.
+    If no folder is specified, uses the folder where pytest was called.
+    The screenshot will include the entire page unless a selector is given.
+    If a provided selector is not found, then takes a full-page screenshot.
     If the folder provided doesn't exist, it will get created.
-    The screenshot will be in PNG format.
+    The screenshot will be in PNG format: (*.png)
     """
     if not name.endswith(".png"):
         name = name + ".png"
@@ -709,12 +828,18 @@ def save_screenshot(driver, name, folder=None):
         screenshot_path = "%s/%s" % (file_path, name)
     else:
         screenshot_path = name
-    try:
-        element = driver.find_element(by=By.TAG_NAME, value="body")
-        element_png = element.screenshot_as_png
-        with open(screenshot_path, "wb") as file:
-            file.write(element_png)
-    except Exception:
+    if selector:
+        try:
+            element = driver.find_element(by=by, value=selector)
+            element_png = element.screenshot_as_png
+            with open(screenshot_path, "wb") as file:
+                file.write(element_png)
+        except Exception:
+            if driver:
+                driver.get_screenshot_as_file(screenshot_path)
+            else:
+                pass
+    else:
         if driver:
             driver.get_screenshot_as_file(screenshot_path)
         else:
@@ -760,13 +885,17 @@ def _get_last_page(driver):
     return last_page
 
 
-def save_test_failure_data(driver, name, browser_type, folder=None):
+def save_test_failure_data(driver, name, browser_type=None, folder=None):
     """
-    Saves failure data to the current directory (or to a subfolder if provided)
+    Saves failure data to the current directory, or to a subfolder if provided.
+    If {name} does not end in ".txt", it will get added to it.
+    If {browser_type} is provided, the logs will include that.
     If the folder provided doesn't exist, it will get created.
     """
     import traceback
 
+    if not name.endswith(".txt"):
+        name = name + ".txt"
     if folder:
         abs_path = os.path.abspath(".")
         file_path = abs_path + "/%s" % folder
@@ -779,7 +908,8 @@ def save_test_failure_data(driver, name, browser_type, folder=None):
     last_page = _get_last_page(driver)
     data_to_save = []
     data_to_save.append("Last_Page: %s" % last_page)
-    data_to_save.append("Browser: %s " % browser_type)
+    if browser_type:
+        data_to_save.append("Browser: %s " % browser_type)
     data_to_save.append(
         "Traceback: "
         + "".join(
@@ -863,7 +993,7 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
         try:
             driver.switch_to.frame(frame)
             return True
-        except NoSuchFrameException:
+        except (NoSuchFrameException, TimeoutException):
             if type(frame) is str:
                 by = None
                 if page_utils.is_xpath_selector(frame):

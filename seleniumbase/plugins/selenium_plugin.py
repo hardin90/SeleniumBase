@@ -21,6 +21,7 @@ class SeleniumBrowser(Plugin):
     --cap-string=STRING  (The web browser's desired capabilities to use.)
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
+    --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
@@ -29,8 +30,9 @@ class SeleniumBrowser(Plugin):
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
-    --headless  (Run tests headlessly. Default mode on Linux OS.)
-    --headed  (Run tests with a GUI on Linux OS.)
+    --headless  (Run tests in headless mode. The default arg on Linux OS.)
+    --headed  (Run tests in headed/GUI mode on Linux OS.)
+    --xvfb  (Run tests using the Xvfb virtual display server on Linux OS.)
     --locale=LOCALE_CODE  (Set the Language Locale Code for the web browser.)
     --interval=SECONDS  (The autoplay interval for presentations & tour steps)
     --start-page=URL  (The starting URL for the web browser when tests begin.)
@@ -42,8 +44,9 @@ class SeleniumBrowser(Plugin):
     --message-duration=SECONDS  (The time length for Messenger alerts.)
     --check-js  (Check for JavaScript errors after page loads.)
     --ad-block  (Block some types of display ads after page loads.)
-    --block-images (Block images from loading during tests.)
+    --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
+    --recorder  (Enables the Recorder for turning browser actions into code.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
@@ -55,8 +58,9 @@ class SeleniumBrowser(Plugin):
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --maximize  (Start tests with the web browser window maximized.)
-    --save-screenshot  (Save a screenshot at the end of each test.)
+    --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
+    --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
     --timeout-multiplier=MULTIPLIER  (Multiplies the default timeout values.)
     """
 
@@ -142,7 +146,7 @@ class SeleniumBrowser(Plugin):
             dest="port",
             default="4444",
             help="""Designates the Selenium Grid port to use.
-                    Default: 4444.""",
+                    Default: 4444. (If 443, protocol becomes "https")""",
         )
         parser.add_option(
             "--proxy",
@@ -153,6 +157,24 @@ class SeleniumBrowser(Plugin):
                     Format: servername:port.  OR
                             username:password@servername:port  OR
                             A dict key from proxy_list.PROXY_LIST
+                    Default: None.""",
+        )
+        parser.add_option(
+            "--proxy-bypass-list",
+            "--proxy_bypass_list",
+            action="store",
+            dest="proxy_bypass_list",
+            default=None,
+            help="""Designates the hosts, domains, and/or IP addresses
+                    to bypass when using a proxy server with "--proxy".
+                    Format: A ";"-separated string.
+                    Example usage:
+                        pytest
+                            --proxy="username:password@servername:port"
+                            --proxy-bypass-list="*.foo.com;github.com"
+                        pytest
+                            --proxy="servername:port"
+                            --proxy-bypass-list="127.0.0.1:8080"
                     Default: None.""",
         )
         parser.add_option(
@@ -274,6 +296,17 @@ class SeleniumBrowser(Plugin):
                     (The default setting on Mac or Windows is headed.)""",
         )
         parser.add_option(
+            "--xvfb",
+            action="store_true",
+            dest="xvfb",
+            default=False,
+            help="""Using this makes tests run headlessly using Xvfb
+                    instead of the browser's built-in headless mode.
+                    When using "--xvfb", the "--headless" option
+                    will no longer be enabled by default on Linux.
+                    Default: False. (Linux-ONLY!)""",
+        )
+        parser.add_option(
             "--locale_code",
             "--locale-code",
             "--locale",
@@ -321,6 +354,7 @@ class SeleniumBrowser(Plugin):
         parser.add_option(
             "--slow_mode",
             "--slow-mode",
+            "--slowmo",
             "--slow",
             action="store_true",
             dest="slow_mode",
@@ -374,6 +408,7 @@ class SeleniumBrowser(Plugin):
                     every page load.""",
         )
         parser.add_option(
+            "--adblock",
             "--ad_block",
             "--ad-block",
             "--block_ads",
@@ -403,8 +438,23 @@ class SeleniumBrowser(Plugin):
                     before each MasterQA verification pop-up.""",
         )
         parser.add_option(
+            "--recorder",
+            "--record",
+            "--rec",
+            "--codegen",
+            action="store_true",
+            dest="recorder_mode",
+            default=False,
+            help="""Using this enables the SeleniumBase Recorder,
+                    which records browser actions for converting
+                    into SeleniumBase scripts.""",
+        )
+        parser.add_option(
             "--disable_csp",
             "--disable-csp",
+            "--no_csp",
+            "--no-csp",
+            "--dcsp",
             action="store_true",
             dest="disable_csp",
             default=False,
@@ -529,13 +579,14 @@ class SeleniumBrowser(Plugin):
             help="""The option to start with the web browser maximized.""",
         )
         parser.add_option(
+            "--screenshot",
             "--save_screenshot",
             "--save-screenshot",
+            "--ss",
             action="store_true",
             dest="save_screenshot",
             default=False,
-            help="""(DEPRECATED) - Screenshots are enabled by default now.
-                    This option saves screenshots during test failures.
+            help="""Save a screenshot at the end of the test.
                     (Added to the "latest_logs/" folder.)""",
         )
         parser.add_option(
@@ -548,6 +599,17 @@ class SeleniumBrowser(Plugin):
                     Automated Visual Testing with SeleniumBase.
                     When a test calls self.check_window(), it will
                     rebuild its files in the visual_baseline folder.""",
+        )
+        parser.add_option(
+            "--external_pdf",
+            "--external-pdf",
+            action="store_true",
+            dest="external_pdf",
+            default=False,
+            help="""This option sets the following on Chromium:
+                    "plugins.always_open_pdf_externally": True,
+                    which causes opened PDF URLs to download immediately,
+                    instead of being displayed in the browser window.""",
         )
         parser.add_option(
             "--timeout_multiplier",
@@ -568,11 +630,18 @@ class SeleniumBrowser(Plugin):
         proxy_helper.remove_proxy_zip_if_present()
 
     def beforeTest(self, test):
+        browser = self.options.browser
+        if self.options.recorder_mode and browser not in ["chrome", "edge"]:
+            message = (
+                "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
+                '\n  (Your browser choice was: "%s")\n' % browser)
+            raise Exception(message)
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
         test.test.headless = self.options.headless
         test.test.headed = self.options.headed
+        test.test.xvfb = self.options.xvfb
         test.test.locale_code = self.options.locale_code
         test.test.interval = self.options.interval
         test.test.start_page = self.options.start_page
@@ -586,6 +655,7 @@ class SeleniumBrowser(Plugin):
         test.test.firefox_arg = self.options.firefox_arg
         test.test.firefox_pref = self.options.firefox_pref
         test.test.proxy_string = self.options.proxy_string
+        test.test.proxy_bypass_list = self.options.proxy_bypass_list
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics
@@ -599,6 +669,8 @@ class SeleniumBrowser(Plugin):
         test.test.ad_block_on = self.options.ad_block_on
         test.test.block_images = self.options.block_images
         test.test.verify_delay = self.options.verify_delay  # MasterQA
+        test.test.recorder_mode = self.options.recorder_mode
+        test.test.recorder_ext = self.options.recorder_mode  # Again
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws
@@ -616,20 +688,30 @@ class SeleniumBrowser(Plugin):
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
+        test.test.external_pdf = self.options.external_pdf
         test.test.timeout_multiplier = self.options.timeout_multiplier
-        test.test.use_grid = False
         test.test.dashboard = False
         test.test._multithreaded = False
         test.test._reuse_session = False
         if test.test.servername != "localhost":
-            # Use Selenium Grid (Use --server="127.0.0.1" for localhost Grid)
-            test.test.use_grid = True
-        if "linux" in sys.platform and (
-            not self.options.headed and not self.options.headless
+            # Using Selenium Grid
+            # (Set --server="127.0.0.1" for localhost Grid)
+            if str(self.options.port) == "443":
+                test.test.protocol = "https"
+        if self.options.xvfb and "linux" not in sys.platform:
+            # The Xvfb virtual display server is for Linux OS Only!
+            self.options.xvfb = False
+        if (
+            "linux" in sys.platform
+            and not self.options.headed
+            and not self.options.headless
+            and not self.options.xvfb
         ):
             print(
-                "(Running with --headless on Linux. "
-                "Use --headed or --gui to override.)"
+                "(Linux uses --headless by default. "
+                "To override, use --headed / --gui. "
+                "For Xvfb mode instead, use --xvfb. "
+                "Or hide this info with --headless.)"
             )
             self.options.headless = True
             test.test.headless = True
@@ -639,7 +721,7 @@ class SeleniumBrowser(Plugin):
         if self.options.headless:
             try:
                 # from pyvirtualdisplay import Display  # Skip for own lib
-                from seleniumbase.virtual_display.display import Display
+                from sbvirtualdisplay import Display
 
                 self.display = Display(visible=0, size=(1440, 1880))
                 self.display.start()
@@ -667,7 +749,7 @@ class SeleniumBrowser(Plugin):
             pass
         except Exception:
             pass
-        if self.options.headless:
+        if self.options.headless or self.options.xvfb:
             if self.headless_active:
                 try:
                     self.display.stop()

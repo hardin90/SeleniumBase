@@ -2,6 +2,8 @@
 SeleniumBase constants are stored in this file.
 """
 
+from seleniumbase.core import encoded_images
+
 
 class Environment:
     # Usage Example => "--env=qa" => Then access value in tests with "self.env"
@@ -10,7 +12,11 @@ class Environment:
     DEVELOP = "develop"
     PRODUCTION = "production"
     MASTER = "master"
+    REMOTE = "remote"
     LOCAL = "local"
+    ALPHA = "alpha"
+    BETA = "beta"
+    MAIN = "main"
     TEST = "test"
 
 
@@ -27,9 +33,11 @@ class Charts:
     SAVED_FOLDER = "saved_charts"
 
 
-class Dashboard:
-    from seleniumbase.core import encoded_images
+class Recordings:
+    SAVED_FOLDER = "recordings"
 
+
+class Dashboard:
     TITLE = "SeleniumBase Test Results Dashboard"
     # STYLE_CSS = "https://seleniumbase.io/cdn/css/pytest_style.css"
     STYLE_CSS = "assets/pytest_style.css"  # Generated before tests
@@ -46,6 +54,16 @@ class Dashboard:
     DASH_PIE_PNG_1 = encoded_images.DASH_PIE_PNG_1  # Faster than CDN
     DASH_PIE_PNG_2 = encoded_images.DASH_PIE_PNG_2  # Faster than CDN
     DASH_PIE_PNG_3 = encoded_images.DASH_PIE_PNG_3  # Faster than CDN
+
+
+class SideBySide:
+    HTML_FILE = "side_by_side.html"
+    SIDE_BY_SIDE_PNG = encoded_images.SIDE_BY_SIDE_PNG
+
+
+class MultiBrowser:
+    CHROMEDRIVER_FIXING_LOCK = Files.DOWNLOADS_FOLDER + "/driver_fixing.lock"
+    CHROMEDRIVER_REPAIRED = Files.DOWNLOADS_FOLDER + "/driver_fixed.lock"
 
 
 class SavedCookies:
@@ -264,15 +282,17 @@ class Hopscotch:
 
 
 class IntroJS:
-    VER = "2.9.3"
-    MIN_CSS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "intro.js/%s/introjs.css" % VER
-    )
-    MIN_JS = (
-        "https://cdnjs.cloudflare.com/ajax/libs/"
-        "intro.js/%s/intro.min.js" % VER
-    )
+    VER = "4.2.2"
+    MIN_CSS = "https://unpkg.com/intro.js@%s/minified/introjs.min.css" % VER
+    MIN_JS = "https://unpkg.com/intro.js@%s/minified/intro.min.js" % VER
+
+
+class TourColor:
+    """Used for button colors in IntroJS Tours"""
+    # theme_color = "#f26721"  # Orange
+    # hover_color = "#db5409"  # Darker Orange
+    theme_color = "#367be5"  # Blue
+    hover_color = "#245ac0"  # Darker Blue
 
 
 class JqueryConfirm:
@@ -285,6 +305,9 @@ class JqueryConfirm:
         "https://cdnjs.cloudflare.com/ajax/libs/"
         "jquery-confirm/%s/jquery-confirm.min.js" % VER
     )
+    DEFAULT_THEME = "bootstrap"
+    DEFAULT_COLOR = "blue"
+    DEFAULT_WIDTH = "38%"
 
 
 class Shepherd:

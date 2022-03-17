@@ -39,13 +39,22 @@ HTML_REPORT = "report.html"
 RESULTS_TABLE = "results_table.csv"
 
 """
+If True, switch to new tabs/windows automatically if a click opens a new one.
+(This switch only happens if the initial tab is still on same URL as before,
+which prevents a situation where a click opens up a new URL in the same tab,
+where a pop-up might open up a new tab on its own, leading to a double open.
+If False, the browser will stay on the current tab where the click happened.
+"""
+SWITCH_TO_NEW_TABS_ON_CLICK = True
+
+"""
 This adds wait_for_ready_state_complete() after various browser actions.
 Setting this to True may improve reliability at the cost of speed.
 """
 # Called after self.open(url) or self.open_url(url), NOT self.driver.open(url)
 WAIT_FOR_RSC_ON_PAGE_LOADS = True
 # Called after self.click(selector), NOT element.click()
-WAIT_FOR_RSC_ON_CLICKS = True
+WAIT_FOR_RSC_ON_CLICKS = False
 
 """
 This adds wait_for_angularjs() after various browser actions.

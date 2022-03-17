@@ -11,6 +11,12 @@ sbase methods
 sbase options
 sbase mkdir ui_tests
 sbase mkfile new_test.py
+sbase mkrec new_test.py
+sbase mkrec new_test.py --url=wikipedia.org
+sbase codegen new_test.py --url=wikipedia.org
+sbase recorder
+sbase record new_test.py
+sbase record
 sbase mkpres new_presentation.py
 sbase mkchart new_chart.py
 sbase convert webdriver_unittest_file.py
@@ -38,7 +44,7 @@ def show_usage():
     sc = ""
     sc += '    Type "sbase help [COMMAND]" for specific command info.\n'
     sc += '    For info on all commands, type: "seleniumbase --help".\n'
-    sc += ' * (Use "pytest" for running tests) *\n'
+    sc += '    Use "pytest" for running tests.\n'
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
         c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
@@ -69,26 +75,29 @@ def show_basic_usage():
     sc += ' *    OR:        "sbase [COMMAND] [PARAMETERS]"\n'
     sc += "\n"
     sc += "COMMANDS:\n"
-    sc += "      install         [DRIVER] [OPTIONS]\n"
-    sc += "      methods         (List common Python methods)\n"
-    sc += "      options         (List common pytest options)\n"
-    sc += "      mkdir           [DIRECTORY] [OPTIONS]\n"
-    sc += "      mkfile          [FILE.py] [OPTIONS]\n"
-    sc += "      mkpres          [FILE.py] [LANG]\n"
-    sc += "      mkchart         [FILE.py] [LANG]\n"
-    sc += "      print           [FILE] [OPTIONS]\n"
-    sc += "      translate       [SB_FILE.py] [LANG] [ACTION]\n"
-    sc += "      convert         [WEBDRIVER_UNITTEST_FILE.py]\n"
-    sc += "      extract-objects [SB_FILE.py]\n"
-    sc += "      inject-objects  [SB_FILE.py] [OPTIONS]\n"
-    sc += "      objectify       [SB_FILE.py] [OPTIONS]\n"
-    sc += "      revert-objects  [SB_FILE.py] [OPTIONS]\n"
-    sc += "      encrypt         (OR: obfuscate)\n"
-    sc += "      decrypt         (OR: unobfuscate)\n"
-    sc += "      download server (The Selenium Grid JAR file)\n"
-    sc += "      grid-hub        [start|stop] [OPTIONS]\n"
-    sc += "      grid-node       [start|stop] --hub=[HOST/IP]\n"
-    sc += ' * (EXAMPLE: "sbase install chromedriver latest")  *\n'
+    sc += "      install          [DRIVER] [OPTIONS]\n"
+    sc += "      methods          (List common Python methods)\n"
+    sc += "      options          (List common pytest options)\n"
+    sc += "      mkdir            [DIRECTORY] [OPTIONS]\n"
+    sc += "      mkfile           [FILE.py] [OPTIONS]\n"
+    sc += "      mkrec / codegen  [FILE.py] [OPTIONS]\n"
+    sc += "      recorder         (Open Recorder Desktop App.)\n"
+    sc += "      record           (If args: mkrec. Else: App.)\n"
+    sc += "      mkpres           [FILE.py] [LANG]\n"
+    sc += "      mkchart          [FILE.py] [LANG]\n"
+    sc += "      print            [FILE] [OPTIONS]\n"
+    sc += "      translate        [SB_FILE.py] [LANG] [ACTION]\n"
+    sc += "      convert          [WEBDRIVER_UNITTEST_FILE.py]\n"
+    sc += "      extract-objects  [SB_FILE.py]\n"
+    sc += "      inject-objects   [SB_FILE.py] [OPTIONS]\n"
+    sc += "      objectify        [SB_FILE.py] [OPTIONS]\n"
+    sc += "      revert-objects   [SB_FILE.py] [OPTIONS]\n"
+    sc += "      encrypt / obfuscate\n"
+    sc += "      decrypt / unobfuscate\n"
+    sc += "      download server  (Get Selenium Grid JAR file)\n"
+    sc += "      grid-hub         [start|stop] [OPTIONS]\n"
+    sc += "      grid-node        [start|stop] --hub=[HOST/IP]\n"
+    sc += ' * (EXAMPLE: "sbase install chromedriver latest") *\n'
     sc += ""
     if "linux" not in sys.platform:
         c1 = colorama.Fore.BLUE + colorama.Back.LIGHTCYAN_EX
@@ -120,12 +129,13 @@ def show_install_usage():
     print("           sbase install chromedriver")
     print("           sbase install geckodriver")
     print("           sbase install edgedriver")
-    print("           sbase install chromedriver 89")
-    print("           sbase install chromedriver 89.0.4389.23")
+    print("           sbase install chromedriver 99")
+    print("           sbase install chromedriver 99.0.4844.51")
     print("           sbase install chromedriver latest")
+    print("           sbase install chromedriver latest-1")
     print("           sbase install chromedriver -p")
     print("           sbase install chromedriver latest -p")
-    print("           sbase install edgedriver 89.0.774.54")
+    print("           sbase install edgedriver 99.0.1150.39")
     print("  Output:")
     print("           Installs the chosen webdriver to seleniumbase/drivers/")
     print("           (chromedriver is required for Chrome automation)")
@@ -149,7 +159,7 @@ def show_mkdir_usage():
     print("  Example:")
     print("           sbase mkdir ui_tests")
     print("  Options:")
-    print("         -b / --basic  (Only config files. No tests added.)")
+    print("           -b / --basic  (Only config files. No tests added.)")
     print("  Output:")
     print("           Creates a new folder for running SBase scripts.")
     print("           The new folder contains default config files,")
@@ -172,22 +182,71 @@ def show_mkfile_usage():
     print("  Example:")
     print("           sbase mkfile new_test.py")
     print("  Options:")
-    print("          -b / --basic  (Basic boilerplate / single-line test)")
+    print("           -b / --basic  (Basic boilerplate / single-line test)")
+    print("           -r / --rec  (adds ipdb breakpoint for Recorder Mode)")
     print("  Language Options:")
-    print("          --en / --English    |    --zh / --Chinese")
-    print("          --nl / --Dutch      |    --fr / --French")
-    print("          --it / --Italian    |    --ja / --Japanese")
-    print("          --ko / --Korean     |    --pt / --Portuguese")
-    print("          --ru / --Russian    |    --es / --Spanish")
+    print("           --en / --English    |    --zh / --Chinese")
+    print("           --nl / --Dutch      |    --fr / --French")
+    print("           --it / --Italian    |    --ja / --Japanese")
+    print("           --ko / --Korean     |    --pt / --Portuguese")
+    print("           --ru / --Russian    |    --es / --Spanish")
     print("  Output:")
-    print("          Creates a new SBase test file with boilerplate code.")
-    print("          If the file already exists, an error is raised.")
-    print("          By default, uses English mode and creates a")
-    print("          boilerplate with the 5 most common SeleniumBase")
-    print('          methods, which are "open", "type", "click",')
-    print('          "assert_element", and "assert_text". If using the')
-    print('          basic boilerplate option, only the "open" method')
-    print("          is included.")
+    print("           Creates a new SBase test file with boilerplate code.")
+    print("           If the file already exists, an error is raised.")
+    print("           By default, uses English mode and creates a")
+    print("           boilerplate with the 5 most common SeleniumBase")
+    print('           methods, which are "open", "type", "click",')
+    print('           "assert_element", and "assert_text". If using the')
+    print('           basic boilerplate option, only the "open" method')
+    print("           is included.")
+    print("")
+
+
+def show_mkrec_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "mkrec" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase mkrec [FILE.py] [OPTIONS]")
+    print("           OR:    sbase mkrec [FILE.py] [OPTIONS]")
+    print("  Examples:")
+    print("           sbase mkrec new_test.py")
+    print("           sbase mkrec new_test.py --url=wikipedia.org")
+    print("  Options:")
+    print("           --url=URL  (Sets the initial start page URL.)")
+    print("           --edge  (Use Edge browser instead of Chrome.)")
+    print("           --gui / --headed  (Use headed mode on Linux.)")
+    print("           --overwrite  (Overwrite file when it exists.)")
+    print("  Output:")
+    print("           Creates a new SeleniumBase test using the Recorder.")
+    print("           If the filename already exists, an error is raised.")
+    print("")
+
+
+def show_codegen_usage():
+    c2 = colorama.Fore.BLUE + colorama.Back.LIGHTGREEN_EX
+    c3 = colorama.Fore.BLUE + colorama.Back.LIGHTYELLOW_EX
+    cr = colorama.Style.RESET_ALL
+    sc = "  " + c2 + "** " + c3 + "codegen" + c2 + " **" + cr
+    print(sc)
+    print("")
+    print("  Usage:")
+    print("           seleniumbase codegen [FILE.py] [OPTIONS]")
+    print("           OR:    sbase codegen [FILE.py] [OPTIONS]")
+    print("  Examples:")
+    print("           sbase codegen new_test.py")
+    print("           sbase codegen new_test.py --url=wikipedia.org")
+    print("  Options:")
+    print("           --url=URL  (Sets the initial start page URL.)")
+    print("           --edge  (Use Edge browser instead of Chrome.)")
+    print("           --gui / --headed  (Use headed mode on Linux.)")
+    print("           --overwrite  (Overwrite file when it exists.)")
+    print("  Output:")
+    print("           Creates a new SeleniumBase test using the Recorder.")
+    print("           If the filename already exists, an error is raised.")
     print("")
 
 
@@ -204,17 +263,17 @@ def show_mkpres_usage():
     print("  Example:")
     print("           sbase mkpres new_presentation.py --en")
     print("  Language Options:")
-    print("          --en / --English    |    --zh / --Chinese")
-    print("          --nl / --Dutch      |    --fr / --French")
-    print("          --it / --Italian    |    --ja / --Japanese")
-    print("          --ko / --Korean     |    --pt / --Portuguese")
-    print("          --ru / --Russian    |    --es / --Spanish")
+    print("           --en / --English    |    --zh / --Chinese")
+    print("           --nl / --Dutch      |    --fr / --French")
+    print("           --it / --Italian    |    --ja / --Japanese")
+    print("           --ko / --Korean     |    --pt / --Portuguese")
+    print("           --ru / --Russian    |    --es / --Spanish")
     print("  Output:")
-    print("          Creates a new presentation with 3 example slides.")
-    print("          If the file already exists, an error is raised.")
-    print("          By default, the slides are written in English,")
-    print('          and use "serif" theme with "slide" transition.')
-    print("          The slides can be used as a basic boilerplate.")
+    print("           Creates a new presentation with 3 example slides.")
+    print("           If the file already exists, an error is raised.")
+    print("           By default, the slides are written in English,")
+    print('           and use "serif" theme with "slide" transition.')
+    print("           The slides can be used as a basic boilerplate.")
     print("")
 
 
@@ -231,17 +290,17 @@ def show_mkchart_usage():
     print("  Example:")
     print("           sbase mkchart new_chart.py --en")
     print("  Language Options:")
-    print("          --en / --English    |    --zh / --Chinese")
-    print("          --nl / --Dutch      |    --fr / --French")
-    print("          --it / --Italian    |    --ja / --Japanese")
-    print("          --ko / --Korean     |    --pt / --Portuguese")
-    print("          --ru / --Russian    |    --es / --Spanish")
+    print("           --en / --English    |    --zh / --Chinese")
+    print("           --nl / --Dutch      |    --fr / --French")
+    print("           --it / --Italian    |    --ja / --Japanese")
+    print("           --ko / --Korean     |    --pt / --Portuguese")
+    print("           --ru / --Russian    |    --es / --Spanish")
     print("  Output:")
-    print("          Creates a new SeleniumBase chart presentation.")
-    print("          If the file already exists, an error is raised.")
-    print("          By default, the slides are written in English,")
-    print('          and use a "sky" theme with "slide" transition.')
-    print("          The chart can be used as a basic boilerplate.")
+    print("           Creates a new SeleniumBase chart presentation.")
+    print("           If the file already exists, an error is raised.")
+    print("           By default, the slides are written in English,")
+    print('           and use a "sky" theme with "slide" transition.')
+    print("           The chart can be used as a basic boilerplate.")
     print("")
 
 
@@ -272,13 +331,13 @@ def show_print_usage():
     print(sc)
     print("")
     print("  Usage:")
-    print("         seleniumbase print [FILE] [OPTIONS]")
-    print("         OR:    sbase print [FILE] [OPTIONS]")
+    print("           seleniumbase print [FILE] [OPTIONS]")
+    print("           OR:    sbase print [FILE] [OPTIONS]")
     print("  Options:")
-    print("         -n   (Add line Numbers to the rows)")
+    print("           -n   (Add line Numbers to the rows)")
     print("  Output:")
-    print("         Prints the code/text of any file")
-    print("         with syntax-highlighting.")
+    print("           Prints the code/text of any file")
+    print("           with syntax-highlighting.")
     print("")
 
 
@@ -290,30 +349,30 @@ def show_translate_usage():
     print(sc)
     print("")
     print("  Usage:")
-    print("         seleniumbase translate [SB_FILE.py] [LANG] [ACTION]")
-    print("         OR:    sbase translate [SB_FILE.py] [LANG] [ACTION]")
+    print("           seleniumbase translate [SB_FILE.py] [LANG] [ACTION]")
+    print("           OR:    sbase translate [SB_FILE.py] [LANG] [ACTION]")
     print("  Languages:")
-    print("         --en / --English    |    --zh / --Chinese")
-    print("         --nl / --Dutch      |    --fr / --French")
-    print("         --it / --Italian    |    --ja / --Japanese")
-    print("         --ko / --Korean     |    --pt / --Portuguese")
-    print("         --ru / --Russian    |    --es / --Spanish")
+    print("           --en / --English    |    --zh / --Chinese")
+    print("           --nl / --Dutch      |    --fr / --French")
+    print("           --it / --Italian    |    --ja / --Japanese")
+    print("           --ko / --Korean     |    --pt / --Portuguese")
+    print("           --ru / --Russian    |    --es / --Spanish")
     print("  Actions:")
-    print("         -p / --print  (Print translation output to the screen)")
-    print("         -o / --overwrite  (Overwrite the file being translated)")
-    print("         -c / --copy  (Copy the translation to a new .py file)")
+    print("           -p / --print  (Print translation output to the screen)")
+    print("           -o / --overwrite  (Overwrite the file being translated)")
+    print("           -c / --copy  (Copy the translation to a new .py file)")
     print("  Options:")
-    print("         -n  (include line Numbers when using the Print action)")
+    print("           -n  (include line Numbers when using the Print action)")
     print("  Output:")
-    print("         Translates a SeleniumBase Python file into the language")
-    print('         specified. Method calls and "import" lines get swapped.')
-    print("         Both a language and an action must be specified.")
-    print('         The "-p" action can be paired with one other action.')
-    print('         When running with "-c" (or "--copy"), the new file name')
-    print("         will be the original name appended with an underscore")
-    print("         plus the 2-letter language code of the new language.")
-    print('         (Example: Translating "test_1.py" into Japanese with')
-    print('          "-c" will create a new file called "test_1_ja.py".)')
+    print("           Translates a SeleniumBase Python file into the language")
+    print('           specified. Method calls and "import" lines get swapped.')
+    print("           Both a language and an action must be specified.")
+    print('           The "-p" action can be paired with one other action.')
+    print('           When running with "-c" (or "--copy"), the new file name')
+    print("           will be the original name appended with an underscore")
+    print("           plus the 2-letter language code of the new language.")
+    print('           (Example: Translating "test_1.py" into Japanese with')
+    print('            "-c" will create a new file called "test_1_ja.py".)')
     print("")
 
 
@@ -634,9 +693,10 @@ def show_options():
     op += "      |  return / r: Run until method returns. j: Jump to line. |\n"
     op += "      | where / w: Show stack spot. u: Up stack. d: Down stack. |\n"
     op += "      | longlist / ll: See code. dir(): List namespace objects. |\n"
+    op += "--recorder  (Record browser actions to generate test scripts.)\n"
+    op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"
     op += "-x  (Stop running the tests after the first failure is reached.)\n"
     op += "--archive-logs  (Archive old log files instead of deleting them.)\n"
-    op += "--save-screenshot  (Save a screenshot at the end of each test.)\n"
     op += "--check-js  (Check for JavaScript errors after page loads.)\n"
     op += "--start-page=URL  (The browser start page when tests begin.)\n"
     op += "--agent=STRING  (Modify the web browser's User-Agent string.)\n"
@@ -677,6 +737,8 @@ def show_detailed_help():
     show_install_usage()
     show_mkdir_usage()
     show_mkfile_usage()
+    show_mkrec_usage()
+    show_codegen_usage()
     show_mkpres_usage()
     show_mkchart_usage()
     show_convert_usage()
@@ -717,6 +779,28 @@ def main():
         else:
             show_basic_usage()
             show_install_usage()
+    elif (
+        command == "recorder"
+        or (command == "record" and len(command_args) == 0)
+    ):
+        from seleniumbase.console_scripts import sb_recorder
+
+        sb_recorder.main()
+    elif (
+        command == "mkrec"
+        or command == "codegen"
+        or (command == "record" and len(command_args) >= 1)
+    ):
+        if len(command_args) >= 1:
+            from seleniumbase.console_scripts import sb_mkrec
+
+            sb_mkrec.main()
+        else:
+            show_basic_usage()
+            if command == "codegen":
+                show_codegen_usage()
+            else:
+                show_mkrec_usage()
     elif command == "mkdir":
         if len(command_args) >= 1:
             from seleniumbase.console_scripts import sb_mkdir
@@ -759,14 +843,6 @@ def main():
             show_convert_usage()
     elif command == "print":
         if len(command_args) >= 1:
-            if sys.version_info[0] == 2:
-                c5 = colorama.Fore.RED + colorama.Back.LIGHTYELLOW_EX
-                cr = colorama.Style.RESET_ALL
-                msg = '"sbase print" does NOT support Python 2! '
-                msg += 'Try using the Unix "cat" command instead!'
-                message = "\n" + c5 + msg + cr + "\n"
-                print("")
-                raise Exception(message)
             from seleniumbase.console_scripts import sb_print
 
             sb_print.main()
@@ -891,6 +967,14 @@ def main():
             elif command_args[0] == "mkfile":
                 print("")
                 show_mkfile_usage()
+                return
+            elif command_args[0] == "mkrec":
+                print("")
+                show_mkrec_usage()
+                return
+            elif command_args[0] == "codegen":
+                print("")
+                show_codegen_usage()
                 return
             elif command_args[0] == "mkpres":
                 print("")

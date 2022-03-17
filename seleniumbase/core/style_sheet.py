@@ -1,10 +1,7 @@
 title = """<meta id="OGTitle" property="og:title" content="SeleniumBase">
     <title>Test Report</title>
     <link rel="SHORTCUT ICON"
-    href="%s" /> """ % (
-    "https://raw.githubusercontent.com/seleniumbase/SeleniumBase"
-    "/master/seleniumbase/resources/favicon.ico"
-)
+    href="https://seleniumbase.io/img/favicon.ico" /> """
 
 style = (
     title
@@ -120,6 +117,9 @@ dt_backdrop_style = """
     #driver-popover-item, .popover-class {
         pointer-events: auto !important;
     }
+    button.driver-prev-btn.driver-disabled {
+        visibility: hidden;
+    }
     """
 
 messenger_style = """
@@ -148,6 +148,35 @@ hops_backdrop_style = """
         font-size: 110%;
     }
     """
+
+# IntroJS Style
+introjs_style = """
+    .introjs-button.introjs-nextbutton,
+    .introjs-button.introjs-donebutton {
+        color: #fff !important;
+        background-color: %s !important;
+        border: 1px solid %s !important;
+        text-shadow: none;
+        box-shadow: none;
+    }
+    .introjs-button.introjs-nextbutton:hover,
+    .introjs-button.introjs-donebutton:hover {
+        color: #fff !important;
+        background-color: %s !important;
+        border: 1px solid %s !important;
+    }
+    .introjs-button {
+        box-sizing: content-box;
+        text-decoration: none;
+    }
+    .introjs-button.introjs-skipbutton {
+        color: %s;
+    }
+    .introjs-tooltip, .introjs-floating {
+        box-sizing: content-box;
+        position: absolute;
+    }
+"""
 
 # Shepherd Backdrop Style
 sh_backdrop_style = """

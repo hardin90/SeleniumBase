@@ -941,6 +941,30 @@ class MD:
     md["activate_jquery"][8] = "активировать_JQUERY"
     md["activate_jquery"][9] = "activar_jquery"
 
+    md["activate_recorder"] = ["*"] * num_langs
+    md["activate_recorder"][0] = "activate_recorder"
+    md["activate_recorder"][1] = "加载RECORDER"
+    md["activate_recorder"][2] = "activeer_recorder"
+    md["activate_recorder"][3] = "activer_recorder"
+    md["activate_recorder"][4] = "attiva_recorder"
+    md["activate_recorder"][5] = "RECORDERを読み込む"
+    md["activate_recorder"][6] = "RECORDER_로드"
+    md["activate_recorder"][7] = "ativar_recorder"
+    md["activate_recorder"][8] = "активировать_RECORDER"
+    md["activate_recorder"][9] = "activar_recorder"
+
+    md["open_if_not_url"] = ["*"] * num_langs
+    md["open_if_not_url"][0] = "open_if_not_url"
+    md["open_if_not_url"][1] = "开启如果不网址"
+    md["open_if_not_url"][2] = "openen_zo_niet_url"
+    md["open_if_not_url"][3] = "ouvrir_si_non_url"
+    md["open_if_not_url"][4] = "apri_se_non_url"
+    md["open_if_not_url"][5] = "URLでない場合は開く"
+    md["open_if_not_url"][6] = "URL_이_아닌_경우_열기"
+    md["open_if_not_url"][7] = "abrir_se_não_url"
+    md["open_if_not_url"][8] = "открыть_если_не_URL"
+    md["open_if_not_url"][9] = "abrir_que_no_url"
+
     md["ad_block"] = ["*"] * num_langs
     md["ad_block"][0] = "ad_block"
     md["ad_block"][1] = "阻止广告"
@@ -2212,6 +2236,19 @@ class MD:
     md["block_ads"][7] = "bloquear_anúncios"
     md["block_ads"][8] = "блокировать_рекламу"
     md["block_ads"][9] = "bloquear_anuncios"
+
+    # "scroll_to_element" -> duplicate of "scroll_to"
+    md["scroll_to_element"] = ["*"] * num_langs
+    md["scroll_to_element"][0] = "scroll_to_element"
+    md["scroll_to_element"][1] = "滚动到"
+    md["scroll_to_element"][2] = "scrollen_naar"
+    md["scroll_to_element"][3] = "déménager_à"
+    md["scroll_to_element"][4] = "scorrere_fino_a"
+    md["scroll_to_element"][5] = "スクロールして"
+    md["scroll_to_element"][6] = "요소로_스크롤"
+    md["scroll_to_element"][7] = "rolar_para"
+    md["scroll_to_element"][8] = "прокрутить_к"
+    md["scroll_to_element"][9] = "desplazarse_a"
 
     # "start_tour" -> duplicate of "play_tour"
     md["start_tour"] = ["*"] * num_langs

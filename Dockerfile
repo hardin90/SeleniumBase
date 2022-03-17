@@ -83,9 +83,19 @@ RUN pip3 install --upgrade pip
 RUN pip3 install --upgrade setuptools
 RUN pip3 install --upgrade setuptools-scm
 RUN cd /SeleniumBase && ls && pip3 install -r requirements.txt --upgrade
-RUN cd /SeleniumBase && python3 setup.py develop
-RUN seleniumbase install chromedriver
-RUN seleniumbase install geckodriver
+RUN cd /SeleniumBase && pip3 install .
+
+#=====================
+# Download WebDrivers
+#=====================
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux32.tar.gz
+RUN tar -xvzf geckodriver-v0.30.0-linux32.tar.gz
+RUN chmod +x geckodriver
+RUN mv geckodriver /usr/local/bin/
+RUN wget https://chromedriver.storage.googleapis.com/2.44/chromedriver_linux64.zip
+RUN unzip chromedriver_linux64.zip
+RUN chmod +x chromedriver
+RUN mv chromedriver /usr/local/bin/
 
 #==========================================
 # Create entrypoint and grab example tests

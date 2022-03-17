@@ -1,7 +1,9 @@
-<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logging, Dashboards, and Reports:</h3>
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
 
-[<img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase Features" width="285">](https://www.youtube.com/watch?v=XpuJCjJhJwQ)
-<p>(<b><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ">SBase Dashboard Tutorial on YouTube</a></b>)</p>
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logs, The Dashboard, and Reports:</h3>
+
+<!-- YouTube View --><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ"><img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
+<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ">The Dashboard Tutorial on YouTube</a></b>)</p>
 
 🔵 During test failures, logs and screenshots from the most recent test run will get saved to the ``latest_logs/`` folder. If ``--archive-logs`` is specified (or if ARCHIVE_EXISTING_LOGS is set to True in [settings.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/config/settings.py)), test logs will also get archived to the ``archived_logs/`` folder. Otherwise, the log files will be cleaned out when the next test run begins (by default).
 
@@ -70,7 +72,15 @@ pytest test_suite.py --dashboard --html=report.html
 
 <img src="https://seleniumbase.io/cdn/img/dash_report.jpg" alt="Dashboard Pytest HTML Report" title="Dashboard Pytest HTML Report" width="520" />
 
-If viewing pytest html reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the html to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/).
+--------
+
+If viewing ``pytest-html`` reports in [Jenkins](https://www.jenkins.io/), you may need to [configure Jenkins settings](https://stackoverflow.com/a/46197356) for the HTML to render correctly. This is due to [Jenkins CSP changes](https://www.jenkins.io/doc/book/system-administration/security/configuring-content-security-policy/). That setting can be changed from ``Manage Jenkins`` > ``Script Console`` by running:
+
+```
+System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "")
+```
+
+--------
 
 You can also use ``--junit-xml=report.xml`` to get an xml report instead. Jenkins can use this file to display better reporting for your tests.
 

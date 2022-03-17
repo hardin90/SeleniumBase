@@ -2,6 +2,7 @@
 This module contains useful utility methods.
 """
 import codecs
+import os
 import re
 import requests
 
@@ -56,6 +57,9 @@ def is_partial_link_text_selector(selector):
         selector.startswith("partial_link=")
         or selector.startswith("partial_link_text=")
         or selector.startswith("partial_text=")
+        or selector.startswith("p_link=")
+        or selector.startswith("p_link_text=")
+        or selector.startswith("p_text=")
     ):
         return True
     return False
@@ -65,7 +69,7 @@ def is_name_selector(selector):
     """
     A basic method to determine if a selector is a name selector.
     """
-    if selector.startswith("name="):
+    if selector.startswith("name=") or selector.startswith("&"):
         return True
     return False
 
@@ -75,11 +79,11 @@ def get_link_text_from_selector(selector):
     A basic method to get the link text from a link text selector.
     """
     if selector.startswith("link="):
-        return selector.split("link=")[1]
+        return selector[len("link="):]
     elif selector.startswith("link_text="):
-        return selector.split("link_text=")[1]
+        return selector[len("link_text="):]
     elif selector.startswith("text="):
-        return selector.split("text=")[1]
+        return selector[len("text="):]
     return selector
 
 
@@ -88,11 +92,17 @@ def get_partial_link_text_from_selector(selector):
     A basic method to get the partial link text from a partial link selector.
     """
     if selector.startswith("partial_link="):
-        return selector.split("partial_link=")[1]
+        return selector[len("partial_link="):]
     elif selector.startswith("partial_link_text="):
-        return selector.split("partial_link_text=")[1]
+        return selector[len("partial_link_text="):]
     elif selector.startswith("partial_text="):
-        return selector.split("partial_text=")[1]
+        return selector[len("partial_text="):]
+    elif selector.startswith("p_link="):
+        return selector[len("p_link="):]
+    elif selector.startswith("p_link_text="):
+        return selector[len("p_link_text="):]
+    elif selector.startswith("p_text="):
+        return selector[len("p_text="):]
     return selector
 
 
@@ -101,7 +111,9 @@ def get_name_from_selector(selector):
     A basic method to get the name from a name selector.
     """
     if selector.startswith("name="):
-        return selector.split("name=")[1]
+        return selector[len("name="):]
+    if selector.startswith("&"):
+        return selector[len("&"):]
     return selector
 
 
@@ -197,19 +209,31 @@ def _get_unique_links(page_url, soup):
                 pass
             unique_links.append(link)
 
-    return unique_links
+    links = unique_links
+    links = list(set(links))  # Make sure all duplicates were removed
+    links = sorted(links)  # Sort all the links alphabetically
+    return links
 
 
-def _get_link_status_code(link, allow_redirects=False, timeout=5):
+def _get_link_status_code(
+    link,
+    allow_redirects=False,
+    timeout=5,
+    verify=False,
+):
     """Get the status code of a link.
     If the timeout is exceeded, will return a 404.
+    If "verify" is False, will ignore certificate errors.
     For a list of available status codes, see:
     https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
     """
     status_code = None
     try:
         response = requests.get(
-            link, allow_redirects=allow_redirects, timeout=timeout
+            link,
+            allow_redirects=allow_redirects,
+            timeout=timeout,
+            verify=verify,
         )
         status_code = response.status_code
     except Exception:
@@ -236,7 +260,8 @@ def _download_file_to(file_url, destination_folder, new_file_name=None):
     else:
         file_name = file_url.split("/")[-1]
     r = requests.get(file_url)
-    with open(destination_folder + "/" + file_name, "wb") as code:
+    file_path = os.path.join(destination_folder, file_name)
+    with open(file_path, "wb") as code:
         code.write(r.content)
 
 
@@ -251,6 +276,6 @@ def _save_data_as(data, destination_folder, file_name):
 def make_css_match_first_element_only(selector):
     # Only get the first match
     last_syllable = selector.split(" ")[-1]
-    if ":" not in last_syllable and ":contains" not in selector:
+    if ":first" not in last_syllable:
         selector += ":first"
     return selector

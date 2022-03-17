@@ -1,6 +1,6 @@
-[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
+<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
 
-## Console Scripts
+<h2>Console Scripts</h2>
 
 SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
 
@@ -12,20 +12,65 @@ SeleniumBase console scripts help you get things done more easily, such as insta
 
 (<i>For running tests, [use <b>pytest</b> with SeleniumBase](https://github.com/seleniumbase/SeleniumBase/blob/master/help_docs/customizing_test_runs.md).</i>)
 
-### install
+```
+COMMANDS:
+      install          [DRIVER] [OPTIONS]
+      methods          (List common Python methods)
+      options          (List common pytest options)
+      mkdir            [DIRECTORY] [OPTIONS]
+      mkfile           [FILE.py] [OPTIONS]
+      mkrec / codegen  [FILE.py] [OPTIONS]
+      recorder         (Open Recorder Desktop App.)
+      record           (If args: mkrec. Else: App.)
+      mkpres           [FILE.py] [LANG]
+      mkchart          [FILE.py] [LANG]
+      print            [FILE] [OPTIONS]
+      translate        [SB_FILE.py] [LANG] [ACTION]
+      convert          [WEBDRIVER_UNITTEST_FILE.py]
+      extract-objects  [SB_FILE.py]
+      inject-objects   [SB_FILE.py] [OPTIONS]
+      objectify        [SB_FILE.py] [OPTIONS]
+      revert-objects   [SB_FILE.py] [OPTIONS]
+      encrypt / obfuscate
+      decrypt / unobfuscate
+      download server  (Get Selenium Grid JAR file)
+      grid-hub         [start|stop] [OPTIONS]
+      grid-node        [start|stop] --hub=[HOST/IP]
+ * (EXAMPLE: "sbase install chromedriver latest") *
+
+    Type "sbase help [COMMAND]" for specific command info.
+    For info on all commands, type: "seleniumbase --help".
+    Use "pytest" for running tests.
+```
+
+<h3>install</h3>
 
 * Usage:
-``sbase install [DRIVER] [VERSION]``
-    (Drivers: ``chromedriver``, ``geckodriver``, ``edgedriver``,
-              ``iedriver``, ``operadriver``)
-    (Versions: ``latest`` or a specific driver version.
-               If none specified, installs the default version.)
+``sbase install [DRIVER] [OPTIONS]``
 
 * Examples:
-``sbase install chromedriver``
 
-* Options:
-    ``latest``:
+```bash
+sbase install chromedriver
+sbase install geckodriver
+sbase install edgedriver
+sbase install chromedriver 99
+sbase install chromedriver 99.0.4844.51
+sbase install chromedriver latest
+sbase install chromedriver latest-1  # (Latest minus one)
+sbase install chromedriver -p
+sbase install chromedriver latest -p
+sbase install edgedriver 99.0.1150.39
+```
+
+(Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
+           ``iedriver``, ``operadriver``)
+
+(Options:  ``latest`` or a specific driver version.
+           For chromedriver, you can also specify the major
+           version int, or ``latest-1`` for latest minus 1.
+           If none specified, installs the default version.
+           ``-p`` / ``--path``: Also copy to "/usr/local/bin".)
 
 * Output:
 Installs the specified webdriver.
@@ -35,7 +80,7 @@ Installs the specified webdriver.
 (``iedriver`` is required for Internet Explorer automation)
 (``operadriver`` is required for Opera Browser automation)
 
-### methods
+<h3>methods</h3>
 
 * Usage:
 ``sbase methods``
@@ -43,7 +88,7 @@ Installs the specified webdriver.
 * Output:
 Displays common SeleniumBase Python methods.
 
-### options
+<h3>options</h3>
 
 * Usage:
 ``sbase options``
@@ -52,7 +97,53 @@ Displays common SeleniumBase Python methods.
 Displays common pytest command-line options
 that are available when using SeleniumBase.
 
-### mkdir
+```
+--browser=BROWSER  (The web browser to use. Default is "chrome")
+--headless  (Run tests headlessly. Default mode on Linux OS.)
+--demo  (Slow down and visually see test actions as they occur.)
+--slow  (Slow down the automation. Faster than using Demo Mode.)
+--reuse-session / --rs  (Reuse browser session between tests.)
+--crumbs  (Clear all cookies between tests reusing a session.)
+--maximize  (Start tests with the web browser window maximized.)
+--dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)
+--incognito  (Enable Chromium's Incognito mode.)
+--guest  (Enable Chromium's Guest mode.)
+-m=MARKER  (Run tests with the specified pytest marker.)
+-n=NUM  (Multithread the tests using that many threads.)
+-v  (Verbose mode. Print the full names of each test run.)
+--html=report.html  (Create a detailed pytest-html report.)
+--collect-only / --co  (Only show discovered tests. No run.)
+--co -q  (Only show full names of discovered tests. No run.)
+--pdb  (Enter the Post Mortem Debug Mode after any test fails.)
+--trace  (Enter Debug Mode immediately after starting any test.)
+      | Debug Mode Commands  >>>   help / h: List all commands. |
+      |   n: Next line of method. s: Step through. c: Continue. |
+      |  return / r: Run until method returns. j: Jump to line. |
+      | where / w: Show stack spot. u: Up stack. d: Down stack. |
+      | longlist / ll: See code. dir(): List namespace objects. |
+--recorder  (Record browser actions to generate test scripts.)
+--save-screenshot  (Save a screenshot at the end of each test.)
+-x  (Stop running the tests after the first failure is reached.)
+--archive-logs  (Archive old log files instead of deleting them.)
+--check-js  (Check for JavaScript errors after page loads.)
+--start-page=URL  (The browser start page when tests begin.)
+--agent=STRING  (Modify the web browser's User-Agent string.)
+--mobile  (Use Chromium's mobile device emulator during tests.)
+--metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
+--ad-block  (Block some types of display ads after page loads.)
+--settings-file=FILE  (Override default SeleniumBase settings.)
+--env=ENV  (Set the test env. Access with "self.env" in tests.)
+--data=DATA  (Extra test data. Access with "self.data" in tests.)
+--disable-csp  (Disable the Content Security Policy of websites.)
+--server=SERVER  (The Selenium Grid server/IP used for tests.)
+--port=PORT  (The Selenium Grid port used by the test server.)
+--proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
+--proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)
+
+For the full list of command-line options, type: "pytest --help".
+```
+
+<h3>mkdir</h3>
 
 * Usage:
 ``sbase mkdir [DIRECTORY] [OPTIONS]``
@@ -72,7 +163,6 @@ test frameworks.
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── my_first_test.py
 ├── parameterized_test.py
@@ -81,7 +171,6 @@ ui_tests/
 ├── setup.cfg
 ├── test_demo_site.py
 └── boilerplates/
-    │
     ├── __init__.py
     ├── base_test_case.py
     ├── boilerplate_test.py
@@ -89,7 +178,6 @@ ui_tests/
     ├── page_objects.py
     ├── sb_fixture_test.py
     └── samples/
-        │
         ├── __init__.py
         ├── google_objects.py
         ├── google_test.py
@@ -101,14 +189,13 @@ If running with the ``-b`` or ``--basic`` option:
 
 ```bash
 ui_tests/
-│
 ├── __init__.py
 ├── pytest.ini
 ├── requirements.txt
 └── setup.cfg
 ```
 
-### mkfile
+<h3>mkfile</h3>
 
 * Usage:
 ``sbase mkfile [FILE.py] [OPTIONS]``
@@ -118,6 +205,7 @@ ui_tests/
 
 * Options:
 ``-b`` / ``--basic``  (Basic boilerplate / single-line test)
+``-r`` / ``--rec``  (adds ipdb breakpoint for Recorder Mode)
 
 * Language Options:
 ``--en`` / ``--English``    |    ``--zh`` / ``--Chinese``
@@ -136,7 +224,37 @@ methods, which are "open", "type", "click",
 basic boilerplate option, only the "open" method
 is included.
 
-### mkpres
+<h3>mkrec / record / codegen</h3>
+
+* Usage:
+``sbase mkrec [FILE.py] [OPTIONS]``
+``sbase codegen [FILE.py] [OPTIONS]``
+
+* Examples:
+``sbase mkrec new_test.py``
+``sbase mkrec new_test.py --url=seleniumbase.io``
+``sbase codegen new_test.py``
+``sbase codegen new_test.py --url=wikipedia.org``
+
+* Options:
+``--url=URL``  (Sets the initial start page URL.)
+``--edge``  (Use Edge browser instead of Chrome.)
+``--gui`` / ``--headed``  (Use headed mode on Linux.)
+``--overwrite``  (Overwrite file when it exists.)
+
+* Output:
+Creates a new SeleniumBase test using the Recorder.
+If the filename already exists, an error is raised.
+
+<h3>recorder</h3>
+
+* Usage:
+``sbase recorder``
+
+* Output:
+Launches the SeleniumBase Recorder Desktop App.
+
+<h3>mkpres</h3>
 
 * Usage:
 ``sbase mkpres [FILE.py] [LANG]``
@@ -158,7 +276,7 @@ By default, the slides are written in English,
 and use "serif" theme with "slide" transition.
 The slides can be used as a basic boilerplate.
 
-### mkchart
+<h3>mkchart</h3>
 
 * Usage:
 ``sbase mkchart [FILE.py] [LANG]``
@@ -180,7 +298,7 @@ By default, the slides are written in English,
 and use a "sky" theme with "slide" transition.
 The chart can be used as a basic boilerplate.
 
-### print
+<h3>print</h3>
 
 * Usage:
 ``sbase print [FILE] [OPTIONS]``
@@ -192,7 +310,7 @@ The chart can be used as a basic boilerplate.
 Prints the code/text of any file
 with syntax-highlighting.
 
-### translate
+<h3>translate</h3>
 
 * Usage:
 ``sbase translate [SB_FILE.py] [LANGUAGE] [ACTION]``
@@ -223,19 +341,7 @@ plus the 2-letter language code of the new language.
 (Example: Translating "test_1.py" into Japanese with
 ``-c`` will create a new file called "test_1_ja.py".)
 
-### convert
-
-* Usage:
-``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
-
-* Output:
-Converts a Selenium IDE exported WebDriver unittest file
-into a SeleniumBase file. Adds ``_SB`` to the new
-file name while keeping the original file intact.
-Works with Katalon Recorder scripts.
-See [The Recorder ReadMe](https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/) for details.
-
-### extract-objects
+<h3>extract-objects</h3>
 
 * Usage:
 ``sbase extract-objects [SB_FILE.py]``
@@ -245,7 +351,7 @@ Creates page objects based on selectors found in a
 seleniumbase Python file and saves those objects to the
 "page_objects.py" file in the same folder as the tests.
 
-### inject-objects
+<h3>inject-objects</h3>
 
 * Usage:
 ``sbase inject-objects [SB_FILE.py] [OPTIONS]``
@@ -258,7 +364,7 @@ Takes the page objects found in the "page_objects.py"
 file and uses those to replace matching selectors in
 the selected seleniumbase Python file.
 
-### objectify
+<h3>objectify</h3>
 
 * Usage:
 ``sbase objectify [SB_FILE.py] [OPTIONS]``
@@ -273,7 +379,7 @@ have been replaced with variable names defined in
 (This has the same outcome as combining
 ``extract-objects`` with ``inject-objects``)
 
-### revert-objects
+<h3>revert-objects</h3>
 
 * Usage:
 ``sbase revert-objects [SB_FILE.py] [OPTIONS]``
@@ -287,7 +393,19 @@ Reverts the changes made by ``seleniumbase objectify ...`` or
 seleniumbase Python file. Objects will get replaced by
 selectors stored in the "page_objects.py" file.
 
-### encrypt / obfuscate
+<h3>convert</h3>
+
+* Usage:
+``sbase convert [WEBDRIVER_UNITTEST_FILE.py]``
+
+* Output:
+Converts a Selenium IDE exported WebDriver unittest file
+into a SeleniumBase file. Adds ``_SB`` to the new
+file name while keeping the original file intact.
+Works with Katalon Recorder scripts.
+See [This ReadMe](https://seleniumbase.io/seleniumbase/utilities/selenium_ide/ReadMe/) for details.
+
+<h3>encrypt / obfuscate</h3>
 
 * Usage:
 ``sbase encrypt``  OR  ``sbase obfuscate``
@@ -296,7 +414,7 @@ selectors stored in the "page_objects.py" file.
 Runs the password encryption/obfuscation tool.
 (Where you can enter a password to encrypt/obfuscate.)
 
-### decrypt / unobfuscate
+<h3>decrypt / unobfuscate</h3>
 
 * Usage:
 ``sbase decrypt``  OR  ``sbase unobfuscate``
@@ -305,7 +423,7 @@ Runs the password encryption/obfuscation tool.
 Runs the password decryption/unobfuscation tool.
 (Where you can enter an encrypted password to decrypt.)
 
-### download
+<h3>download</h3>
 
 * Usage:
 ``sbase download server``
@@ -314,7 +432,7 @@ Runs the password decryption/unobfuscation tool.
 Downloads the Selenium Server JAR file for Grid usage.
 (That JAR file is required when using a Selenium Grid)
 
-### grid-hub
+<h3>grid-hub</h3>
 
 * Usage:
 ``sbase grid-hub {start|stop|restart} [OPTIONS]``
@@ -330,7 +448,7 @@ to speed up test runs and reduce the total time
 of test suite execution.
 You can start, restart, or stop the Grid Hub server.
 
-### grid-node
+<h3>grid-node</h3>
 
 * Usage:
 ``sbase grid-node {start|stop|restart} [OPTIONS]``
@@ -343,3 +461,7 @@ You can start, restart, or stop the Grid Hub server.
 Controls the Selenium Grid node, which serves as a
 worker machine for your Selenium Grid Hub server.
 You can start, restart, or stop the Grid node.
+
+--------
+
+[<img src="https://seleniumbase.io/cdn/img/super_logo_sb.png" title="SeleniumBase" width="290">](https://github.com/seleniumbase/SeleniumBase/blob/master/README.md)
