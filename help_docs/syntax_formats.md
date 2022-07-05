@@ -1,14 +1,7 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_3.png" alt="SeleniumBase" title="SeleniumBase" width="320" /></a></h3>
-
 <a id="syntax_formats"></a>
-<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 17 syntax formats</h2>
+<h2><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> The 20 syntax formats</h2>
 
-<!-- YouTube View --><a href="https://www.youtube.com/watch?v=PYpO9kNBjgM"><img src="http://img.youtube.com/vi/PYpO9kNBjgM/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
-<!-- GitHub Only --><p>(<b><a href="https://www.youtube.com/watch?v=PYpO9kNBjgM">Watch this tutorial on YouTube</a></b>)</p>
-
---------
-
-<b>SeleniumBase</b> supports 17 different syntax formats (<i>design patterns</i>) for structuring tests. (<i>The first 6 are the most common.</i>)
+<b>SeleniumBase</b> supports 20 different syntax formats (<i>design patterns</i>) for structuring tests. (<i>The first 6 are the most common.</i>)
 
 <h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 1. <code>BaseCase</code> direct inheritance</h3>
 
@@ -44,7 +37,7 @@ class BaseTestCase(BaseCase):
         # <<< Run custom setUp() code for tests AFTER the super().setUp() >>>
 
     def tearDown(self):
-        self.save_teardown_screenshot()
+        self.save_teardown_screenshot()  # If test fails, or if "--screenshot"
         if self.has_exception():
             # <<< Run custom code if the test failed. >>>
             pass
@@ -122,7 +115,7 @@ class LoginPage:
 class MyTests(BaseCase):
     def test_swag_labs_login(self):
         LoginPage().login_to_swag_labs(self, "standard_user")
-        self.assert_element("#inventory_container")
+        self.assert_element("div.inventory_list")
         self.assert_element('div:contains("Sauce Labs Backpack")')
 ```
 
@@ -143,7 +136,7 @@ class LoginPage:
 class MyTests:
     def test_swag_labs_login(self, sb):
         LoginPage().login_to_swag_labs(sb, "standard_user")
-        sb.assert_element("#inventory_container")
+        sb.assert_element("div.inventory_list")
         sb.assert_element('div:contains("Sauce Labs Backpack")')
 ```
 
@@ -185,7 +178,77 @@ class Test_Request_Fixture:
 
 (See the bottom of <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_request_sb_fixture.py">examples/test_request_sb_fixture.py</a> for the test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 9. SeleniumBase in Chinese</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 9. Overriding the SeleniumBase browser launcher </h3>
+
+When you want to use SeleniumBase methods, but you want total freedom to control how you spin up your web browsers, this is the format you want. Although SeleniumBase gives you plenty of command-line options to change how your browsers are launched, this format gives you even more control. Here's an example of that:
+
+```python
+from selenium import webdriver
+from seleniumbase import BaseCase
+
+class OverrideDriverTest(BaseCase):
+    def get_new_driver(self, *args, **kwargs):
+        """This method overrides get_new_driver() from BaseCase."""
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option(
+            "excludeSwitches", ["enable-automation"]
+        )
+        if self.headless:
+            options.add_argument("--headless")
+        return webdriver.Chrome(options=options)
+
+    def test_simple(self):
+        self.open("https://seleniumbase.io/demo_page")
+        self.assert_text("Demo Page", "h1")
+```
+
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/test_override_driver.py">examples/test_override_driver.py</a>)
+
+The above format lets you use [selenium-wire](https://github.com/wkeeling/selenium-wire) to intercept & inspect requests and responses during SeleniumBase tests. Here's how the ``selenium-wire`` integration may look:
+
+```python
+from seleniumbase import BaseCase
+from seleniumwire import webdriver  # the selenium-wire webdriver
+
+
+class WireTestCase(BaseCase):
+    def get_new_driver(self, *args, **kwargs):
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option("useAutomationExtension", False)
+        return webdriver.Chrome(options=options)
+
+    def test_simple(self):
+        self.open("https://seleniumbase.io/demo_page")
+        for request in self.driver.requests:
+            print(request.url)
+```
+
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 10. Using the SeleniumBase browser launcher without BaseCase </h3>
+
+One way of running Selenium tests with pure ``python`` (as opposed to using ``pytest`` or ``nosetests``) is by using this format, which bypasses [BaseCase](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/base_case.py) methods while still giving you ``browser_launcher`` with its powerful webdriver management software. SeleniumBase includes helper files such as [page_actions.py](https://github.com/seleniumbase/SeleniumBase/blob/master/seleniumbase/fixtures/page_actions.py), which may help you get around some of the limitations of bypassing ``BaseCase``. Here's an example:
+
+```python
+from seleniumbase import get_driver
+from seleniumbase import js_utils
+from seleniumbase import page_actions
+
+driver = get_driver("chrome", headless=False)
+try:
+    driver.get("https://seleniumbase.io/apps/calculator")
+    page_actions.wait_for_element_visible(driver, "4", "id").click()
+    page_actions.wait_for_element_visible(driver, "2", "id").click()
+    page_actions.wait_for_text_visible(driver, "42", "output", "id")
+    js_utils.highlight_with_js(driver, "#output", 6, "")
+finally:
+    driver.quit()
+```
+
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/raw_browser_launcher.py">examples/raw_browser_launcher.py</a>)
+
+The above format can be used as a drop-in replacement for virtually every Python/selenium framework, as it uses the raw ``driver`` for handling commands. The ``get_driver()`` method simplifies the work of managing drivers and spinning them up with optimal settings. Note that now you'll need to manage the spin-up and spin-down of browsers in tests, which was done automatically in tests that inherit ``BaseCase`` (or ones that use the ``sb`` pytest fixture). You'll also need to use extra code (as shown above) to make sure you don't leave any browsers hanging after your tests complete.
+
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 11. SeleniumBase in Chinese</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Chinese. Here's an example of that:
 
@@ -202,10 +265,10 @@ class 我的测试类(硒测试用例):
         self.单击("#searchButton")
         self.断言文本("舞龍", "#firstHeading")
         self.断言元素('img[src*="Chinese_draak.jpg"]')
-        self.输入文本("#searchInput", "火鍋")
+        self.输入文本("#searchInput", "麻婆豆腐")
         self.单击("#searchButton")
-        self.断言文本("火鍋", "#firstHeading")
-        self.断言元素('td:contains("火鍋的各種食材")')
+        self.断言文本("麻婆豆腐", "#firstHeading")
+        self.断言元素('div.thumb div:contains("一家中餐館的麻婆豆腐")')
         self.输入文本("#searchInput", "精武英雄")
         self.单击("#searchButton")
         self.断言元素('img[src*="Fist_of_legend.jpg"]')
@@ -214,7 +277,7 @@ class 我的测试类(硒测试用例):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/chinese_test_1.py">examples/translations/chinese_test_1.py</a> for the Chinese test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 10. SeleniumBase in Dutch</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 12. SeleniumBase in Dutch</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Dutch. Here's an example of that:
 
@@ -229,11 +292,11 @@ class MijnTestklasse(Testgeval):
         self.typ("#searchInput", "Stroopwafel")
         self.klik("#searchButton")
         self.controleren_tekst("Stroopwafel", "#firstHeading")
-        self.controleren_element('img[alt="Stroopwafels"]')
+        self.controleren_element('img[src*="Stroopwafels"]')
         self.typ("#searchInput", "Rijksmuseum Amsterdam")
         self.klik("#searchButton")
         self.controleren_tekst("Rijksmuseum", "#firstHeading")
-        self.controleren_element('img[alt="Het Rijksmuseum"]')
+        self.controleren_element('img[src*="Rijksmuseum"]')
         self.terug()
         self.controleren_ware("Stroopwafel" in self.huidige_url_ophalen())
         self.vooruit()
@@ -242,7 +305,7 @@ class MijnTestklasse(Testgeval):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/dutch_test_1.py">examples/translations/dutch_test_1.py</a> for the Dutch test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 11. SeleniumBase in French</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 13. SeleniumBase in French</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into French. Here's an example of that:
 
@@ -254,12 +317,12 @@ class MaClasseDeTest(CasDeBase):
         self.ouvrir("https://fr.wikipedia.org/wiki/")
         self.vérifier_texte("Wikipédia")
         self.vérifier_élément('[alt="Wikipédia"]')
-        self.taper("#searchInput", "Crème brûlée")
-        self.cliquer("#searchButton")
+        self.js_taper("#searchform input", "Crème brûlée")
+        self.cliquer("#searchform button")
         self.vérifier_texte("Crème brûlée", "#firstHeading")
         self.vérifier_élément('img[alt*="Crème brûlée"]')
-        self.taper("#searchInput", "Jardin des Tuileries")
-        self.cliquer("#searchButton")
+        self.js_taper("#searchform input", "Jardin des Tuileries")
+        self.cliquer("#searchform button")
         self.vérifier_texte("Jardin des Tuileries", "#firstHeading")
         self.vérifier_élément('img[alt*="Jardin des Tuileries"]')
         self.retour()
@@ -270,7 +333,7 @@ class MaClasseDeTest(CasDeBase):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/french_test_1.py">examples/translations/french_test_1.py</a> for the French test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 12. SeleniumBase in Italian</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 14. SeleniumBase in Italian</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Italian. Here's an example of that:
 
@@ -298,7 +361,7 @@ class MiaClasseDiTest(CasoDiProva):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/italian_test_1.py">examples/translations/italian_test_1.py</a> for the Italian test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 13. SeleniumBase in Japanese</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15. SeleniumBase in Japanese</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Japanese. Here's an example of that:
 
@@ -309,17 +372,17 @@ class 私のテストクラス(セレニウムテストケース):
     def test_例1(self):
         self.を開く("https://ja.wikipedia.org/wiki/")
         self.テキストを確認する("ウィキペディア")
-        self.要素を確認する('[title="メインページに移動する"]')
-        self.入力("#searchInput", "アニメ")
-        self.クリックして("#searchButton")
+        self.要素を確認する('[title*="メインページに移動する"]')
+        self.JS入力('input[name="search"]', "アニメ")
+        self.クリックして("#searchform button")
         self.テキストを確認する("アニメ", "#firstHeading")
-        self.入力("#searchInput", "寿司")
-        self.クリックして("#searchButton")
+        self.JS入力('input[name="search"]', "寿司")
+        self.クリックして("#searchform button")
         self.テキストを確認する("寿司", "#firstHeading")
         self.要素を確認する('img[alt="握り寿司"]')
-        self.入力("#searchInput", "レゴランド・ジャパン")
-        self.クリックして("#searchButton")
-        self.要素を確認する('img[alt="Legoland japan.jpg"]')
+        self.JS入力("#searchInput", "レゴランド・ジャパン")
+        self.クリックして("#searchform button")
+        self.要素を確認する('img[alt*="LEGOLAND JAPAN"]')
         self.リンクテキストを確認する("名古屋城")
         self.リンクテキストをクリックします("テーマパーク")
         self.テキストを確認する("テーマパーク", "#firstHeading")
@@ -327,7 +390,7 @@ class 私のテストクラス(セレニウムテストケース):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/japanese_test_1.py">examples/translations/japanese_test_1.py</a> for the Japanese test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 14. SeleniumBase in Korean</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 16. SeleniumBase in Korean</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Korean. Here's an example of that:
 
@@ -339,13 +402,13 @@ class 테스트_클래스(셀레늄_테스트_케이스):
         self.열기("https://ko.wikipedia.org/wiki/")
         self.텍스트_확인("위키백과")
         self.요소_확인('[title="위키백과:소개"]')
-        self.입력("#searchInput", "김치")
-        self.클릭("#searchButton")
+        self.JS_입력("#searchform input", "김치")
+        self.클릭("#searchform button")
         self.텍스트_확인("김치", "#firstHeading")
         self.요소_확인('img[alt="Various kimchi.jpg"]')
         self.링크_텍스트_확인("한국 요리")
-        self.입력("#searchInput", "비빔밥")
-        self.클릭("#searchButton")
+        self.JS_입력("#searchform input", "비빔밥")
+        self.클릭("#searchform button")
         self.텍스트_확인("비빔밥", "#firstHeading")
         self.요소_확인('img[alt="Dolsot-bibimbap.jpg"]')
         self.링크_텍스트를_클릭합니다("돌솥비빔밥")
@@ -354,7 +417,7 @@ class 테스트_클래스(셀레늄_테스트_케이스):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/korean_test_1.py">examples/translations/korean_test_1.py</a> for the Korean test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 15. SeleniumBase in Portuguese</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 17. SeleniumBase in Portuguese</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Portuguese. Here's an example of that:
 
@@ -366,25 +429,25 @@ class MinhaClasseDeTeste(CasoDeTeste):
         self.abrir("https://pt.wikipedia.org/wiki/")
         self.verificar_texto("Wikipédia")
         self.verificar_elemento('[title="Língua portuguesa"]')
-        self.digitar("#searchInput", "João Pessoa")
-        self.clique("#searchButton")
+        self.js_digitar("#searchform input", "João Pessoa")
+        self.clique("#searchform button")
         self.verificar_texto("João Pessoa", "#firstHeading")
         self.verificar_elemento('img[alt*="João Pessoa"]')
-        self.digitar("#searchInput", "Florianópolis")
-        self.clique("#searchButton")
+        self.js_digitar("#searchform input", "Florianópolis")
+        self.clique("#searchform button")
         self.verificar_texto("Florianópolis", "h1#firstHeading")
-        self.verificar_elemento('img[alt*="Avenida Beira Mar"]')
+        self.verificar_elemento('td:contains("Avenida Beira-Mar")')
         self.voltar()
         self.verificar_verdade("João" in self.obter_url_atual())
-        self.digitar("#searchInput", "Teatro Amazonas")
-        self.clique("#searchButton")
+        self.js_digitar("#searchform input", "Teatro Amazonas")
+        self.clique("#searchform button")
         self.verificar_texto("Teatro Amazonas", "#firstHeading")
         self.verificar_texto_do_link("Festival Amazonas de Ópera")
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/portuguese_test_1.py">examples/translations/portuguese_test_1.py</a> for the Portuguese test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 16. SeleniumBase in Russian</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 18. SeleniumBase in Russian</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Russian. Here's an example of that:
 
@@ -412,7 +475,7 @@ class МойТестовыйКласс(ТестНаСелен):
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/russian_test_1.py">examples/translations/russian_test_1.py</a> for the Russian test.)
 
-<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 17. SeleniumBase in Spanish</h3>
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 19. SeleniumBase in Spanish</h3>
 
 This format is similar to the English version with <code>BaseCase</code> inheritance, but there's a different import statement, and method names have been translated into Spanish. Here's an example of that:
 
@@ -439,6 +502,107 @@ class MiClaseDePrueba(CasoDePrueba):
 ```
 
 (See <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/translations/spanish_test_1.py">examples/translations/spanish_test_1.py</a> for the Spanish test.)
+
+<h3><img src="https://seleniumbase.io/img/green_logo.png" title="SeleniumBase" width="32" /> 20. Behave-BDD Gherkin tests that use SeleniumBase </h3>
+
+With [Behave's BDD Gherkin format](https://behave.readthedocs.io/en/stable/gherkin.html), you can use natural language to write tests that work with SeleniumBase methods. Behave tests are run by calling ``behave`` on the command-line. This requires some special files in a specific directory structure. Here's an example of that structure:
+
+```bash
+features/
+├── __init__.py
+├── behave.ini
+├── environment.py
+├── feature_file.feature
+└── steps/
+    ├── __init__.py
+    ├── imported.py
+    └── step_file.py
+```
+
+A ``*.feature`` file might look like this:
+
+```gherkin
+Feature: SeleniumBase scenarios for the RealWorld App
+
+  Scenario: Verify RealWorld App (log in / sign out)
+    Given Open "seleniumbase.io/realworld/login"
+    And Clear Session Storage
+    When Type "demo_user" into "#username"
+    And Type "secret_pass" into "#password"
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
+    Then Assert exact text "Welcome!" in "h1"
+    And Highlight "img#image1"
+    And Click 'a:contains("This Page")'
+    And Save screenshot to logs
+    When Click link "Sign out"
+    Then Assert element 'a:contains("Sign in")'
+    And Assert text "You have been signed out!"
+```
+
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/features/realworld.feature">examples/behave_bdd/features/realworld.feature</a>)
+
+You'll need the ``environment.py`` file for tests to work. Here it is:
+
+```python
+from seleniumbase import BaseCase
+from seleniumbase.behave import behave_sb
+behave_sb.set_base_class(BaseCase)  # Accepts a BaseCase subclass
+from seleniumbase.behave.behave_sb import before_all  # noqa
+from seleniumbase.behave.behave_sb import before_feature  # noqa
+from seleniumbase.behave.behave_sb import before_scenario  # noqa
+from seleniumbase.behave.behave_sb import before_step  # noqa
+from seleniumbase.behave.behave_sb import after_step  # noqa
+from seleniumbase.behave.behave_sb import after_scenario  # noqa
+from seleniumbase.behave.behave_sb import after_feature  # noqa
+from seleniumbase.behave.behave_sb import after_all  # noqa
+```
+
+(From <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/features/environment.py">examples/behave_bdd/features/environment.py</a>)
+
+Inside that file, you can use ``BaseCase`` (or a subclass) for the inherited class.
+
+For your ``behave`` tests to have access to SeleniumBase Behave steps, you can create an ``imported.py`` file with the following line:
+
+```python
+from seleniumbase.behave import steps  # noqa
+```
+
+That will allow you to use lines like this in your ``*.feature`` files:
+
+```gherkin
+Feature: SeleniumBase scenarios for the RealWorld App
+
+  Scenario: Verify RealWorld App (log in / sign out)
+    Given Open "seleniumbase.io/realworld/login"
+    And Clear Session Storage
+    When Type "demo_user" into "#username"
+    And Type "secret_pass" into "#password"
+    And Do MFA "GAXG2MTEOR3DMMDG" into "#totpcode"
+    Then Assert exact text "Welcome!" in "h1"
+    And Highlight "img#image1"
+    And Click 'a:contains("This Page")'
+    And Save screenshot to logs
+```
+
+You can also create your own step files (eg. ``step_file.py``):
+
+```python
+from behave import step
+
+@step("Open the Swag Labs Login Page")
+def go_to_swag_labs(context):
+    sb = context.sb
+    sb.open("https://www.saucedemo.com")
+    sb.clear_local_storage()
+
+@step("Login to Swag Labs with {user}")
+def login_to_swag_labs(context, user):
+    sb = context.sb
+    sb.type("#user-name", user)
+    sb.type("#password", "secret_sauce\n")
+```
+
+(For more information, see the <a href="https://github.com/seleniumbase/SeleniumBase/blob/master/examples/behave_bdd/ReadMe.md">SeleniumBase Behave BDD ReadMe</a>.)
 
 --------
 

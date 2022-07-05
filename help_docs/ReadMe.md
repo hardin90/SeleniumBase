@@ -1,23 +1,22 @@
-<div><a href="https://github.com/seleniumbase/SeleniumBase"><img src="https://seleniumbase.io/cdn/img/mac_sb_logo_5.png" alt="SeleniumBase" width="304" /></a></div>
-
 <h2><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Help Docs</h2>
 
 <p align="left">
-<a href="https://seleniumbase.io/#python_installation">🚀 Start</a> |
-<a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🖥️ CLI</a> |
-<a href="https://seleniumbase.io/help_docs/features_list/">🏰 Features</a>
+<a href="https://seleniumbase.io/#python_installation">🚀 Start</a>
 <br />
-<a href="https://seleniumbase.io/examples/ReadMe/">👨‍🏫 Examples</a> |
+<a href="https://seleniumbase.io/help_docs/features_list/">🎯 Features</a> |
+<a href="https://seleniumbase.io/help_docs/customizing_test_runs/">🎛️ Options</a>
+<br />
+<a href="https://seleniumbase.io/examples/ReadMe/">📝 Examples</a> |
 <a href="https://seleniumbase.io/help_docs/mobile_testing/">📱 Mobile</a>
 <br />
-<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Syntax Formats</a> |
-<a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI</a>
+<a href="https://seleniumbase.io/help_docs/syntax_formats/">🔠 Formats</a> |
+<a href="https://seleniumbase.io/integrations/github/workflows/ReadMe/">🤖 CI/CD</a>
 <br />
 <a href="https://seleniumbase.io/help_docs/method_summary/">📚 API</a> |
 <a href="https://seleniumbase.io/examples/example_logs/ReadMe/">📊 Reports</a> |
 <a href="https://seleniumbase.io/examples/tour_examples/ReadMe/">🗺️ Tours</a>
 <br />
-<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🧙‍ Console Scripts</a> |
+<a href="https://seleniumbase.io/seleniumbase/console_scripts/ReadMe/">🔮 Console Scripts</a> |
 <a href="https://seleniumbase.io/seleniumbase/utilities/selenium_grid/ReadMe/">🌐 Grid</a>
 <br />
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/boilerplates">♻️ Boilerplates</a> |
@@ -32,8 +31,8 @@
 <a href="https://seleniumbase.io/help_docs/recorder_mode/">🔴 Recorder</a> |
 <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/integrations/node_js">🏃 NodeRunner</a>
 <br />
-<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Presenter</a> |
-<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📶 ChartMaker</a>
+<a href="https://seleniumbase.io/examples/presenter/ReadMe/">🎞️ Slides</a> |
+<a href="https://seleniumbase.io/examples/chart_maker/ReadMe/">📊 Charts</a>
 </p>
 
 --------

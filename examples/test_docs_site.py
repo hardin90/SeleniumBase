@@ -4,7 +4,8 @@ from seleniumbase import BaseCase
 class DocsSiteTests(BaseCase):
     def test_docs(self):
         self.open("https://seleniumbase.io/")
-        self.assert_exact_text("SeleniumBase ReadMe", "h1")
+        self.delete_all_cookies()
+        self.assert_text("SeleniumBase", "h1")
         self.click('a[href="help_docs/features_list/"]')
         self.assert_exact_text("Features List", "h1")
         self.click('a[href="../../examples/ReadMe/"]')
@@ -22,4 +23,4 @@ class DocsSiteTests(BaseCase):
         self.click('a[href="../method_summary/"]')
         self.assert_exact_text("API Reference", "h1")
         self.click('img[alt="logo"]')
-        self.assert_exact_text("SeleniumBase ReadMe", "h1")
+        self.assert_text("SeleniumBase", "h1")

@@ -9,14 +9,14 @@ by giving page elements enough time to load before taking action on them.
 The default option for searching for elements is by CSS Selector.
 This can be changed by overriding the "By" parameter.
 Options are:
-By.CSS_SELECTOR
-By.CLASS_NAME
-By.ID
-By.NAME
-By.LINK_TEXT
-By.XPATH
-By.TAG_NAME
-By.PARTIAL_LINK_TEXT
+By.CSS_SELECTOR        # "css selector"
+By.CLASS_NAME          # "class name"
+By.ID                  # "id"
+By.NAME                # "name"
+By.LINK_TEXT           # "link text"
+By.XPATH               # "xpath"
+By.TAG_NAME            # "tag name"
+By.PARTIAL_LINK_TEXT   # "partial link text"
 """
 
 import codecs
@@ -28,17 +28,16 @@ from selenium.common.exceptions import ElementNotVisibleException
 from selenium.common.exceptions import NoAlertPresentException
 from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
 from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase.config import settings
-from seleniumbase.fixtures import shared_utils as s_utils
+from seleniumbase.fixtures import shared_utils
 
 
-def is_element_present(driver, selector, by=By.CSS_SELECTOR):
+def is_element_present(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is present on the page.
     @Params
@@ -55,7 +54,7 @@ def is_element_present(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
+def is_element_visible(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is visible on the page.
     @Params
@@ -72,7 +71,7 @@ def is_element_visible(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def is_element_enabled(driver, selector, by=By.CSS_SELECTOR):
+def is_element_enabled(driver, selector, by="css selector"):
     """
     Returns whether the specified element selector is enabled on the page.
     @Params
@@ -89,7 +88,7 @@ def is_element_enabled(driver, selector, by=By.CSS_SELECTOR):
         return False
 
 
-def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
+def is_text_visible(driver, text, selector, by="css selector"):
     """
     Returns whether the specified text is visible in the specified selector.
     @Params
@@ -108,7 +107,7 @@ def is_text_visible(driver, text, selector, by=By.CSS_SELECTOR):
 
 
 def is_attribute_present(
-    driver, selector, attribute, value=None, by=By.CSS_SELECTOR
+    driver, selector, attribute, value=None, by="css selector"
 ):
     """
     Returns whether the specified attribute is present in the given selector.
@@ -137,7 +136,7 @@ def is_attribute_present(
         return False
 
 
-def hover_on_element(driver, selector, by=By.CSS_SELECTOR):
+def hover_on_element(driver, selector, by="css selector"):
     """
     Fires the hover event for the specified element by the given selector.
     @Params
@@ -159,16 +158,16 @@ def hover_element(driver, element):
 
 
 def timeout_exception(exception, message):
-    exception, message = s_utils.format_exc(exception, message)
-    raise exception(message)
+    exc, msg = shared_utils.format_exc(exception, message)
+    raise exc(msg)
 
 
 def hover_and_click(
     driver,
     hover_selector,
     click_selector,
-    hover_by=By.CSS_SELECTOR,
-    click_by=By.CSS_SELECTOR,
+    hover_by="css selector",
+    click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
     """
@@ -212,7 +211,7 @@ def hover_element_and_click(
     driver,
     element,
     click_selector,
-    click_by=By.CSS_SELECTOR,
+    click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
     """
@@ -247,7 +246,7 @@ def hover_element_and_double_click(
     driver,
     element,
     click_selector,
-    click_by=By.CSS_SELECTOR,
+    click_by="css selector",
     timeout=settings.SMALL_TIMEOUT,
 ):
     start_ms = time.time() * 1000.0
@@ -279,7 +278,11 @@ def hover_element_and_double_click(
 
 
 def wait_for_element_present(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -291,6 +294,7 @@ def wait_for_element_present(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
     A web element object
     """
@@ -298,7 +302,7 @@ def wait_for_element_present(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             return element
@@ -311,16 +315,28 @@ def wait_for_element_present(
     if timeout == 1:
         plural = ""
     if not element:
+        if (
+            original_selector
+            and ":contains(" in original_selector
+            and "contains(." in selector
+        ):
+            selector = original_selector
         message = "Element {%s} was not present after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
         timeout_exception(NoSuchElementException, message)
+    else:
+        return element
 
 
 def wait_for_element_visible(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -334,6 +350,7 @@ def wait_for_element_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     @Returns
     A web element object
     """
@@ -342,7 +359,7 @@ def wait_for_element_visible(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
@@ -360,6 +377,12 @@ def wait_for_element_visible(
     if timeout == 1:
         plural = ""
     if not element and by != By.LINK_TEXT:
+        if (
+            original_selector
+            and ":contains(" in original_selector
+            and "contains(." in selector
+        ):
+            selector = original_selector
         if not is_present:
             # The element does not exist in the HTML
             message = "Element {%s} was not present after %s second%s!" % (
@@ -375,22 +398,24 @@ def wait_for_element_visible(
             plural,
         )
         timeout_exception(ElementNotVisibleException, message)
-    if not element and by == By.LINK_TEXT:
+    elif not element and by == By.LINK_TEXT:
         message = "Link text {%s} was not visible after %s second%s!" % (
             selector,
             timeout,
             plural,
         )
         timeout_exception(ElementNotVisibleException, message)
+    else:
+        return element
 
 
 def wait_for_text_visible(
     driver,
     text,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
-    browser=None
+    browser=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -406,31 +431,50 @@ def wait_for_text_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    browser - used to handle a special edge case when using Safari
     @Returns
     A web element object that contains the text searched for
     """
     element = None
     is_present = False
+    full_text = None
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
+        full_text = None
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if browser == "safari":
+            if element.tag_name == "input":
+                if (
+                    element.is_displayed()
+                    and text in element.get_property("value")
+                ):
+                    return element
+                else:
+                    if element.is_displayed():
+                        full_text = element.get_property("value").strip()
+                    element = None
+                    raise Exception()
+            elif browser == "safari":
                 if (
                     element.is_displayed()
                     and text in element.get_attribute("innerText")
                 ):
                     return element
                 else:
+                    if element.is_displayed():
+                        full_text = element.get_attribute("innerText")
+                        full_text = full_text.strip()
                     element = None
                     raise Exception()
             else:
                 if element.is_displayed() and text in element.text:
                     return element
                 else:
+                    if element.is_displayed():
+                        full_text = element.text.strip()
                     element = None
                     raise Exception()
         except Exception:
@@ -451,20 +495,31 @@ def wait_for_text_visible(
             )
             timeout_exception(NoSuchElementException, message)
         # The element exists in the HTML, but the text is not visible
-        message = (
-            "Expected text {%s} for {%s} was not visible after %s second%s!"
-            % (text, selector, timeout, plural)
-        )
-        timeout_exception(ElementNotVisibleException, message)
+        message = None
+        if not full_text or len(str(full_text.replace("\n", ""))) > 320:
+            message = (
+                "Expected text substring {%s} for {%s} was not visible "
+                "after %s second%s!" % (text, selector, timeout, plural)
+            )
+        else:
+            full_text = full_text.replace("\n", "\\n ")
+            message = (
+                "Expected text substring {%s} for {%s} was not visible "
+                "after %s second%s!\n (The string searched was {%s})"
+                % (text, selector, timeout, plural, full_text)
+            )
+        timeout_exception(TextNotVisibleException, message)
+    else:
+        return element
 
 
 def wait_for_exact_text_visible(
     driver,
     text,
     selector,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
-    browser=None
+    browser=None,
 ):
     """
     Searches for the specified element by the given selector. Returns the
@@ -480,26 +535,41 @@ def wait_for_exact_text_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    browser - used to handle a special edge case when using Safari
     @Returns
     A web element object that contains the text searched for
     """
     element = None
     is_present = False
+    actual_text = None
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
+        actual_text = None
         try:
             element = driver.find_element(by=by, value=selector)
             is_present = True
-            if browser == "safari":
+            if element.tag_name == "input":
                 if (
                     element.is_displayed()
-                    and text.strip() == element.get_attribute(
-                        "innerText").strip()
+                    and text.strip() == element.get_property("value").strip()
                 ):
                     return element
                 else:
+                    if element.is_displayed():
+                        actual_text = element.get_property("value").strip()
+                    element = None
+                    raise Exception()
+            elif browser == "safari":
+                if element.is_displayed() and (
+                    text.strip() == element.get_attribute("innerText").strip()
+                ):
+                    return element
+                else:
+                    if element.is_displayed():
+                        actual_text = element.get_attribute("innerText")
+                        actual_text = actual_text.strip()
                     element = None
                     raise Exception()
             else:
@@ -509,6 +579,8 @@ def wait_for_exact_text_visible(
                 ):
                     return element
                 else:
+                    if element.is_displayed():
+                        actual_text = element.text.strip()
                     element = None
                     raise Exception()
         except Exception:
@@ -529,11 +601,22 @@ def wait_for_exact_text_visible(
             )
             timeout_exception(NoSuchElementException, message)
         # The element exists in the HTML, but the exact text is not visible
-        message = (
-            "Expected exact text {%s} for {%s} was not visible "
-            "after %s second%s!" % (text, selector, timeout, plural)
-        )
-        timeout_exception(ElementNotVisibleException, message)
+        message = None
+        if not actual_text or len(str(actual_text)) > 120:
+            message = (
+                "Expected exact text {%s} for {%s} was not visible "
+                "after %s second%s!" % (text, selector, timeout, plural)
+            )
+        else:
+            actual_text = actual_text.replace("\n", "\\n")
+            message = (
+                "Expected exact text {%s} for {%s} was not visible "
+                "after %s second%s!\n (Actual text was {%s})"
+                % (text, selector, timeout, plural, actual_text)
+            )
+        timeout_exception(TextNotVisibleException, message)
+    else:
+        return element
 
 
 def wait_for_attribute(
@@ -541,7 +624,7 @@ def wait_for_attribute(
     selector,
     attribute,
     value=None,
-    by=By.CSS_SELECTOR,
+    by="css selector",
     timeout=settings.LARGE_TIMEOUT,
 ):
     """
@@ -569,7 +652,7 @@ def wait_for_attribute(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             element_present = True
@@ -620,10 +703,121 @@ def wait_for_attribute(
             % (value, attribute, selector, timeout, plural, found_value)
         )
         timeout_exception(NoSuchAttributeException, message)
+    else:
+        return element
+
+
+def wait_for_element_clickable(
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
+):
+    """
+    Searches for the specified element by the given selector. Returns the
+    element object if the element is present, visible, & clickable on the page.
+    Raises NoSuchElementException if the element does not exist in the HTML
+    within the specified timeout.
+    Raises ElementNotVisibleException if the element exists in the HTML,
+    but is not visible (eg. opacity is "0") within the specified timeout.
+    Raises ElementNotInteractableException if the element is not clickable.
+    @Params
+    driver - the webdriver object (required)
+    selector - the locator for identifying the page element (required)
+    by - the type of selector being used (Default: By.CSS_SELECTOR)
+    timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
+    @Returns
+    A web element object
+    """
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.webdriver.support.ui import WebDriverWait
+
+    element = None
+    is_present = False
+    is_visible = False
+    start_ms = time.time() * 1000.0
+    stop_ms = start_ms + (timeout * 1000.0)
+    for x in range(int(timeout * 10)):
+        shared_utils.check_if_time_limit_exceeded()
+        try:
+            element = driver.find_element(by=by, value=selector)
+            is_present = True
+            if element.is_displayed():
+                is_visible = True
+                if WebDriverWait(driver, 0.001).until(
+                    EC.element_to_be_clickable((by, selector))
+                ):
+                    return element
+                else:
+                    element = None
+                    raise Exception()
+            else:
+                element = None
+                raise Exception()
+        except Exception:
+            now_ms = time.time() * 1000.0
+            if now_ms >= stop_ms:
+                break
+            time.sleep(0.1)
+    plural = "s"
+    if timeout == 1:
+        plural = ""
+    if not element and by != By.LINK_TEXT:
+        if (
+            original_selector
+            and ":contains(" in original_selector
+            and "contains(." in selector
+        ):
+            selector = original_selector
+        if not is_present:
+            # The element does not exist in the HTML
+            message = "Element {%s} was not present after %s second%s!" % (
+                selector,
+                timeout,
+                plural,
+            )
+            timeout_exception(NoSuchElementException, message)
+        if not is_visible:
+            # The element exists in the HTML, but is not visible
+            message = "Element {%s} was not visible after %s second%s!" % (
+                selector,
+                timeout,
+                plural,
+            )
+            timeout_exception(ElementNotVisibleException, message)
+        # The element is visible in the HTML, but is not clickable
+        message = "Element {%s} was not clickable after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotInteractableException, message)
+    elif not element and by == By.LINK_TEXT and not is_visible:
+        message = "Link text {%s} was not visible after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotVisibleException, message)
+    elif not element and by == By.LINK_TEXT and is_visible:
+        message = "Link text {%s} was not clickable after %s second%s!" % (
+            selector,
+            timeout,
+            plural,
+        )
+        timeout_exception(ElementNotInteractableException, message)
+    else:
+        return element
 
 
 def wait_for_element_absent(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector.
@@ -634,11 +828,12 @@ def wait_for_element_absent(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for elements in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             driver.find_element(by=by, value=selector)
             now_ms = time.time() * 1000.0
@@ -650,6 +845,12 @@ def wait_for_element_absent(
     plural = "s"
     if timeout == 1:
         plural = ""
+    if (
+        original_selector
+        and ":contains(" in original_selector
+        and "contains(." in selector
+    ):
+        selector = original_selector
     message = "Element {%s} was still present after %s second%s!" % (
         selector,
         timeout,
@@ -659,7 +860,11 @@ def wait_for_element_absent(
 
 
 def wait_for_element_not_visible(
-    driver, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver,
+    selector,
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
+    original_selector=None,
 ):
     """
     Searches for the specified element by the given selector.
@@ -670,11 +875,12 @@ def wait_for_element_not_visible(
     selector - the locator for identifying the page element (required)
     by - the type of selector being used (Default: By.CSS_SELECTOR)
     timeout - the time to wait for the element in seconds
+    original_selector - handle pre-converted ":contains(TEXT)" selector
     """
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             element = driver.find_element(by=by, value=selector)
             if element.is_displayed():
@@ -689,6 +895,12 @@ def wait_for_element_not_visible(
     plural = "s"
     if timeout == 1:
         plural = ""
+    if (
+        original_selector
+        and ":contains(" in original_selector
+        and "contains(." in selector
+    ):
+        selector = original_selector
     message = "Element {%s} was still visible after %s second%s!" % (
         selector,
         timeout,
@@ -698,7 +910,7 @@ def wait_for_element_not_visible(
 
 
 def wait_for_text_not_visible(
-    driver, text, selector, by=By.CSS_SELECTOR, timeout=settings.LARGE_TIMEOUT
+    driver, text, selector, by="css selector", timeout=settings.LARGE_TIMEOUT
 ):
     """
     Searches for the text in the element of the given selector on the page.
@@ -716,7 +928,7 @@ def wait_for_text_not_visible(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         if not is_text_visible(driver, text, selector, by=by):
             return True
         now_ms = time.time() * 1000.0
@@ -740,8 +952,8 @@ def wait_for_attribute_not_present(
     selector,
     attribute,
     value=None,
-    by=By.CSS_SELECTOR,
-    timeout=settings.LARGE_TIMEOUT
+    by="css selector",
+    timeout=settings.LARGE_TIMEOUT,
 ):
     """
     Searches for the specified element attribute by the given selector.
@@ -759,7 +971,7 @@ def wait_for_attribute_not_present(
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         if not is_attribute_present(
             driver, selector, attribute, value=value, by=by
         ):
@@ -784,7 +996,7 @@ def wait_for_attribute_not_present(
     timeout_exception(Exception, message)
 
 
-def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
+def find_visible_elements(driver, selector, by="css selector"):
     """
     Finds all WebElements that match a selector and are visible.
     Similar to webdriver.find_elements.
@@ -808,7 +1020,7 @@ def find_visible_elements(driver, selector, by=By.CSS_SELECTOR):
 
 
 def save_screenshot(
-    driver, name, folder=None, selector=None, by=By.CSS_SELECTOR
+    driver, name, folder=None, selector=None, by="css selector"
 ):
     """
     Saves a screenshot of the current page.
@@ -960,7 +1172,7 @@ def wait_for_and_switch_to_alert(driver, timeout=settings.LARGE_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             alert = driver.switch_to.alert
             # Raises exception if no alert present
@@ -989,11 +1201,11 @@ def switch_to_frame(driver, frame, timeout=settings.SMALL_TIMEOUT):
     start_ms = time.time() * 1000.0
     stop_ms = start_ms + (timeout * 1000.0)
     for x in range(int(timeout * 10)):
-        s_utils.check_if_time_limit_exceeded()
+        shared_utils.check_if_time_limit_exceeded()
         try:
             driver.switch_to.frame(frame)
             return True
-        except (NoSuchFrameException, TimeoutException):
+        except Exception:
             if type(frame) is str:
                 by = None
                 if page_utils.is_xpath_selector(frame):
@@ -1035,7 +1247,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     stop_ms = start_ms + (timeout * 1000.0)
     if isinstance(window, int):
         for x in range(int(timeout * 10)):
-            s_utils.check_if_time_limit_exceeded()
+            shared_utils.check_if_time_limit_exceeded()
             try:
                 window_handle = driver.window_handles[window]
                 driver.switch_to.window(window_handle)
@@ -1057,7 +1269,7 @@ def switch_to_window(driver, window, timeout=settings.SMALL_TIMEOUT):
     else:
         window_handle = window
         for x in range(int(timeout * 10)):
-            s_utils.check_if_time_limit_exceeded()
+            shared_utils.check_if_time_limit_exceeded()
             try:
                 driver.switch_to.window(window_handle)
                 return True

@@ -89,6 +89,8 @@ def main():
         code_lang = "go"
     elif file_to_print.lower().endswith(".java"):
         code_lang = "java"
+    elif file_to_print.lower().endswith(".feature"):
+        code_lang = "gherkin"
     elif "." not in file_to_print:
         code_lang = "markdown"
     else:
@@ -595,12 +597,9 @@ def main():
     if use_rich and code_lang == "markdown" and not line_numbers:
         all_code = rich_helper.fix_emoji_spacing(all_code)
         all_code = all_code.replace("<br />", "\n")
-        all_code = all_code.replace(
-            '<p align="center">', '\n')
-        all_code = all_code.replace(
-            '<p align="left">', '\n')
-        all_code = all_code.replace(
-            '<p align="right">', '\n')
+        all_code = all_code.replace('<p align="center">', "\n")
+        all_code = all_code.replace('<p align="left">', "\n")
+        all_code = all_code.replace('<p align="right">', "\n")
         all_code = all_code.replace("<p>", "\n")
         all_code = all_code.replace("</p>", "\n")
         if "<b>*" not in all_code and "*<b>" not in all_code:

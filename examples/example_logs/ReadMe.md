@@ -1,5 +1,3 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
-
 <h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> Logs, The Dashboard, and Reports:</h3>
 
 <!-- YouTube View --><a href="https://www.youtube.com/watch?v=XpuJCjJhJwQ"><img src="http://img.youtube.com/vi/XpuJCjJhJwQ/0.jpg" title="SeleniumBase on YouTube" width="285" /></a>
@@ -101,6 +99,24 @@ nosetests test_suite.py --report
 <img src="https://seleniumbase.io/cdn/img/nose_report.png" alt="Example Nosetest Report" title="Example Nosetest Report" width="320" />
 
 (NOTE: You can add ``--show-report`` to immediately display Nosetest reports after the test suite completes. Only use ``--show-report`` when running tests locally because it pauses the test run.)
+
+--------
+
+<h3><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="32" /> 🐝⚪ Behave Dashboard & Reports:</h3>
+
+(The [behave_bdd/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples/behave_bdd) folder can be found in the [examples/](https://github.com/seleniumbase/SeleniumBase/tree/master/examples) folder.)
+
+```bash
+behave behave_bdd/features/ -D dashboard -D headless
+```
+
+<img src="https://seleniumbase.io/cdn/img/sb_behave_dashboard.png" title="SeleniumBase" width="600">
+
+You can also use ``--junit`` to get ``.xml`` reports for each Behave feature. Jenkins can use these files to display better reporting for your tests.
+
+```bash
+behave behave_bdd/features/ --junit -D rs -D headless
+```
 
 --------
 

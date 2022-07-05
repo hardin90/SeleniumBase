@@ -1,32 +1,33 @@
 """
-Installs the specified web driver.
+Downloads the specified webdriver to "seleniumbase/drivers/"
 
 Usage:
-        sbase install {chromedriver|geckodriver|edgedriver|
-                       iedriver|operadriver} [OPTIONS]
+         sbase get {chromedriver|geckodriver|edgedriver|
+                    iedriver|operadriver} [OPTIONS]
 Options:
-        VERSION         Specify the version.
-                        (Default chromedriver version = 2.44)
-                        Use "latest" for the latest version.
-        -p OR --path    Also copy the driver to /usr/local/bin
-Example:
-        sbase install chromedriver
-        sbase install geckodriver
-        sbase install edgedriver
-        sbase install chromedriver 99.0.4844.51
-        sbase install chromedriver 99
-        sbase install chromedriver latest
-        sbase install chromedriver latest-1  # (Latest minus one)
-        sbase install chromedriver -p
-        sbase install chromedriver latest -p
-        sbase install edgedriver 99.0.1150.39
+         VERSION         Specify the version.
+                         (Default chromedriver = 72.0.3626.69)
+                         Use "latest" for the latest version.
+                         Use "latest-1" for one less than that.
+         -p OR --path    Also copy the driver to /usr/local/bin
+Examples:
+         sbase get chromedriver
+         sbase get geckodriver
+         sbase get edgedriver
+         sbase get chromedriver 101.0.4951.41
+         sbase get chromedriver 101
+         sbase get chromedriver latest
+         sbase get chromedriver latest-1  # (Latest minus one)
+         sbase get chromedriver -p
+         sbase get chromedriver latest -p
+         sbase get edgedriver 101.0.1210.32
 Output:
-        Installs the chosen webdriver to seleniumbase/drivers/
-        (chromedriver is required for Chrome automation)
-        (geckodriver is required for Firefox automation)
-        (edgedriver is required for MS Edge automation)
-        (operadriver is required for Opera Browser automation)
-        (iedriver is required for Internet Explorer automation)
+         Downloads the chosen webdriver to seleniumbase/drivers
+         (chromedriver is required for Chrome automation)
+         (geckodriver is required for Firefox automation)
+         (edgedriver is required for MS Edge automation)
+         (operadriver is required for Opera Browser automation)
+         (iedriver is required for InternetExplorer automation)
 """
 
 import colorama
@@ -43,37 +44,42 @@ from seleniumbase import drivers  # webdriver storage folder for SeleniumBase
 urllib3.disable_warnings()
 DRIVER_DIR = os.path.dirname(os.path.realpath(drivers.__file__))
 LOCAL_PATH = "/usr/local/bin/"  # On Mac and Linux systems
-DEFAULT_CHROMEDRIVER_VERSION = "2.44"  # (Specify "latest" to get the latest)
-DEFAULT_GECKODRIVER_VERSION = "v0.30.0"
-DEFAULT_EDGEDRIVER_VERSION = "99.0.1150.39"  # (Looks for LATEST_STABLE first)
+DEFAULT_CHROMEDRIVER_VERSION = "72.0.3626.69"  # (Specify "latest" for latest)
+DEFAULT_GECKODRIVER_VERSION = "v0.31.0"
+DEFAULT_EDGEDRIVER_VERSION = "101.0.1210.32"  # (Looks for LATEST_STABLE first)
 DEFAULT_OPERADRIVER_VERSION = "v.96.0.4664.45"
 
 
 def invalid_run_command():
-    exp = "  ** install **\n\n"
+    exp = "  ** get / install **\n\n"
     exp += "  Usage:\n"
-    exp += "          seleniumbase install [DRIVER] [OPTIONS]\n"
-    exp += "          OR     sbase install [DRIVER] [OPTIONS]\n"
-    exp += "              (Drivers: chromedriver, geckodriver, edgedriver,\n"
-    exp += "                        iedriver, operadriver)\n"
+    exp += "           seleniumbase install [DRIVER] [OPTIONS]\n"
+    exp += "           OR     sbase install [DRIVER] [OPTIONS]\n"
+    exp += "           OR  seleniumbase get [DRIVER] [OPTIONS]\n"
+    exp += "           OR         sbase get [DRIVER] [OPTIONS]\n"
+    exp += "                (Drivers: chromedriver, geckodriver, edgedriver,\n"
+    exp += "                          iedriver, operadriver)\n"
     exp += "  Options:\n"
-    exp += "          VERSION         Specify the version.\n"
-    exp += "                          (Default chromedriver version = 2.44)\n"
-    exp += '                          Use "latest" for the latest version.\n'
-    exp += "          -p OR --path    Also copy the driver to /usr/local/bin\n"
-    exp += "  Example:\n"
-    exp += "          sbase install chromedriver\n"
-    exp += "          sbase install geckodriver\n"
-    exp += "          sbase install edgedriver"
-    exp += "          sbase install chromedriver 99\n"
-    exp += "          sbase install chromedriver 99.0.4844.51\n"
-    exp += "          sbase install chromedriver latest\n"
-    exp += "          sbase install chromedriver latest-1\n"
-    exp += "          sbase install chromedriver -p\n"
-    exp += "          sbase install chromedriver latest -p\n"
-    exp += "          sbase install edgedriver 99.0.1150.39"
+    exp += "           VERSION        Specify the version.\n"
+    exp += "                           (Default chromedriver = 72.0.3626.69.\n"
+    exp += '                            Use "latest" for the latest version.\n'
+    exp += "                            For chromedriver, you can also use\n"
+    exp += "                            the major version integer\n"
+    exp += '                            or "latest-1" for 1 less than that.)\n'
+    exp += "           -p OR --path   Also copy the driver to /usr/local/bin\n"
+    exp += "  Examples:\n"
+    exp += "           sbase get chromedriver\n"
+    exp += "           sbase get geckodriver\n"
+    exp += "           sbase get edgedriver\n"
+    exp += "           sbase get chromedriver 101\n"
+    exp += "           sbase get chromedriver 101.0.4951.41\n"
+    exp += "           sbase get chromedriver latest\n"
+    exp += "           sbase get chromedriver latest-1\n"
+    exp += "           sbase get chromedriver -p\n"
+    exp += "           sbase get chromedriver latest -p\n"
+    exp += "           sbase get edgedriver 101.0.1210.32\n"
     exp += "  Output:\n"
-    exp += "          Installs the chosen webdriver to seleniumbase/drivers/\n"
+    exp += "          Downloads the chosen webdriver to seleniumbase/drivers\n"
     exp += "          (chromedriver is required for Chrome automation)\n"
     exp += "          (geckodriver is required for Firefox automation)\n"
     exp += "          (edgedriver is required for Microsoft Edge automation)\n"
@@ -102,21 +108,32 @@ def requests_get(url):
 
 
 def main(override=None):
-    if override == "chromedriver":
-        sys.argv = ["seleniumbase", "install", "chromedriver"]
-    elif override == "edgedriver":
-        sys.argv = ["seleniumbase", "install", "edgedriver"]
-    elif override == "geckodriver":
-        sys.argv = ["seleniumbase", "install", "geckodriver"]
-    elif override == "iedriver":
-        sys.argv = ["seleniumbase", "install", "iedriver"]
+    if override:
+        if override == "chromedriver":
+            sys.argv = ["seleniumbase", "get", "chromedriver"]
+        elif override.startswith("chromedriver "):
+            extra = override.split("chromedriver ")[1]
+            sys.argv = ["seleniumbase", "get", "chromedriver", extra]
+        elif override == "edgedriver":
+            sys.argv = ["seleniumbase", "get", "edgedriver"]
+        elif override.startswith("edgedriver "):
+            extra = override.split("edgedriver ")[1]
+            sys.argv = ["seleniumbase", "get", "edgedriver", extra]
+        elif override == "geckodriver":
+            sys.argv = ["seleniumbase", "get", "geckodriver"]
+        elif override.startswith("geckodriver "):
+            extra = override.split("geckodriver ")[1]
+            sys.argv = ["seleniumbase", "get", "geckodriver", extra]
+        elif override == "iedriver":
+            sys.argv = ["seleniumbase", "get", "iedriver"]
+        elif override.startswith("iedriver "):
+            extra = override.split("iedriver ")[1]
+            sys.argv = ["seleniumbase", "get", "iedriver", extra]
 
     num_args = len(sys.argv)
     if (
-        sys.argv[0].split("/")[-1].lower() == "seleniumbase"
-        or (sys.argv[0].split("\\")[-1].lower() == "seleniumbase")
-        or (sys.argv[0].split("/")[-1].lower() == "sbase")
-        or (sys.argv[0].split("\\")[-1].lower() == "sbase")
+        "sbase" in sys.argv[0].lower()
+        or ("seleniumbase" in sys.argv[0].lower())
     ):
         if num_args < 3 or num_args > 5:
             invalid_run_command()
@@ -196,7 +213,7 @@ def main(override=None):
                 use_version = url_request.text
                 if get_latest_minus_one:
                     get_v_latest = True
-                    use_version = str(int(use_version.split('.')[0]) - 1)
+                    use_version = str(int(use_version.split(".")[0]) - 1)
         if get_v_latest:
             url_req = requests_get(last)
             if url_req.ok:
@@ -226,7 +243,15 @@ def main(override=None):
             if get_latest:
                 p_version = p_version + " " + c2 + "(Latest)" + cr
             else:
-                not_latest = c5 + "(" + c4 + "NOT Latest" + c5 + ")" + cr
+                n_l_s = "NOT Latest"
+                try:
+                    int_use_version = int(use_version.split(".")[0])
+                    int_latest_version = int(latest_version.split(".")[0])
+                    if int_use_version > int_latest_version:
+                        n_l_s = "NOT Latest Stable"
+                except Exception:
+                    pass
+                not_latest = c5 + "(" + c4 + n_l_s + c5 + ")" + cr
                 p_version = p_version + " " + not_latest
             msg = c2 + "chromedriver version for download" + cr
             print("\n*** %s = %s" % (msg, p_version))
@@ -235,7 +260,7 @@ def main(override=None):
         if not get_latest:
             to_upgrade = " " + c3 + "To upgrade" + cr
             run_this = c3 + "run this" + cr
-            install_sb = c6 + "sbase install chromedriver latest" + cr
+            install_sb = c6 + "sbase get chromedriver latest" + cr
             print("\n %s to the latest version of chromedriver," % to_upgrade)
             print("   %s: >>> %s" % (run_this, install_sb))
             print("  (Requires the latest version of Chrome installed)")
@@ -657,6 +682,11 @@ def main(override=None):
             print("Making [%s %s] executable ..." % (driver_file, use_version))
             make_executable(driver_path)
             print("%s[%s] is now ready for use!%s" % (c1, driver_file, cr))
+            if copy_to_path and os.path.exists(LOCAL_PATH):
+                path_file = LOCAL_PATH + f_name
+                shutil.copyfile(new_file, path_file)
+                make_executable(path_file)
+                print("Also copied to: %s%s%s" % (c3, path_file, cr))
             print("")
         elif name == "operadriver":
             if len(contents) > 3:

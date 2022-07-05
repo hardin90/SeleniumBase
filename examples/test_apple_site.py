@@ -4,9 +4,10 @@ from seleniumbase import BaseCase
 
 class AppleTests(BaseCase):
     def test_apple_developer_site_webdriver_instructions(self):
-        self.demo_mode = True
-        self.demo_sleep = 0.5
-        self.message_duration = 2.0
+        if not (self.headless or self.xvfb):
+            self.demo_mode = True
+            self.demo_sleep = 0.5
+            self.message_duration = 2.0
         if self.headless and (
             self.browser == "chrome" or self.browser == "edge"
         ):
@@ -19,9 +20,9 @@ class AppleTests(BaseCase):
         title = "Testing with WebDriver in Safari"
         self.type('[placeholder*="developer.apple.com"]', title + "\n")
         self.click("link=%s" % title)
-        self.assert_element('nav.documentation-nav')
+        self.assert_element("nav.documentation-nav")
         self.assert_text(title, "h1")
-        self.highlight("div.description div.abstract")
+        self.assert_text("Enable WebDriver and run a test.", "div.abstract")
         self.highlight("h2")
         h3 = "h3:nth-of-type(%s)"
         self.assert_text("Make Sure You Have Safari’s WebDriver", h3 % "1")

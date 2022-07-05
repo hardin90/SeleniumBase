@@ -5,6 +5,7 @@ class MyTourClass(BaseCase):
     def test_google_tour(self):
         self.open("https://google.com/ncr")
         self.wait_for_element('input[title="Search"]')
+        self.hide_elements("iframe")
 
         self.create_bootstrap_tour()  # OR self.create_tour(theme="bootstrap")
         self.add_tour_step("Welcome to Google!", title="SeleniumBase Tours")
@@ -70,7 +71,7 @@ class MyTourClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour",
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
         )
         self.export_tour(filename="bootstrap_google_maps_tour.js")
         self.play_tour()

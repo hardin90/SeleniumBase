@@ -3,14 +3,12 @@ from seleniumbase import BaseCase
 
 
 class OverrideDriverTest(BaseCase):
-
     def get_new_driver(self, *args, **kwargs):
-        """ This method overrides get_new_driver() from BaseCase. """
+        """This method overrides get_new_driver() from BaseCase."""
         options = webdriver.ChromeOptions()
         options.add_experimental_option(
             "excludeSwitches", ["enable-automation"]
         )
-        options.add_experimental_option("useAutomationExtension", False)
         if self.headless:
             options.add_argument("--headless")
         return webdriver.Chrome(options=options)

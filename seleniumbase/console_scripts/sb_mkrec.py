@@ -23,6 +23,7 @@ Options:
     --edge  (Use Edge browser instead of Chrome.)
     --gui / --headed  (Use headed mode on Linux.)
     --overwrite  (Overwrite file when it exists.)
+    --behave  (Also output Behave/Gherkin files.)
 
 Output:
     Creates a new SeleniumBase test using the Recorder.
@@ -49,6 +50,7 @@ def invalid_run_command(msg=None):
     exp += "           --edge  (Use Edge browser instead of Chrome.)\n"
     exp += "           --gui / --headed  (Use headed mode on Linux.)\n"
     exp += "           --overwrite  (Overwrite file when it exists.)\n"
+    exp += "           --behave  (Also output Behave/Gherkin files.)\n"
     exp += "  Output:\n"
     exp += "           Creates a new SeleniumBase test using the Recorder.\n"
     exp += "           If the filename already exists, an error is raised.\n"
@@ -89,6 +91,7 @@ def main():
     next_is_url = False
     use_colors = True
     force_gui = False
+    rec_behave = False
 
     if "linux" in platform:
         use_colors = False
@@ -116,7 +119,7 @@ def main():
     file_path = os.path.join(dir_name, file_name)
 
     if (
-        "--overwrite" in ' '.join(command_args).lower()
+        "--overwrite" in " ".join(command_args).lower()
         and os.path.exists(file_path)
     ):
         os.remove(file_path)
@@ -132,11 +135,11 @@ def main():
                 help_me = True
             elif option.lower() == "--edge":
                 use_edge = True
-            elif (
-                option.lower() in ("--gui", "--headed")
-            ):
+            elif option.lower() in ("--gui", "--headed"):
                 if "linux" in platform:
                     force_gui = True
+            elif option.lower() in ("--rec-behave", "--behave", "--gherkin"):
+                rec_behave = True
             elif option.lower().startswith("--url="):
                 start_page = option[len("--url="):]
             elif option.lower() == "--url":
@@ -163,33 +166,30 @@ def main():
     data.append("")
     data.append("class RecorderTests(BaseCase):")
     data.append("    def test_recording(self):")
-    data.append('        if self.recorder_ext and not self.xvfb:')
-    data.append('            import ipdb; ipdb.set_trace()')
+    data.append("        if self.recorder_ext and not self.xvfb:")
+    data.append("            import ipdb; ipdb.set_trace()")
     data.append("")
     file = codecs.open(file_path, "w+", "utf-8")
     file.writelines("\r\n".join(data))
     file.close()
     success = (
-        "\n" + c0 + '* RECORDING initialized:' + cr + " "
+        "\n" + c0 + "* RECORDING initialized:" + cr + " "
         "" + c1 + file_name + "" + cr + "\n"
     )
     print(success)
+    run_cmd = None
     if not start_page:
         run_cmd = "pytest %s --rec -q -s" % file_name
-        if use_edge:
-            run_cmd += " --edge"
-        if force_gui:
-            run_cmd += " --gui"
-        print(run_cmd)
-        os.system(run_cmd)
     else:
         run_cmd = "pytest %s --rec -q -s --url=%s" % (file_name, start_page)
-        if use_edge:
-            run_cmd += " --edge"
-        if force_gui:
-            run_cmd += " --gui"
-        print(run_cmd)
-        os.system(run_cmd)
+    if use_edge:
+        run_cmd += " --edge"
+    if force_gui:
+        run_cmd += " --gui"
+    if rec_behave:
+        run_cmd += " --rec-behave"
+    print(run_cmd)
+    os.system(run_cmd)
     if os.path.exists(file_path):
         os.remove(file_path)
     recorded_filename = file_name[:-3] + "_rec.py"
@@ -207,6 +207,22 @@ def main():
         "" + c1 + file_name + cr + "\n"
     )
     print(success)
+    if rec_behave:
+        recorded_filename = file_name[:-3] + "_rec.feature"
+        recordings_dir = os.path.join(dir_name, "recordings")
+        features_dir = os.path.join(recordings_dir, "features")
+        recorded_file = os.path.join(features_dir, recorded_filename)
+        if " " not in recorded_file:
+            os.system("sbase print %s -n" % recorded_file)
+        elif '"' not in recorded_file:
+            os.system('sbase print "%s" -n' % recorded_file)
+        else:
+            os.system("sbase print '%s' -n" % recorded_file)
+        success = (
+            "\n" + c2 + "***" + cr + " BEHAVE RECORDING at: "
+            "" + c1 + os.path.relpath(recorded_file) + cr + "\n"
+        )
+        print(success)
 
 
 if __name__ == "__main__":

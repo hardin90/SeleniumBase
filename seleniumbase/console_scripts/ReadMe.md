@@ -1,8 +1,6 @@
-<h3 align="center"><a href="https://github.com/seleniumbase/SeleniumBase/"><img src="https://seleniumbase.io/cdn/img/sb_logo_10t.png" alt="SeleniumBase" title="SeleniumBase" width="240"></a></h3>
+<h2>🔮 Console Scripts 🔮</h2>
 
-<h2>Console Scripts</h2>
-
-SeleniumBase console scripts help you get things done more easily, such as installing web drivers, creating a test directory with necessary configuration files, converting old WebDriver unittest scripts into SeleniumBase code, translating tests into multiple languages, and using the Selenium Grid.
+⭐ SeleniumBase console scripts help you get things done, such as getting web drivers, creating a test directory with useful files, activating the SeleniumBase Recorder, launching the SeleniumBase Commander, translating tests into other languages, running a Selenium Grid, and more.
 
 * Usage: ``seleniumbase [COMMAND] [PARAMETERS]``
 
@@ -14,9 +12,11 @@ SeleniumBase console scripts help you get things done more easily, such as insta
 
 ```
 COMMANDS:
-      install          [DRIVER] [OPTIONS]
+      get / install    [DRIVER] [OPTIONS]
       methods          (List common Python methods)
       options          (List common pytest options)
+      gui / commander  [OPTIONAL PATH or TEST FILE]
+      behave-gui       (SBase Commander for Behave)
       mkdir            [DIRECTORY] [OPTIONS]
       mkfile           [FILE.py] [OPTIONS]
       mkrec / codegen  [FILE.py] [OPTIONS]
@@ -36,31 +36,32 @@ COMMANDS:
       download server  (Get Selenium Grid JAR file)
       grid-hub         [start|stop] [OPTIONS]
       grid-node        [start|stop] --hub=[HOST/IP]
- * (EXAMPLE: "sbase install chromedriver latest") *
+ * (EXAMPLE: "sbase get chromedriver latest") *
 
     Type "sbase help [COMMAND]" for specific command info.
     For info on all commands, type: "seleniumbase --help".
     Use "pytest" for running tests.
 ```
 
-<h3>install</h3>
+<h3>get / install</h3>
 
 * Usage:
+``sbase get [DRIVER] [OPTIONS]``
 ``sbase install [DRIVER] [OPTIONS]``
 
 * Examples:
 
 ```bash
-sbase install chromedriver
-sbase install geckodriver
-sbase install edgedriver
-sbase install chromedriver 99
-sbase install chromedriver 99.0.4844.51
-sbase install chromedriver latest
-sbase install chromedriver latest-1  # (Latest minus one)
-sbase install chromedriver -p
-sbase install chromedriver latest -p
-sbase install edgedriver 99.0.1150.39
+sbase get chromedriver  # (Default version = 72.0.3626.69)
+sbase get geckodriver
+sbase get edgedriver
+sbase get chromedriver 101
+sbase get chromedriver 101.0.4951.41
+sbase get chromedriver latest
+sbase get chromedriver latest-1  # (Latest minus one)
+sbase get chromedriver -p
+sbase get chromedriver latest -p
+sbase get edgedriver 101.0.1210.32
 ```
 
 (Drivers:  ``chromedriver``, ``geckodriver``, ``edgedriver``,
@@ -73,11 +74,11 @@ sbase install edgedriver 99.0.1150.39
            ``-p`` / ``--path``: Also copy to "/usr/local/bin".)
 
 * Output:
-Installs the specified webdriver.
+Downloads the chosen webdriver to ``seleniumbase/drivers/``.
 (``chromedriver`` is required for Google Chrome automation)
 (``geckodriver`` is required for Mozilla Firefox automation)
 (``edgedriver`` is required for Microsoft Edge automation)
-(``iedriver`` is required for Internet Explorer automation)
+(``iedriver`` is required for InternetExplorer automation)
 (``operadriver`` is required for Opera Browser automation)
 
 <h3>methods</h3>
@@ -97,7 +98,7 @@ Displays common SeleniumBase Python methods.
 Displays common pytest command-line options
 that are available when using SeleniumBase.
 
-```
+```bash
 --browser=BROWSER  (The web browser to use. Default is "chrome")
 --headless  (Run tests headlessly. Default mode on Linux OS.)
 --demo  (Slow down and visually see test actions as they occur.)
@@ -105,15 +106,16 @@ that are available when using SeleniumBase.
 --reuse-session / --rs  (Reuse browser session between tests.)
 --crumbs  (Clear all cookies between tests reusing a session.)
 --maximize  (Start tests with the web browser window maximized.)
---dashboard  (Enable SeleniumBase's Dashboard at dashboard.html)
---incognito  (Enable Chromium's Incognito mode.)
---guest  (Enable Chromium's Guest mode.)
+--dashboard  (Enable SeleniumBase\'s Dashboard at dashboard.html)
+--incognito  (Enable Chromium\'s Incognito mode.)
+--guest  (Enable Chromium\'s Guest mode.)
 -m=MARKER  (Run tests with the specified pytest marker.)
 -n=NUM  (Multithread the tests using that many threads.)
 -v  (Verbose mode. Print the full names of each test run.)
 --html=report.html  (Create a detailed pytest-html report.)
 --collect-only / --co  (Only show discovered tests. No run.)
 --co -q  (Only show full names of discovered tests. No run.)
+-x  (Stop running tests after the first failure is reached.)
 --pdb  (Enter the Post Mortem Debug Mode after any test fails.)
 --trace  (Enter Debug Mode immediately after starting any test.)
       | Debug Mode Commands  >>>   help / h: List all commands. |
@@ -123,12 +125,11 @@ that are available when using SeleniumBase.
       | longlist / ll: See code. dir(): List namespace objects. |
 --recorder  (Record browser actions to generate test scripts.)
 --save-screenshot  (Save a screenshot at the end of each test.)
--x  (Stop running the tests after the first failure is reached.)
 --archive-logs  (Archive old log files instead of deleting them.)
 --check-js  (Check for JavaScript errors after page loads.)
 --start-page=URL  (The browser start page when tests begin.)
---agent=STRING  (Modify the web browser's User-Agent string.)
---mobile  (Use Chromium's mobile device emulator during tests.)
+--agent=STRING  (Modify the web browser\'s User-Agent string.)
+--mobile  (Use Chromium\'s mobile device emulator during tests.)
 --metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
 --ad-block  (Block some types of display ads after page loads.)
 --settings-file=FILE  (Override default SeleniumBase settings.)
@@ -142,6 +143,86 @@ that are available when using SeleniumBase.
 
 For the full list of command-line options, type: "pytest --help".
 ```
+
+<h3>behave-options</h3>
+
+* Usage:
+``sbase behave-options``
+
+* Output:
+Displays common Behave command-line options
+that are available when using SeleniumBase.
+
+```bash
+-D browser=BROWSER  (The web browser to use. Default is "chrome")
+-D headless  (Run tests headlessly. Default mode on Linux OS.)
+-D demo  (Slow down and visually see test actions as they occur.)
+-D slow  (Slow down the automation. Faster than using Demo Mode.)
+-D reuse-session / -D rs  (Reuse browser session between tests.)
+-D crumbs  (Clear all cookies between tests reusing a session.)
+-D maximize  (Start tests with the web browser window maximized.)
+-D dashboard  (Enable SeleniumBase\'s Dashboard at dashboard.html)
+-D incognito  (Enable Chromium\'s Incognito mode.)
+-D guest  (Enable Chromium\'s Guest mode.)
+--no-snippets / -q  (Quiet mode. Don\'t print snippets.)
+--dry-run / -d  (Dry run. Only show discovered tests.)
+--stop  (Stop running tests after the first failure is reached.)
+-D pdb  (Enter the Post Mortem Debug Mode after any test fails.)
+      | Debug Mode Commands  >>>   help / h: List all commands. |
+      |   n: Next line of method. s: Step through. c: Continue. |
+      |  return / r: Run until method returns. j: Jump to line. |
+      | where / w: Show stack spot. u: Up stack. d: Down stack. |
+      | longlist / ll: See code. dir(): List namespace objects. |
+-D recorder  (Record browser actions to generate test scripts.)
+-D save-screenshot  (Save a screenshot at the end of each test.)
+-D archive-logs  (Archive old log files instead of deleting them.)
+-D check-js  (Check for JavaScript errors after page loads.)
+-D start-page=URL  (The browser start page when tests begin.)
+-D agent=STRING  (Modify the web browser\'s User-Agent string.)
+-D mobile  (Use Chromium\'s mobile device emulator during tests.)
+-D metrics=STRING  (Set mobile "CSSWidth,CSSHeight,PixelRatio".)
+-D ad-block  (Block some types of display ads after page loads.)
+-D settings-file=FILE  (Override default SeleniumBase settings.)
+-D env=ENV  (Set the test env. Access with "self.env" in tests.)
+-D data=DATA  (Extra test data. Access with "self.data" in tests.)
+-D disable-csp  (Disable the Content Security Policy of websites.)
+-D server=SERVER  (The Selenium Grid server/IP used for tests.)
+-D port=PORT  (The Selenium Grid port used by the test server.)
+-D proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
+-D proxy=USER:PASS@SERVER:PORT  (Use authenticated proxy server.)
+
+For the full list of command-line options, type: "behave --help".
+```
+
+<h3>gui / commander</h3>
+
+* Usage:
+
+```bash
+sbase gui [OPTIONAL PATH or TEST FILE]
+sbase commander [OPTIONAL PATH or TEST FILE]
+```
+
+<h3>behave-gui</h3>
+
+* Usage:
+
+```bash
+sbase behave-gui [OPTIONAL PATH or TEST FILE]
+sbase gui-behave [OPTIONAL PATH or TEST FILE]
+```
+
+* Examples:
+
+```bash
+sbase behave-gui
+sbase behave-gui -i=calculator
+sbase behave-gui features/
+sbase behave-gui features/calculator.feature
+```
+
+* Output:
+Launches SeleniumBase Commander | GUI for Behave.
 
 <h3>mkdir</h3>
 
@@ -241,6 +322,7 @@ is included.
 ``--edge``  (Use Edge browser instead of Chrome.)
 ``--gui`` / ``--headed``  (Use headed mode on Linux.)
 ``--overwrite``  (Overwrite file when it exists.)
+``--behave``  (Also output Behave/Gherkin files.)
 
 * Output:
 Creates a new SeleniumBase test using the Recorder.
@@ -249,7 +331,10 @@ If the filename already exists, an error is raised.
 <h3>recorder</h3>
 
 * Usage:
-``sbase recorder``
+``sbase recorder``  [OPTIONS]
+
+* Options:
+``--behave``  (Also output Behave/Gherkin files.)
 
 * Output:
 Launches the SeleniumBase Recorder Desktop App.

@@ -10,6 +10,9 @@ from seleniumbase import config as sb_config
 from seleniumbase.config import settings
 from seleniumbase.fixtures import constants
 
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
 pytest_plugins = ["pytester"]  # Adds the "testdir" fixture
 
 
@@ -30,6 +33,7 @@ def pytest_addoption(parser):
     --var1=STRING  (Extra test data. Access with "self.var1" in tests.)
     --var2=STRING  (Extra test data. Access with "self.var2" in tests.)
     --var3=STRING  (Extra test data. Access with "self.var3" in tests.)
+    --variables=DICT  (Extra test data. Access with "self.variables".)
     --user-data-dir=DIR  (Set the Chrome user data directory to use.)
     --protocol=PROTOCOL  (The Selenium Grid protocol: http|https.)
     --server=SERVER  (The Selenium Grid server/IP used for tests.)
@@ -39,11 +43,13 @@ def pytest_addoption(parser):
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
+    --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
+    --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
-    --chromium-arg=ARG  (Add a Chromium arg for Chrome/Edge, comma-separated.)
-    --firefox-arg=ARG  (Add a Firefox arg for Firefox, comma-separated.)
+    --chromium-arg="ARG=N,ARG2" (Set Chromium args, ","-separated, no spaces.)
+    --firefox-arg="ARG=N,ARG2" (Set Firefox args, comma-separated, no spaces.)
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
@@ -66,20 +72,26 @@ def pytest_addoption(parser):
     --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
+    --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
+    --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
+    --rec-print  (If the Recorder is enabled, prints output after tests end.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+    --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --dashboard  (Enable the SeleniumBase Dashboard. Saved at: dashboard.html)
+    --dash-title=STRING  (Set the title shown for the generated dashboard.)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
     --reuse-session | --rs  (Reuse browser session between tests.)
     --crumbs  (Delete all cookies between tests reusing a session.)
-    --maximize  (Start tests with the web browser window maximized.)
+    --window-size  (Set the browser window size: "Width,Height".)
+    --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
@@ -215,21 +227,36 @@ def pytest_addoption(parser):
         help="Extra data to pass to tests from the command line.",
     )
     parser.addoption(
+        "--variables",
+        dest="variables",
+        default=None,
+        help="""A var dict to pass to tests from the command line.
+                Example usage:
+                ----------------------------------------------
+                Option: --variables='{"special":123}'
+                Access: self.variables["special"]  # (123)
+                ----------------------------------------------
+                Option: --variables='{"color":"red","num":42}'
+                Access: self.variables["color"]  # ("red")
+                Access: self.variables["num"]  # (42)
+                ----------------------------------------------""",
+    )
+    parser.addoption(
         "--cap_file",
         "--cap-file",
         dest="cap_file",
         default=None,
         help="""The file that stores browser desired capabilities
-                for BrowserStack, Sauce Labs, and other
-                remote web drivers to use.""",
+                for BrowserStack, LambdaTest, Sauce Labs,
+                and other remote web drivers to use.""",
     )
     parser.addoption(
         "--cap_string",
         "--cap-string",
         dest="cap_string",
         default=None,
-        help="""The string that stores browser desired
-                capabilities for BrowserStack, Sauce Labs,
+        help="""The string that stores browser desired capabilities
+                for BrowserStack, LambdaTest, Sauce Labs,
                 and other remote web drivers to use.
                 Enclose cap-string in single quotes.
                 Enclose parameter keys in double quotes.
@@ -303,6 +330,7 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--database_env",
+        "--database-env",
         action="store",
         dest="database_env",
         choices=(
@@ -311,7 +339,11 @@ def pytest_addoption(parser):
             constants.Environment.DEVELOP,
             constants.Environment.PRODUCTION,
             constants.Environment.MASTER,
+            constants.Environment.REMOTE,
             constants.Environment.LOCAL,
+            constants.Environment.ALPHA,
+            constants.Environment.BETA,
+            constants.Environment.MAIN,
             constants.Environment.TEST,
         ),
         default=constants.Environment.TEST,
@@ -389,13 +421,15 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--proxy",
+        "--proxy-server",
+        "--proxy-string",
         action="store",
         dest="proxy_string",
         default=None,
         help="""Designates the proxy server:port to use.
                 Format: servername:port.  OR
-                username:password@servername:port  OR
-                A dict key from proxy_list.PROXY_LIST
+                        username:password@servername:port  OR
+                        A dict key from proxy_list.PROXY_LIST
                 Default: None.""",
     )
     parser.addoption(
@@ -414,6 +448,17 @@ def pytest_addoption(parser):
                     pytest
                         --proxy="servername:port"
                         --proxy-bypass-list="127.0.0.1:8080"
+                Default: None.""",
+    )
+    parser.addoption(
+        "--proxy-pac-url",
+        "--pac-url",
+        action="store",
+        dest="proxy_pac_url",
+        default=None,
+        help="""Designates the proxy PAC URL to use.
+                Format: A URL string  OR
+                        A username:password@URL string
                 Default: None.""",
     )
     parser.addoption(
@@ -698,6 +743,35 @@ def pytest_addoption(parser):
                 into SeleniumBase scripts.""",
     )
     parser.addoption(
+        "--rec-behave",
+        "--rec-gherkin",
+        action="store_true",
+        dest="rec_behave",
+        default=False,
+        help="""Not only enables the SeleniumBase Recorder,
+                but also saves recorded actions into the
+                behave-gerkin format, which includes a
+                feature file, an imported steps file,
+                and the environment.py file.""",
+    )
+    parser.addoption(
+        "--rec-sleep",
+        "--record-sleep",
+        action="store_true",
+        dest="record_sleep",
+        default=False,
+        help="""If Recorder Mode is enabled,
+                records sleep(seconds) calls.""",
+    )
+    parser.addoption(
+        "--rec-print",
+        action="store_true",
+        dest="rec_print",
+        default=False,
+        help="""If Recorder Mode is enabled,
+                prints output after tests end.""",
+    )
+    parser.addoption(
         "--disable_csp",
         "--disable-csp",
         "--no_csp",
@@ -784,6 +858,16 @@ def pytest_addoption(parser):
                 Info: chromedevtools.github.io/devtools-protocol/""",
     )
     parser.addoption(
+        "--final-debug",
+        action="store_true",
+        dest="final_debug",
+        default=False,
+        help="""Enter Debug Mode at the end of each test.
+                To enter Debug Mode only on failures, use "--pdb".
+                If using both "--final-debug" and "--pdb" together,
+                then Debug Mode will activate twice on failures.""",
+    )
+    parser.addoption(
         "--dashboard",
         action="store_true",
         dest="dashboard",
@@ -792,6 +876,13 @@ def pytest_addoption(parser):
                 To access the SeleniumBase Dashboard interface,
                 open the dashboard.html file located in the same
                 folder that the pytest command was run from.""",
+    )
+    parser.addoption(
+        "--dash_title",
+        "--dash-title",
+        dest="dash_title",
+        default=None,
+        help="Set the title shown for the generated dashboard.",
     )
     parser.addoption(
         "--swiftshader",
@@ -848,6 +939,17 @@ def pytest_addoption(parser):
                 is only needed when using "--reuse-session".""",
     )
     parser.addoption(
+        "--window-size",
+        "--window_size",
+        action="store",
+        dest="window_size",
+        default=None,
+        help="""The option to set the default window "width,height".
+                Format: A comma-separated string with the 2 values.
+                Example: "1200,800"
+                Default: None. (Will use default values if None)""",
+    )
+    parser.addoption(
         "--maximize_window",
         "--maximize-window",
         "--maximize",
@@ -855,8 +957,8 @@ def pytest_addoption(parser):
         action="store_true",
         dest="maximize_option",
         default=False,
-        help="""The option to start with the browser window
-                maximized.""",
+        help="""The option to start with a maximized browser window.
+                (Overrides the "window-size" option if used.)""",
     )
     parser.addoption(
         "--screenshot",
@@ -903,6 +1005,7 @@ def pytest_addoption(parser):
     )
 
     sys_argv = sys.argv
+    arg_join = " ".join(sys.argv)
     sb_config._browser_shortcut = None
 
     # SeleniumBase does not support pytest-timeout due to hanging browsers.
@@ -936,7 +1039,6 @@ def pytest_addoption(parser):
         or "--record" in sys_argv
         or "--rec" in sys_argv
     ):
-        arg_join = " ".join(sys.argv)
         if ("-n" in sys_argv) or (" -n=" in arg_join) or ("-c" in sys_argv):
             raise Exception(
                 "\n\n  Recorder Mode does NOT support multi-process mode (-n)!"
@@ -951,7 +1053,7 @@ def pytest_addoption(parser):
         or "--record" in sys_argv
         or "--rec" in sys_argv
     ):
-        if ("--headless" in sys_argv):
+        if "--headless" in sys_argv:
             raise Exception(
                 "\n\n  Recorder Mode does NOT support Headless Mode!"
                 '\n  (DO NOT combine "--recorder" with "--headless"!)\n'
@@ -1043,12 +1145,13 @@ def pytest_addoption(parser):
     ):
         message = (
             "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
-            '\n  (Your browser choice was: "%s")\n' % browser_list[0])
+            '\n  (Your browser choice was: "%s")\n' % browser_list[0]
+        )
         raise Exception(message)
 
 
 def pytest_configure(config):
-    """ This runs after command-line options have been parsed. """
+    """This runs after command-line options have been parsed."""
     sb_config.item_count = 0
     sb_config.item_count_passed = 0
     sb_config.item_count_failed = 0
@@ -1064,6 +1167,7 @@ def pytest_configure(config):
     sb_config.var1 = config.getoption("var1")
     sb_config.var2 = config.getoption("var2")
     sb_config.var3 = config.getoption("var3")
+    sb_config.variables = config.getoption("variables")
     sb_config.environment = config.getoption("environment")
     sb_config.with_selenium = config.getoption("with_selenium")
     sb_config.user_agent = config.getoption("user_agent")
@@ -1096,6 +1200,7 @@ def pytest_configure(config):
             sb_config.protocol = "https"
     sb_config.proxy_string = config.getoption("proxy_string")
     sb_config.proxy_bypass_list = config.getoption("proxy_bypass_list")
+    sb_config.proxy_pac_url = config.getoption("proxy_pac_url")
     sb_config.cap_file = config.getoption("cap_file")
     sb_config.cap_string = config.getoption("cap_string")
     sb_config.settings_file = config.getoption("settings_file")
@@ -1118,6 +1223,18 @@ def pytest_configure(config):
     sb_config.verify_delay = config.getoption("verify_delay")
     sb_config.recorder_mode = config.getoption("recorder_mode")
     sb_config.recorder_ext = config.getoption("recorder_mode")  # Again
+    sb_config.rec_behave = config.getoption("rec_behave")
+    sb_config.rec_print = config.getoption("rec_print")
+    sb_config.record_sleep = config.getoption("record_sleep")
+    if sb_config.rec_print and not sb_config.recorder_mode:
+        sb_config.recorder_mode = True
+        sb_config.recorder_ext = True
+    elif sb_config.rec_behave and not sb_config.recorder_mode:
+        sb_config.recorder_mode = True
+        sb_config.recorder_ext = True
+    elif sb_config.record_sleep and not sb_config.recorder_mode:
+        sb_config.recorder_mode = True
+        sb_config.recorder_ext = True
     sb_config.disable_csp = config.getoption("disable_csp")
     sb_config.disable_ws = config.getoption("disable_ws")
     sb_config.enable_ws = config.getoption("enable_ws")
@@ -1128,7 +1245,9 @@ def pytest_configure(config):
     sb_config.no_sandbox = config.getoption("no_sandbox")
     sb_config.disable_gpu = config.getoption("disable_gpu")
     sb_config.remote_debug = config.getoption("remote_debug")
+    sb_config.final_debug = config.getoption("final_debug")
     sb_config.dashboard = config.getoption("dashboard")
+    sb_config.dash_title = config.getoption("dash_title")
     sb_config.swiftshader = config.getoption("swiftshader")
     sb_config.incognito = config.getoption("incognito")
     sb_config.guest_mode = config.getoption("guest_mode")
@@ -1136,12 +1255,14 @@ def pytest_configure(config):
     sb_config.reuse_session = config.getoption("reuse_session")
     sb_config.crumbs = config.getoption("crumbs")
     sb_config.shared_driver = None  # The default driver for session reuse
+    sb_config.window_size = config.getoption("window_size")
     sb_config.maximize_option = config.getoption("maximize_option")
     sb_config.save_screenshot = config.getoption("save_screenshot")
     sb_config.visual_baseline = config.getoption("visual_baseline")
     sb_config.external_pdf = config.getoption("external_pdf")
     sb_config.timeout_multiplier = config.getoption("timeout_multiplier")
     sb_config._is_timeout_changed = False
+    sb_config._has_logs = False
     sb_config._SMALL_TIMEOUT = settings.SMALL_TIMEOUT
     sb_config._LARGE_TIMEOUT = settings.LARGE_TIMEOUT
     sb_config.pytest_html_report = config.getoption("htmlpath")  # --html=FILE
@@ -1167,14 +1288,50 @@ def pytest_configure(config):
     sb_config._html_report_name = None  # The name of the pytest html report
 
     arg_join = " ".join(sys.argv)
-    if ("-n" in sys.argv) or (" -n=" in arg_join) or ("-c" in sys.argv):
+    if (
+        "-n" in sys.argv
+        or " -n=" in arg_join
+        or "-c" in sys.argv
+        or (
+            sys.version_info[0] >= 3
+            and "addopts" in config.inicfg.keys()
+            and (
+                "-n=" in config.inicfg["addopts"]
+                or "-n " in config.inicfg["addopts"]
+            )
+        )
+    ):
         sb_config._multithreaded = True
-    if "--html" in sys.argv or " --html=" in arg_join:
+    if (
+        "--html" in sys.argv
+        or " --html=" in arg_join
+        or (
+            sys.version_info[0] >= 3
+            and "addopts" in config.inicfg.keys()
+            and (
+                "--html=" in config.inicfg["addopts"]
+                or "--html " in config.inicfg["addopts"]
+            )
+        )
+    ):
         sb_config._using_html_report = True
         sb_config._html_report_name = config.getoption("htmlpath")
         if sb_config.dashboard:
             if sb_config._html_report_name == "dashboard.html":
                 sb_config._dash_is_html_report = True
+
+    # Recorder Mode does not support multi-threaded / multi-process runs.
+    if sb_config.recorder_mode and sb_config._multithreaded:
+        # At this point, the user likely put a "-n NUM" in the pytest.ini file.
+        # Since raising an exception in pytest_configure raises INTERNALERROR,
+        # print a message here instead and cancel Recorder Mode.
+        print(
+            "\n  Recorder Mode does NOT support multi-process mode (-n)!"
+            '\n  (DO NOT combine "--recorder" with "-n NUM_PROCESSES"!)'
+            "\n  (The Recorder WILL BE DISABLED during this run!)\n"
+        )
+        sb_config.recorder_mode = False
+        sb_config.recorder_ext = False
 
     if sb_config.xvfb and "linux" not in sys.platform:
         # The Xvfb virtual display server is for Linux OS Only!
@@ -1210,6 +1367,9 @@ def pytest_configure(config):
             sb_config.browser = "safari"
         else:
             pass  # Use the browser specified using "--browser=BROWSER"
+
+    if sb_config.dash_title:
+        constants.Dashboard.TITLE = sb_config.dash_title.replace("_", " ")
 
     from seleniumbase.core import log_helper
     from seleniumbase.core import download_helper
@@ -1329,7 +1489,7 @@ def pytest_collection_finish(session):
 
 
 def pytest_runtest_setup(item):
-    """ This runs before every test with pytest. """
+    """This runs before every test with pytest."""
     if sb_config.dashboard:
         sb_config._sbase_detected = False
     test_id, display_id = _get_test_ids_(item)
@@ -1342,16 +1502,32 @@ def pytest_runtest_teardown(item):
     Make sure that webdriver and headless displays have exited.
     (Has zero effect on tests using --reuse-session / --rs)"""
     try:
-        self = item._testcase
-        try:
-            if (
-                hasattr(self, "driver")
-                and self.driver
-                and "--pdb" not in sys.argv
+        if hasattr(item, "_testcase") or hasattr(sb_config, "_sb_pdb_driver"):
+            if hasattr(item, "_testcase"):
+                self = item._testcase
+                try:
+                    if (
+                        hasattr(self, "driver")
+                        and self.driver
+                        and "--pdb" not in sys.argv
+                    ):
+                        if not is_windows or self.driver.service.process:
+                            self.driver.quit()
+                except Exception:
+                    pass
+            elif (
+                hasattr(sb_config, "_sb_pdb_driver")
+                and sb_config._sb_pdb_driver
             ):
-                self.driver.quit()
-        except Exception:
-            pass
+                try:
+                    if (
+                        not is_windows
+                        or sb_config._sb_pdb_driver.service.process
+                    ):
+                        sb_config._sb_pdb_driver.quit()
+                        sb_config._sb_pdb_driver = None
+                except Exception:
+                    pass
         try:
             if hasattr(self, "xvfb") and self.xvfb:
                 if self.headless_active and "--pdb" not in sys.argv:
@@ -1388,7 +1564,11 @@ def pytest_terminal_summary(terminalreporter):
         # Print link a second time because the first one may be off-screen
         dashboard_file = os.getcwd() + "/dashboard.html"
         terminalreporter.write_sep("-", "Dashboard: %s" % dashboard_file)
-    if sb_config._has_exception or sb_config.save_screenshot:
+    if (
+        sb_config._has_exception
+        or sb_config.save_screenshot
+        or sb_config._has_logs
+    ):
         # Log files are generated during test failures and Screenshot Mode
         terminalreporter.write_sep("-", "LogPath: %s" % latest_logs_dir)
 
@@ -1402,7 +1582,12 @@ def _perform_pytest_unconfigure_():
         # Close the shared browser session
         if sb_config.shared_driver:
             try:
-                sb_config.shared_driver.quit()
+                if (
+                    not is_windows
+                    or sb_config.browser == "ie"
+                    or sb_config.shared_driver.service.process
+                ):
+                    sb_config.shared_driver.quit()
             except AttributeError:
                 pass
             except Exception:
@@ -1473,9 +1658,7 @@ def _perform_pytest_unconfigure_():
                     '</head><link rel="shortcut icon" '
                     'href="%s">' % constants.Dashboard.DASH_PIE_PNG_3,
                 )
-                the_html_d = the_html_d.replace(
-                    "<html>", '<html lang="en">'
-                )
+                the_html_d = the_html_d.replace("<html>", '<html lang="en">')
                 the_html_d = the_html_d.replace(
                     "<head>",
                     '<head><meta http-equiv="Content-Type" '
@@ -1535,15 +1718,12 @@ def _perform_pytest_unconfigure_():
 
 
 def pytest_unconfigure(config):
-    """ This runs after all tests have completed with pytest. """
+    """This runs after all tests have completed with pytest."""
     if hasattr(sb_config, "_multithreaded") and sb_config._multithreaded:
         import fasteners
 
         dash_lock = fasteners.InterProcessLock(constants.Dashboard.LOCKFILE)
-        if (
-            hasattr(sb_config, "dashboard")
-            and sb_config.dashboard
-        ):
+        if hasattr(sb_config, "dashboard") and sb_config.dashboard:
             # Multi-threaded tests with the Dashboard
             abs_path = os.path.abspath(".")
             dash_lock_file = constants.Dashboard.LOCKFILE

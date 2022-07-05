@@ -8,6 +8,7 @@ from selenium.common.exceptions import NoSuchAttributeException
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoSuchFrameException
 from selenium.common.exceptions import NoSuchWindowException
+from seleniumbase.common.exceptions import TextNotVisibleException
 from seleniumbase import config as sb_config
 
 
@@ -28,6 +29,10 @@ def format_exc(exception, message):
         exc = NoSuchElementException
     elif exception == "NoSuchElementException":
         exc = NoSuchElementException
+    elif exception == TextNotVisibleException:
+        exc = TextNotVisibleException
+    elif exception == "TextNotVisibleException":
+        exc = TextNotVisibleException
     elif exception == NoAlertPresentException:
         exc = NoAlertPresentException
     elif exception == "NoAlertPresentException":
@@ -71,7 +76,11 @@ def __time_limit_exceeded(message):
 
 
 def check_if_time_limit_exceeded():
-    if sb_config.time_limit and not sb_config.recorder_mode:
+    if (
+        hasattr(sb_config, "time_limit")
+        and sb_config.time_limit
+        and not sb_config.recorder_mode
+    ):
         time_limit = sb_config.time_limit
         now_ms = int(time.time() * 1000)
         if now_ms > sb_config.start_time_ms + sb_config.time_limit_ms:

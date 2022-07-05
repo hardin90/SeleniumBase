@@ -91,6 +91,7 @@ geckodriver.log
 pytestdebug.log
 
 # Reports
+reports/*.xml
 latest_report
 report_archives
 archived_reports
@@ -137,6 +138,9 @@ mkdocs_build/*.md
 mkdocs_build/*/*.md
 mkdocs_build/*/*/*.md
 mkdocs_build/*/*/*/*.md
+
+# macOS system files
+.DS_Store
 
 # Other
 selenium-server-standalone.jar

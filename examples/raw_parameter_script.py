@@ -31,6 +31,7 @@ except (ImportError, ValueError):
 if pure_python:
     sb = MyTestClass("test_swag_labs")
     sb.browser = "chrome"
+    sb.is_behave = False
     sb.headless = False
     sb.headed = False
     sb.xvfb = False
@@ -43,6 +44,7 @@ if pure_python:
     sb.var1 = None
     sb.var2 = None
     sb.var3 = None
+    sb.variables = {}
     sb.account = None
     sb.environment = "test"
     sb.user_agent = None
@@ -66,7 +68,9 @@ if pure_python:
     sb._multithreaded = False
     sb._reuse_session = False
     sb._crumbs = False
+    sb._final_debug = False
     sb.visual_baseline = False
+    sb.window_size = None
     sb.maximize_option = False
     sb.save_screenshot_after_test = False
     sb.timeout_multiplier = None
@@ -76,15 +80,18 @@ if pure_python:
     sb.js_checking_on = False
     sb.recorder_mode = False
     sb.recorder_ext = False
+    sb.record_sleep = False
+    sb.rec_behave = False
+    sb.rec_print = False
     sb.report_on = False
     sb.is_pytest = False
     sb.slow_mode = False
     sb.demo_mode = False
     sb.time_limit = None
-    sb.demo_sleep = 1
+    sb.demo_sleep = None
     sb.dashboard = False
     sb._dash_initialized = False
-    sb.message_duration = 2
+    sb.message_duration = None
     sb.block_images = False
     sb.external_pdf = False
     sb.remote_debug = False
@@ -95,10 +102,10 @@ if pure_python:
     sb.firefox_pref = None
     sb.proxy_string = None
     sb.proxy_bypass_list = None
+    sb.proxy_pac_url = None
     sb.swiftshader = False
     sb.ad_block_on = False
     sb.highlights = None
-    sb.check_js = False
     sb.interval = None
     sb.cap_file = None
     sb.cap_string = None

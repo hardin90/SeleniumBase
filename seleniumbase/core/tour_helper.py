@@ -4,6 +4,7 @@ These helper methods SHOULD NOT be called directly from tests.
 """
 import os
 import re
+import textwrap
 import time
 from selenium.webdriver.common.by import By
 from seleniumbase import config as sb_config
@@ -261,7 +262,7 @@ def is_shepherd_activated(driver):
 
 
 def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
-    """ Plays a Shepherd tour on the current website. """
+    """Plays a Shepherd tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -391,7 +392,7 @@ def play_shepherd_tour(driver, tour_steps, msg_dur, name=None, interval=0):
 def play_bootstrap_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays a Bootstrap tour on the current website. """
+    """Plays a Bootstrap tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -483,7 +484,7 @@ def play_bootstrap_tour(
 def play_driverjs_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays a DriverJS tour on the current website. """
+    """Plays a DriverJS tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -610,7 +611,7 @@ def play_driverjs_tour(
 def play_hopscotch_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays a Hopscotch tour on the current website. """
+    """Plays a Hopscotch tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -729,7 +730,7 @@ def play_hopscotch_tour(
 def play_introjs_tour(
     driver, tour_steps, browser, msg_dur, name=None, interval=0
 ):
-    """ Plays an IntroJS tour on the current website. """
+    """Plays an IntroJS tour on the current website."""
     instructions = ""
     for tour_step in tour_steps[name]:
         instructions += tour_step
@@ -1008,6 +1009,8 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
         instructions += "loadResources()"
 
     instructions += "\n\n////////  Tour Code  ////////\n\n"
+    first_instructions = instructions
+    instructions = "        "
     if tour_type == "bootstrap":
         instructions += "function loadTour() { "
         instructions += 'if ( typeof Tour !== "undefined" ) {\n'
@@ -1070,6 +1073,8 @@ def export_tour(tour_steps, name=None, filename="my_tour.js", url=None):
             $tour = tour;\n"""
     else:
         pass
+    instructions = textwrap.dedent(instructions)
+    instructions = first_instructions + instructions
     instructions += '\n} else { window.setTimeout("loadTour();",100); } '
     instructions += "}\n"
     instructions += "loadTour()\n"

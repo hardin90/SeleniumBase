@@ -3,8 +3,11 @@
 Launches the SeleniumBase Recorder Desktop App.
 
 Usage:
-      seleniumbase recorder
-             sbase recorder
+    seleniumbase recorder [OPTIONS]
+           sbase recorder [OPTIONS]
+
+Options:
+    --behave  (Also output Behave/Gherkin files.)
 
 Output:
     Launches the SeleniumBase Recorder Desktop App.
@@ -14,8 +17,11 @@ import colorama
 import os
 import subprocess
 import sys
+from seleniumbase import config as sb_config
 from seleniumbase.fixtures import page_utils
 
+sb_config.rec_subprocess_p = None
+sb_config.rec_subprocess_used = False
 if sys.version_info <= (3, 7):
     current_version = ".".join(str(ver) for ver in sys.version_info[:3])
     raise Exception(
@@ -50,6 +56,14 @@ def send_window_to_front(window):
     window.after_idle(window.attributes, "-topmost", False)
 
 
+def show_already_recording_warning():
+    messagebox.showwarning(
+        "SeleniumBase Recorder: Already Running!",
+        "Please finalize the active recording from the terminal\n"
+        'where you opened the Recorder: Type "c" and hit Enter.',
+    )
+
+
 def file_name_error(file_name):
     error_msg = None
     if not file_name.endswith(".py"):
@@ -64,11 +78,24 @@ def file_name_error(file_name):
 
 
 def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
+    poll = None
+    if sb_config.rec_subprocess_used:
+        poll = sb_config.rec_subprocess_p.poll()
+    if not sb_config.rec_subprocess_used or poll is not None:
+        pass
+    else:
+        show_already_recording_warning()
+        send_window_to_front(window)
+        poll = sb_config.rec_subprocess_p.poll()
+        if poll is None:
+            return
+
     file_name = file_name.strip()
     error_msg = file_name_error(file_name)
     if error_msg:
         messagebox.showwarning(
-            "Invalid filename", "Invalid filename: %s" % error_msg)
+            "Invalid filename", "Invalid filename: %s" % error_msg
+        )
         return
 
     url = url.strip()
@@ -77,14 +104,15 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
             url = "https://" + url
     if not page_utils.is_valid_url(url):
         messagebox.showwarning(
-            "Invalid URL", "Enter a valid URL! (Eg. seleniumbase.io)")
+            "Invalid URL", "Enter a valid URL! (Eg. seleniumbase.io)"
+        )
     else:
         if os.path.exists(os.getcwd() + "/" + file_name):
             if not overwrite_enabled:
                 msgbox = tk.messagebox.askquestion(
                     "Overwrite?",
                     'Are you sure you want to overwrite "%s"?' % file_name,
-                    icon="warning"
+                    icon="warning",
                 )
                 if msgbox == "yes":
                     os.remove(file_name)
@@ -93,10 +121,26 @@ def do_recording(file_name, url, overwrite_enabled, use_chrome, window):
                     return
             else:
                 os.remove(file_name)
+        add_on = ""
+        command_args = sys.argv[2:]
+        if (
+            "--rec-behave" in command_args
+            or "--behave" in command_args
+            or "--gherkin" in command_args
+        ):
+            add_on = " --rec-behave"
         command = "sbase mkrec %s --url=%s --gui" % (file_name, url)
         if not use_chrome:
             command += " --edge"
-        subprocess.Popen(command, shell=True)
+        command += add_on
+        poll = None
+        if sb_config.rec_subprocess_used:
+            poll = sb_config.rec_subprocess_p.poll()
+        if not sb_config.rec_subprocess_used or poll is not None:
+            sb_config.rec_subprocess_p = subprocess.Popen(command, shell=True)
+            sb_config.rec_subprocess_used = True
+        else:
+            show_already_recording_warning()
         send_window_to_front(window)
 
 
@@ -105,12 +149,13 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
     error_msg = file_name_error(file_name)
     if error_msg:
         messagebox.showwarning(
-            "Invalid filename", "Invalid filename: %s" % error_msg)
+            "Invalid filename", "Invalid filename: %s" % error_msg
+        )
         return
     if not os.path.exists(os.getcwd() + "/" + file_name):
         messagebox.showwarning(
             "File does not exist",
-            'File "%s" does not exist in the current directory!' % file_name
+            'File "%s" does not exist in the current directory!' % file_name,
         )
         return
     command = "pytest %s -q -s" % file_name
@@ -120,8 +165,18 @@ def do_playback(file_name, use_chrome, window, demo_mode=False):
         command += " --edge"
     if demo_mode:
         command += " --demo"
-    print(command)
-    subprocess.Popen(command, shell=True)
+    poll = None
+    if sb_config.rec_subprocess_used:
+        poll = sb_config.rec_subprocess_p.poll()
+    if not sb_config.rec_subprocess_used or poll is not None:
+        print(command)
+        subprocess.Popen(command, shell=True)
+    else:
+        messagebox.showwarning(
+            "SeleniumBase Recorder: Already Running!",
+            "Please finalize the active recording from the terminal\n"
+            'where you opened the Recorder: Type "c" and hit Enter.',
+        )
     send_window_to_front(window)
 
 
@@ -154,32 +209,82 @@ def create_tkinter_gui():
     entry.focus()
     entry.bind(
         "<Return>",
-        (lambda _: do_recording(
-            fname.get(), url.get(), cbx.get(), cbb.get(), window))
+        (
+            lambda _: do_recording(
+                fname.get(), url.get(), cbx.get(), cbb.get(), window
+            )
+        ),
     )
     tk.Button(
-        window, text="Record", fg="red",
+        window,
+        text="Record",
+        fg="red",
         command=lambda: do_recording(
-            fname.get(), url.get(), cbx.get(), cbb.get(), window)
+            fname.get(), url.get(), cbx.get(), cbb.get(), window
+        ),
     ).pack()
     tk.Label(window, text="").pack()
-    tk.Label(
-        window, text="Playback recording (Normal Mode):").pack()
+    tk.Label(window, text="Playback recording (Normal Mode):").pack()
     tk.Button(
-        window, text="Playback", fg="green",
-        command=lambda: do_playback(fname.get(), cbb.get(), window)
+        window,
+        text="Playback",
+        fg="green",
+        command=lambda: do_playback(fname.get(), cbb.get(), window),
     ).pack()
     tk.Label(window, text="").pack()
-    tk.Label(
-        window, text="Playback recording (Demo Mode):").pack()
+    tk.Label(window, text="Playback recording (Demo Mode):").pack()
     tk.Button(
-        window, text="Playback (Demo Mode)", fg="teal",
+        window,
+        text="Playback (Demo Mode)",
+        fg="teal",
         command=lambda: do_playback(
-            fname.get(), cbb.get(), window, demo_mode=True)).pack()
+            fname.get(), cbb.get(), window, demo_mode=True
+        ),
+    ).pack()
 
     # Bring form window to front
     send_window_to_front(window)
+    # Use decoy to set correct focus on main window
+    decoy = tk.Tk()
+    decoy.geometry("1x1")
+    decoy.iconify()
+    decoy.update()
+    decoy.deiconify()
+    decoy.destroy()
+    # Start tkinter
     window.mainloop()
+    end_program()
+
+
+def recorder_still_running():
+    poll = None
+    if sb_config.rec_subprocess_used:
+        try:
+            poll = sb_config.rec_subprocess_p.poll()
+        except Exception:
+            return False
+    else:
+        return False
+    if poll is not None:
+        return False
+    return True
+
+
+def show_still_running_warning():
+    """Give the user a chance to end the recording safely via the
+    pytest ipdb Debug Mode so that processes such as chromedriver
+    and Python don't remain open and hanging in the background."""
+    messagebox.showwarning(
+        "SeleniumBase Recorder: Still Running!",
+        "Please finalize the active recording from the terminal\n"
+        'where you opened the Recorder: Type "c" and hit Enter.\n'
+        "(Then you can safely close this alert.)",
+    )
+
+
+def end_program():
+    if recorder_still_running():
+        show_still_running_warning()
 
 
 def main():

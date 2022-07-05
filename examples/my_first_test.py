@@ -9,7 +9,7 @@ class MyTestClass(BaseCase):
         self.open("https://www.saucedemo.com")
         self.type("#user-name", "standard_user")
         self.type("#password", "secret_sauce\n")
-        self.assert_element("#inventory_container")
+        self.assert_element("div.inventory_list")
         self.assert_text("PRODUCTS", "span.title")
         self.click('button[name*="backpack"]')
         self.click("#shopping_cart_container a")
@@ -33,16 +33,14 @@ class MyTestClass(BaseCase):
         #
         #    ****  NOTES / USEFUL INFO  ****
         #
-        # 1. By default, CSS Selectors are used to identify elements.
+        # 1. By default, page elements are identified by "css selector".
         #    CSS Guide: "https://www.w3schools.com/cssref/css_selectors.asp".
-        #    Other selectors include: "LINK_TEXT", "PARTIAL_LINK_TEXT", "NAME",
-        #    "CLASS_NAME", and "ID", but most of those can be expressed as CSS.
+        #    Other selectors include: "link text", "partial link text", "name",
+        #    "class name", and "id", but most of those can be expressed as CSS.
         #
         #    Here's an example of changing the "by":
         #    [
-        #        from selenium.webdriver.common.by import By
-        #        ...
-        #        self.click('Next', by=By.PARTIAL_LINK_TEXT)
+        #        self.click('Next', by="partial link text")
         #    ]
         #
         #    XPath is used by default if the arg starts with "/", "./", or "(":
@@ -135,9 +133,8 @@ class MyTestClass(BaseCase):
         #
         # 7. self.js_click(SELECTOR) can be used to click on hidden elements.
         #
-        # 8. If a URL starts with "://", then "https://" is automatically used.
-        #    Example: [self.open("://URL")] becomes [self.open("https://URL")]
-        #    This helps by reducing the line length by 5 characters.
+        # 8. self.open(URL) will automatically complete URLs missing a prefix.
+        #    Example: google.com will become https://google.com before opened.
         #
         # 9. For the full method list, see one of the following:
         #    * SeleniumBase/seleniumbase/fixtures/base_case.py

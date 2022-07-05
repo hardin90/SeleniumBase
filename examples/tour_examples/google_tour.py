@@ -5,6 +5,7 @@ class MyTourClass(BaseCase):
     def test_google_tour(self):
         self.open("https://google.com/ncr")
         self.wait_for_element('input[title="Search"]')
+        self.hide_elements("iframe")
 
         # Create a website tour using the ShepherdJS library with "dark" theme
         # Same as:  self.create_shepherd_tour(theme="dark")
@@ -78,7 +79,7 @@ class MyTourClass(BaseCase):
             alignment="left",
         )
         self.add_tour_step(
-            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour",
+            "Thanks for using SeleniumBase Tours!", title="End of Guided Tour"
         )
         self.export_tour()  # The default name for exports is "my_tour.js"
         self.play_tour()

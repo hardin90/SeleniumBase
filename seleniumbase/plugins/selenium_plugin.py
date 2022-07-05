@@ -8,6 +8,10 @@ from seleniumbase.config import settings
 from seleniumbase.core import proxy_helper
 from seleniumbase.fixtures import constants
 
+is_windows = False
+if sys.platform in ["win32", "win64", "x64"]:
+    is_windows = True
+
 
 class SeleniumBrowser(Plugin):
     """
@@ -22,11 +26,13 @@ class SeleniumBrowser(Plugin):
     --proxy=SERVER:PORT  (Connect to a proxy server:port for tests.)
     --proxy=USERNAME:PASSWORD@SERVER:PORT  (Use authenticated proxy server.)
     --proxy-bypass-list=STRING (";"-separated hosts to bypass, Eg "*.foo.com")
+    --proxy-pac-url=URL  (Connect to a proxy server using a PAC_URL.pac file.)
+    --proxy-pac-url=USERNAME:PASSWORD@URL  (Authenticated proxy with PAC URL.)
     --agent=STRING  (Modify the web browser's User-Agent string.)
     --mobile  (Use the mobile device emulator while running tests.)
     --metrics=STRING  (Set mobile metrics: "CSSWidth,CSSHeight,PixelRatio".)
-    --chromium-arg=ARG  (Add a Chromium arg for Chrome/Edge, comma-separated.)
-    --firefox-arg=ARG  (Add a Firefox arg for Firefox, comma-separated.)
+    --chromium-arg="ARG=N,ARG2" (Set Chromium args, ","-separated, no spaces.)
+    --firefox-arg="ARG=N,ARG2" (Set Firefox args, comma-separated, no spaces.)
     --firefox-pref=SET  (Set a Firefox preference:value set, comma-separated.)
     --extension-zip=ZIP  (Load a Chrome Extension .zip|.crx, comma-separated.)
     --extension-dir=DIR  (Load a Chrome Extension directory, comma-separated.)
@@ -47,17 +53,22 @@ class SeleniumBrowser(Plugin):
     --block-images  (Block images from loading during tests.)
     --verify-delay=SECONDS  (The delay before MasterQA verification checks.)
     --recorder  (Enables the Recorder for turning browser actions into code.)
+    --rec-behave  (Same as Recorder Mode, but also generates behave-gherkin.)
+    --rec-sleep  (If the Recorder is enabled, also records self.sleep calls.)
+    --rec-print  (If the Recorder is enabled, prints output after tests end.)
     --disable-csp  (Disable the Content Security Policy of websites.)
     --disable-ws  (Disable Web Security on Chromium-based browsers.)
     --enable-ws  (Enable Web Security on Chromium-based browsers.)
     --enable-sync  (Enable "Chrome Sync".)
     --use-auto-ext  (Use Chrome's automation extension.)
     --remote-debug  (Enable Chrome's Remote Debugger on http://localhost:9222)
+    --final-debug  (Enter Debug Mode after each test ends. Don't use with CI!)
     --swiftshader  (Use Chrome's "--use-gl=swiftshader" feature.)
     --incognito  (Enable Chrome's Incognito mode.)
     --guest  (Enable Chrome's Guest mode.)
     --devtools  (Open Chrome's DevTools when the browser opens.)
-    --maximize  (Start tests with the web browser window maximized.)
+    --window-size  (Set the browser window size: "Width,Height".)
+    --maximize  (Start tests with the browser window maximized.)
     --screenshot  (Save a screenshot at the end of each test.)
     --visual-baseline  (Set the visual baseline for Visual/Layout tests.)
     --external-pdf (Set Chromium "plugins.always_open_pdf_externally": True.)
@@ -95,15 +106,16 @@ class SeleniumBrowser(Plugin):
             dest="cap_file",
             default=None,
             help="""The file that stores browser desired capabilities
-                    for BrowserStack or Sauce Labs web drivers.""",
+                    for BrowserStack, LambdaTest, Sauce Labs,
+                    and other remote web drivers to use.""",
         )
         parser.add_option(
             "--cap_string",
             "--cap-string",
             dest="cap_string",
             default=None,
-            help="""The string that stores browser desired
-                    capabilities for BrowserStack, Sauce Labs,
+            help="""The string that stores browser desired capabilities
+                    for BrowserStack, LambdaTest, Sauce Labs,
                     and other remote web drivers to use.
                     Enclose cap-string in single quotes.
                     Enclose parameter keys in double quotes.
@@ -150,6 +162,8 @@ class SeleniumBrowser(Plugin):
         )
         parser.add_option(
             "--proxy",
+            "--proxy-server",
+            "--proxy-string",
             action="store",
             dest="proxy_string",
             default=None,
@@ -175,6 +189,17 @@ class SeleniumBrowser(Plugin):
                         pytest
                             --proxy="servername:port"
                             --proxy-bypass-list="127.0.0.1:8080"
+                    Default: None.""",
+        )
+        parser.add_option(
+            "--proxy-pac-url",
+            "--pac-url",
+            action="store",
+            dest="proxy_pac_url",
+            default=None,
+            help="""Designates the proxy PAC URL to use.
+                    Format: A URL string  OR
+                            A username:password@URL string
                     Default: None.""",
         )
         parser.add_option(
@@ -450,6 +475,35 @@ class SeleniumBrowser(Plugin):
                     into SeleniumBase scripts.""",
         )
         parser.add_option(
+            "--rec-behave",
+            "--rec-gherkin",
+            action="store_true",
+            dest="rec_behave",
+            default=False,
+            help="""Not only enables the SeleniumBase Recorder,
+                    but also saves recorded actions into the
+                    behave-gerkin format, which includes a
+                    feature file, an imported steps file,
+                    and the environment.py file.""",
+        )
+        parser.add_option(
+            "--rec-sleep",
+            "--record-sleep",
+            action="store_true",
+            dest="record_sleep",
+            default=False,
+            help="""If Recorder Mode is enabled,
+                    records sleep(seconds) calls.""",
+        )
+        parser.add_option(
+            "--rec-print",
+            action="store_true",
+            dest="rec_print",
+            default=False,
+            help="""If Recorder Mode is enabled,
+                    prints output after tests end.""",
+        )
+        parser.add_option(
             "--disable_csp",
             "--disable-csp",
             "--no_csp",
@@ -534,6 +588,16 @@ class SeleniumBrowser(Plugin):
                     Info: chromedevtools.github.io/devtools-protocol/""",
         )
         parser.add_option(
+            "--final-debug",
+            action="store_true",
+            dest="final_debug",
+            default=False,
+            help="""Enter Debug Mode at the end of each test.
+                    To enter Debug Mode only on failures, use "--pdb".
+                    If using both "--final-debug" and "--pdb" together,
+                    then Debug Mode will activate twice on failures.""",
+        )
+        parser.add_option(
             "--swiftshader",
             action="store_true",
             dest="swiftshader",
@@ -569,6 +633,17 @@ class SeleniumBrowser(Plugin):
             help="""Using this opens Chrome's DevTools.""",
         )
         parser.add_option(
+            "--window-size",
+            "--window_size",
+            action="store",
+            dest="window_size",
+            default=None,
+            help="""The option to set the default window "width,height".
+                    Format: A comma-separated string with the 2 values.
+                    Example: "1200,800"
+                    Default: None. (Will use default values if None)""",
+        )
+        parser.add_option(
             "--maximize_window",
             "--maximize-window",
             "--maximize",
@@ -576,7 +651,8 @@ class SeleniumBrowser(Plugin):
             action="store_true",
             dest="maximize_option",
             default=False,
-            help="""The option to start with the web browser maximized.""",
+            help="""The option to start with a maximized browser window.
+                    (Overrides the "window-size" option if used.)""",
         )
         parser.add_option(
             "--screenshot",
@@ -634,8 +710,34 @@ class SeleniumBrowser(Plugin):
         if self.options.recorder_mode and browser not in ["chrome", "edge"]:
             message = (
                 "\n\n  Recorder Mode ONLY supports Chrome and Edge!"
-                '\n  (Your browser choice was: "%s")\n' % browser)
+                '\n  (Your browser choice was: "%s")\n' % browser
+            )
             raise Exception(message)
+        window_size = self.options.window_size
+        if window_size:
+            if window_size.count(",") != 1:
+                message = (
+                    '\n\n  window_size expects a "width,height" string!'
+                    '\n  (Your input was: "%s")\n' % window_size
+                )
+                raise Exception(message)
+            window_size = window_size.replace(" ", "")
+            width = None
+            height = None
+            try:
+                width = int(window_size.split(",")[0])
+                height = int(window_size.split(",")[1])
+            except Exception:
+                message = (
+                    '\n\n  Expecting integer values for "width,height"!'
+                    '\n  (window_size input was: "%s")\n' % window_size
+                )
+                raise Exception(message)
+            settings.CHROME_START_WIDTH = width
+            settings.CHROME_START_HEIGHT = height
+            settings.HEADLESS_START_WIDTH = width
+            settings.HEADLESS_START_HEIGHT = height
+        test.test.is_nosetest = True
         test.test.browser = self.options.browser
         test.test.cap_file = self.options.cap_file
         test.test.cap_string = self.options.cap_string
@@ -656,6 +758,7 @@ class SeleniumBrowser(Plugin):
         test.test.firefox_pref = self.options.firefox_pref
         test.test.proxy_string = self.options.proxy_string
         test.test.proxy_bypass_list = self.options.proxy_bypass_list
+        test.test.proxy_pac_url = self.options.proxy_pac_url
         test.test.user_agent = self.options.user_agent
         test.test.mobile_emulator = self.options.mobile_emulator
         test.test.device_metrics = self.options.device_metrics
@@ -671,6 +774,18 @@ class SeleniumBrowser(Plugin):
         test.test.verify_delay = self.options.verify_delay  # MasterQA
         test.test.recorder_mode = self.options.recorder_mode
         test.test.recorder_ext = self.options.recorder_mode  # Again
+        test.test.rec_behave = self.options.rec_behave
+        test.test.rec_print = self.options.rec_print
+        test.test.record_sleep = self.options.record_sleep
+        if self.options.rec_print:
+            test.test.recorder_mode = True
+            test.test.recorder_ext = True
+        elif self.options.rec_behave:
+            test.test.recorder_mode = True
+            test.test.recorder_ext = True
+        elif self.options.record_sleep:
+            test.test.recorder_mode = True
+            test.test.recorder_ext = True
         test.test.disable_csp = self.options.disable_csp
         test.test.disable_ws = self.options.disable_ws
         test.test.enable_ws = self.options.enable_ws
@@ -681,10 +796,12 @@ class SeleniumBrowser(Plugin):
         test.test.no_sandbox = self.options.no_sandbox
         test.test.disable_gpu = self.options.disable_gpu
         test.test.remote_debug = self.options.remote_debug
+        test.test._final_debug = self.options.final_debug
         test.test.swiftshader = self.options.swiftshader
         test.test.incognito = self.options.incognito
         test.test.guest_mode = self.options.guest_mode
         test.test.devtools = self.options.devtools
+        test.test.window_size = self.options.window_size
         test.test.maximize_option = self.options.maximize_option
         test.test.save_screenshot_after_test = self.options.save_screenshot
         test.test.visual_baseline = self.options.visual_baseline
@@ -738,13 +855,18 @@ class SeleniumBrowser(Plugin):
         test.test.driver = self.driver
 
     def finalize(self, result):
-        """ This runs after all tests have completed with nosetests. """
+        """This runs after all tests have completed with nosetests."""
         proxy_helper.remove_proxy_zip_if_present()
 
     def afterTest(self, test):
         try:
             # If the browser window is still open, close it now.
-            self.driver.quit()
+            if (
+                not is_windows
+                or test.test.browser == "ie"
+                or self.driver.service.process
+            ):
+                self.driver.quit()
         except AttributeError:
             pass
         except Exception:

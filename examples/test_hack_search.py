@@ -8,7 +8,12 @@ from seleniumbase import BaseCase
 
 class HackingTests(BaseCase):
     def test_hack_search(self):
+        if self.headless:
+            self.open_if_not_url("about:blank")
+            print("\n  This test is not for Headless Mode.")
+            self.skip('Do not use "--headless" with this test.')
         self.open("https://google.com/ncr")
+        self.hide_elements("iframe")
         self.assert_element('input[title="Search"]')
         self.set_attribute('[action="/search"]', "action", "//bing.com/search")
         self.set_attributes('[value="Google Search"]', "value", "Bing Search")
@@ -16,15 +21,10 @@ class HackingTests(BaseCase):
         self.sleep(0.5)
         self.js_click('[value="Bing Search"]')
         self.highlight("h1.b_logo")
-        help_docs_install_link = 'a[href*="seleniumbase.io/help_docs/install"]'
-        if self.is_element_visible(help_docs_install_link):
-            self.highlight_click(help_docs_install_link)
-            self.assert_text("Install SeleniumBase", "h1")
-            self.click_link("GitHub branch")
-        self.highlight_click('a[href*="/seleniumbase/SeleniumBase"]')
-        self.assert_element('[href="/seleniumbase/SeleniumBase"]')
-        self.assert_true("seleniumbase/SeleniumBase" in self.get_current_url())
+        self.highlight_click('[href*="github.com/seleniumbase/SeleniumBase"]')
+        self.highlight_click('[href="/seleniumbase/SeleniumBase"]')
         self.highlight_click('a[title="examples"]')
         self.assert_text("examples", "strong.final-path")
-        self.highlight_click('[title="test_hack_search.py"]')
+        self.highlight_click('a[title="test_hack_search.py"]')
         self.assert_text("test_hack_search.py", "strong.final-path")
+        self.highlight("strong.final-path")

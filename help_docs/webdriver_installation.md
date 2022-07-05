@@ -12,7 +12,7 @@ sbase install iedriver
 sbase install operadriver
 ```
 
-* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 2.44 for compatibility reasons</i>):
+* If you have the latest version of Chrome installed, get the latest chromedriver (<i>otherwise it defaults to chromedriver 72.0.3626.69 for compatibility reasons</i>):
 
 ```bash
 sbase install chromedriver latest
@@ -21,9 +21,9 @@ sbase install chromedriver latest
 * You can also install a specific version of chromedriver for a specific version of Chrome:
 
 ```bash
-sbase install chromedriver 94.0.4606.61
+sbase install chromedriver 100.0.4896.60
 
-sbase install chromedriver 94
+sbase install chromedriver 100
 ```
 
 * On Linux, you can run the following two commands (once you've installed SeleniumBase) to automatically upgrade your Chromedriver to match your version of Chrome: (``wget`` downloads the file, and ``pytest`` runs it.)
@@ -81,8 +81,8 @@ chmod +x /usr/local/bin/chromedriver
 ```
 
 ```bash
-wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz
-tar xvfz geckodriver-v0.30.0-linux64.tar.gz
+wget https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz
+tar xvfz geckodriver-v0.31.0-linux64.tar.gz
 mv geckodriver /usr/local/bin/
 chmod +x /usr/local/bin/geckodriver
 ```

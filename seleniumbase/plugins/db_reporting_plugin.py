@@ -28,9 +28,7 @@ class DBReporting(Plugin):
         self.testcase_guid = None
         self.execution_start_time = 0
         self.case_start_time = 0
-        self.application = None
         self.testcase_manager = None
-        self.error_handled = False
         self._result_set = False
         self._test = None
 
@@ -47,7 +45,11 @@ class DBReporting(Plugin):
                 constants.Environment.DEVELOP,
                 constants.Environment.PRODUCTION,
                 constants.Environment.MASTER,
+                constants.Environment.REMOTE,
                 constants.Environment.LOCAL,
+                constants.Environment.ALPHA,
+                constants.Environment.BETA,
+                constants.Environment.MAIN,
                 constants.Environment.TEST,
             ),
             default=constants.Environment.TEST,
@@ -70,7 +72,7 @@ class DBReporting(Plugin):
         self.testcase_manager.insert_execution_data(exec_payload)
 
     def startTest(self, test):
-        """ At the start of the test, set the testcase details. """
+        """At the start of the test, set the testcase details."""
         data_payload = TestcaseDataPayload()
         self.testcase_guid = str(uuid.uuid4())
         data_payload.guid = self.testcase_guid
@@ -145,21 +147,18 @@ class DBReporting(Plugin):
         if err[0] == errors.BlockedTest:
             self.__insert_test_result(constants.State.BLOCKED, test, err)
             self._result_set = True
-            self.error_handled = True
             raise SkipTest(err[1])
             return True
 
         elif err[0] == errors.DeprecatedTest:
             self.__insert_test_result(constants.State.DEPRECATED, test, err)
             self._result_set = True
-            self.error_handled = True
             raise SkipTest(err[1])
             return True
 
         elif err[0] == errors.SkipTest:
             self.__insert_test_result(constants.State.SKIPPED, test, err)
             self._result_set = True
-            self.error_handled = True
             raise SkipTest(err[1])
             return True
 

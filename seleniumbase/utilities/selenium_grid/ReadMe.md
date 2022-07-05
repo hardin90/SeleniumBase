@@ -62,22 +62,28 @@ pytest test_demo_site.py --server=USERNAME:KEY@hub.browserstack.com --port=80
 pytest test_demo_site.py --server=USERNAME:KEY@ondemand.us-east-1.saucelabs.com --port=443 --protocol=https
 ```
 
+* [Perfecto](https://www.perfecto.io/integrations/selenium) Selenium Grid:
+
+```bash
+pytest test_demo_site.py --server=USERNAME:KEY@demo.perfectomobile.com/nexperience/perfectomobile --port=443
+```
+
 * [TestingBot](https://testingbot.com/features) Selenium Grid:
 
 ```bash
 pytest test_demo_site.py --server=USERNAME:KEY@hub.testingbot.com --port=80
 ```
 
-* [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
-
-```bash
-pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
-```
-
 * [LambdaTest](https://www.lambdatest.com/selenium-automation) Selenium Grid:
 
 ```bash
 pytest test_demo_site.py --server=USERNAME:KEY@hub.lambdatest.com --port=80
+```
+
+* [CrossBrowserTesting](https://help.crossbrowsertesting.com/selenium-testing/getting-started/python/) Selenium Grid:
+
+```bash
+pytest test_demo_site.py --server=USERNAME:KEY@hub.crossbrowsertesting.com --port=80
 ```
 
 To use a server on the ``https`` protocol, add ``--protocol=https``:
@@ -89,5 +95,6 @@ pytest test_demo_site.py --protocol=https --server=IP_ADDRESS --port=PORT
 
 (For setting browser desired capabilities while running Selenium remotely, see the <a href="https://seleniumbase.io/help_docs/desired_capabilities/">desired capabilities documentation</a> and the sample files located in <a href="https://github.com/seleniumbase/SeleniumBase/tree/master/examples/capabilities">SeleniumBase/examples/capabilities</a>)
 
-<h4><img src="https://seleniumbase.io/img/sb_icon.png" title="SeleniumBase" width="30" /> More info about the Selenium Grid Hub can be found here:</h4>
-* [https://github.com/SeleniumHQ/selenium/wiki/Grid2](https://github.com/SeleniumHQ/selenium/wiki/Grid2)
+<h4><img src="https://seleniumbase.io/img/logo6.png" title="SeleniumBase" width="28" /> More info about the Selenium Grid Hub can be found here:</h4>
+
+* [https://www.selenium.dev/documentation/grid/](https://www.selenium.dev/documentation/grid/)
